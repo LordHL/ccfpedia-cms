@@ -6,6 +6,8 @@ import org.ccf.ccfpedia.cms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -15,5 +17,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public int addUser(UserBean user) {
         return userMapper.insert(user);
+    }
+
+    @Override
+    public UserBean getUserById(Integer id){
+        UserBean user = userMapper.selectByPrimaryKey(id);
+        return user;
+    }
+
+    @Override
+    public List<UserBean> getUserList(Integer pageNo, Integer pageSize){
+        Integer limit = null;
+        Integer offset = null;
+        if(pageNo != null && pageSize != null){
+            offset = (pageNo - 1) * pageSize;
+            limit = pageSize;
+        }
+        List<UserBean> userList = userMapper.selectByPaging(limit, offset);
+        return userList;
     }
 }

@@ -2,8 +2,6 @@ server:
   port: 8081
 
 spring:
-  jersey:
-    application-path: api
   datasource:
     url: jdbc:mysql://212.64.110.155:3389/ccfpedia_cms
     username: wiki

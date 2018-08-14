@@ -5,7 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <association property="group" javaType="org.ccf.ccfpedia.cms.bean.GroupBean">
       <id property="id" column="id"/>
       <result property="name" column="name"/>
@@ -16,7 +16,7 @@
     </association>
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, password, status, group_id, role_id
+    id, name, password, is_delete, group_id, role_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -24,16 +24,28 @@
     from user
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByPaging" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    order by update_time DESC
+    <if test="limit != null">
+      limit #{limit,jdbcType=INTEGER}
+    </if>
+    <if test="offset != null">
+      offset #{offset,jdbcType=INTEGER}
+    </if>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="org.ccf.ccfpedia.cms.bean.UserBean" useGeneratedKeys="true" keyProperty="id">
     insert into user (name, password,
-      status, role_id, group_id
+      role_id, group_id
       )
     values (#{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-      #{status,jdbcType=INTEGER}, #{role.id,jdbcType=INTEGER}, #{group.id,jdbcType=INTEGER}
+      #{role.id,jdbcType=INTEGER}, #{group.id,jdbcType=INTEGER}
       )
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="org.ccf.ccfpedia.cms.bean.UserBean">
@@ -45,8 +57,8 @@
       <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
       <if test="role.id != null">
         role_id = #{role.id,jdbcType=INTEGER},

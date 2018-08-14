@@ -1,5 +1,6 @@
 package org.ccf.ccfpedia.cms;
 
+import com.alibaba.fastjson.JSONObject;
 import org.ccf.ccfpedia.cms.bean.RoleBean;
 import org.ccf.ccfpedia.cms.bean.UserBean;
 import org.ccf.ccfpedia.cms.service.UserService;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -26,7 +28,19 @@ public class MybatisTest {
         role.setId(1);
         role.setName("test");
         user.setRole(role);
-        user.setStatus(1);
         userService.addUser(user);
     }
+
+    @Test
+    public void testOne() {
+        UserBean user = userService.getUserById(1);
+        System.out.println(user.getName());
+    }
+
+    @Test
+    public void testList() {
+        List<UserBean> userList = userService.getUserList(1, 10);
+        System.out.println(JSONObject.toJSON(userList));
+    }
+
 }

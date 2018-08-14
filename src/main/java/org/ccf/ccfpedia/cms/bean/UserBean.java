@@ -6,7 +6,7 @@ public class UserBean {
     private String password;
     private GroupBean group;
     private RoleBean role;
-    private int status;
+    private int isDelete;
 
     public int getId() {
         return id;
@@ -48,11 +48,11 @@ public class UserBean {
         this.role = role;
     }
 
-    public int getStatus() {
-        return status;
+    public int getIsDelete() {
+        return isDelete;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setIsDelete(int isDelete) {
+        this.isDelete = isDelete;
     }
 }
