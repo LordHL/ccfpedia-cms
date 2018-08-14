@@ -1,0 +1,20 @@
+server:
+  port: 8081
+
+spring:
+  jersey:
+    application-path: api
+  datasource:
+    url: jdbc:mysql://212.64.110.155:3389/ccfpedia_cms
+    username: wiki
+    password: term@ccf
+
+mybatis:
+  configuration:
+    cache-enabled: false
+    map-underscore-to-camel-case: true
+    use-generated-keys: true
+    default-executor-type: reuse
+    default-statement-timeout: 600
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: org.ccf.ccfpedia.cms.bean
