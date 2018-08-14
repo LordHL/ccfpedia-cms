@@ -43,4 +43,10 @@ public class MybatisTest {
         System.out.println(JSONObject.toJSON(userList));
     }
 
+    @Test
+    public void testCount() {
+        int userCount = userService.getUserCount();
+        System.out.println(userCount);
+    }
+
 }

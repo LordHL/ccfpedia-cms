@@ -36,4 +36,20 @@ public class UserServiceImpl implements UserService {
         List<UserBean> userList = userMapper.selectByPaging(limit, offset);
         return userList;
     }
+
+    @Override
+    public int getUserCount(){
+        return userMapper.count();
+    }
+
+    @Override
+    public UserBean login(String account, String password){
+        UserBean user = userMapper.selectByAccount(account);
+        if(user != null){
+            if(user.getPassword() != null && user.getPassword().equals(password)){
+                return user;
+            }
+        }
+        return null;
+    }
 }

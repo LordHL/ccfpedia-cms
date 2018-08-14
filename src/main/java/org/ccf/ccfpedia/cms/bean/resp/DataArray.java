@@ -1,7 +1,10 @@
 package org.ccf.ccfpedia.cms.bean.resp;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DataArray<T> {
     private int count;
     private List<T> array;

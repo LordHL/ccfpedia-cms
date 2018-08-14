@@ -13,7 +13,11 @@ public interface UserMapper {
 
     UserBean selectByPrimaryKey(Integer id);
 
-    List<UserBean> selectByPaging(@Param("limit") Integer limit,@Param("offset") Integer offset);
+    UserBean selectByAccount(String account);
+
+    List<UserBean> selectByPaging(@Param("limit") Integer limit, @Param("offset") Integer offset);
+
+    int count();
 
     int deleteByPrimaryKey(Integer id);
 

@@ -4,6 +4,8 @@
   <resultMap id="BaseResultMap" type="org.ccf.ccfpedia.cms.bean.UserBean">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <association property="group" javaType="org.ccf.ccfpedia.cms.bean.GroupBean">
@@ -16,18 +18,26 @@
     </association>
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, password, is_delete, group_id, role_id
+    id, name, account, email, password, is_delete, group_id, role_id
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from user
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByAccount" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where account = #{account,jdbcType=INTEGER}
+  </select>
   <select id="selectByPaging" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from user
+    where is_delete = 0
     order by update_time DESC
     <if test="limit != null">
       limit #{limit,jdbcType=INTEGER}
@@ -36,18 +46,26 @@
       offset #{offset,jdbcType=INTEGER}
     </if>
   </select>
+  <select id="count" resultType="java.lang.Integer">
+    select count(*)
+    from user
+    where is_delete = 0
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="org.ccf.ccfpedia.cms.bean.UserBean" useGeneratedKeys="true" keyProperty="id">
-    insert into user (name, password,
+    insert into user (name, password, account, email,
       role_id, group_id
       )
-    values (#{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+    values (#{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
       #{role.id,jdbcType=INTEGER}, #{group.id,jdbcType=INTEGER}
       )
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="org.ccf.ccfpedia.cms.bean.UserBean">
     update user
     <set>
@@ -56,6 +74,12 @@
       </if>
       <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
       </if>
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=INTEGER},

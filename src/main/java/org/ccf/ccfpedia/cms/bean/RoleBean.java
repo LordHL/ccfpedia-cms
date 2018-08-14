@@ -1,5 +1,8 @@
 package org.ccf.ccfpedia.cms.bean;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RoleBean {
     private int id;
     private String name;

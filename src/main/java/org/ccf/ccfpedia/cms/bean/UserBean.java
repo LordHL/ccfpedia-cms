@@ -1,9 +1,15 @@
 package org.ccf.ccfpedia.cms.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserBean {
     private int id;
     private String name;
+    private String email;
     private String password;
+    private String account;
     private GroupBean group;
     private RoleBean role;
     private int isDelete;
@@ -24,6 +30,23 @@ public class UserBean {
         this.name = name;
     }
 
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
