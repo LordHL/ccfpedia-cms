@@ -15,7 +15,7 @@ public interface UserMapper {
 
     UserBean selectByAccount(String account);
 
-    List<UserBean> selectByPaging(@Param("limit") Integer limit, @Param("offset") Integer offset);
+    List<UserBean> selectByKeyword(@Param("keyword") String keyword, @Param("limit") Integer limit, @Param("offset") Integer offset);
 
     int count();
 

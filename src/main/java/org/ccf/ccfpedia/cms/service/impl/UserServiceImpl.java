@@ -26,14 +26,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserBean> getUserList(Integer pageNo, Integer pageSize){
+    public List<UserBean> getUserList(String keyword, Integer pageNo, Integer pageSize){
         Integer limit = null;
         Integer offset = null;
         if(pageNo != null && pageSize != null){
             offset = (pageNo - 1) * pageSize;
             limit = pageSize;
         }
-        List<UserBean> userList = userMapper.selectByPaging(limit, offset);
+        List<UserBean> userList = userMapper.selectByKeyword(keyword, limit, offset);
         return userList;
     }
 
@@ -51,5 +51,16 @@ public class UserServiceImpl implements UserService {
             }
         }
         return null;
+    }
+
+    @Override
+    public void update(UserBean user) {
+        userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public UserBean getUserByAccount(String account){
+        UserBean user = userMapper.selectByAccount(account);
+        return user;
     }
 }

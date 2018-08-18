@@ -10,9 +10,13 @@ public interface UserService {
 
     UserBean getUserById(Integer id);
 
-    List<UserBean> getUserList(Integer pageNo, Integer pageSize);
+    List<UserBean> getUserList(String keyword, Integer pageNo, Integer pageSize);
 
     int getUserCount();
 
+    UserBean getUserByAccount(String account);
+
     UserBean login(String account, String password);
+
+    void update(UserBean user);
 }

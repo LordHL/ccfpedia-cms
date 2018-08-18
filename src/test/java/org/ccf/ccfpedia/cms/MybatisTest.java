@@ -1,15 +1,22 @@
 package org.ccf.ccfpedia.cms;
 
 import com.alibaba.fastjson.JSONObject;
+import org.ccf.ccfpedia.cms.bean.GroupBean;
 import org.ccf.ccfpedia.cms.bean.RoleBean;
+import org.ccf.ccfpedia.cms.bean.UserApplyBean;
 import org.ccf.ccfpedia.cms.bean.UserBean;
+import org.ccf.ccfpedia.cms.service.GroupService;
+import org.ccf.ccfpedia.cms.service.RoleService;
+import org.ccf.ccfpedia.cms.service.UserApplyService;
 import org.ccf.ccfpedia.cms.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -19,6 +26,20 @@ public class MybatisTest {
     @Resource
     private UserService userService;
 
+    @Resource
+    private UserApplyService userApplyService;
+    @Resource
+    private RoleService roleService;
+    @Resource
+    private GroupService groupService;
+
+    @Test
+    public void testApplyList(){
+        List<Integer> list = new ArrayList<>();
+        list.add(0);
+        List<UserApplyBean> userApplyList = userApplyService.getUserApplyList(list, 1, 10);
+        System.out.println(userApplyList.size());
+    }
     @Test
     public void testInsert() {
         UserBean user = new UserBean();
@@ -38,8 +59,14 @@ public class MybatisTest {
     }
 
     @Test
+    public void testOneGroup() {
+        GroupBean role = groupService.getGroupById(1);
+        System.out.println(role.getName());
+    }
+
+    @Test
     public void testList() {
-        List<UserBean> userList = userService.getUserList(1, 10);
+        List<UserBean> userList = userService.getUserList("王", 1, 10);
         System.out.println(JSONObject.toJSON(userList));
     }
 

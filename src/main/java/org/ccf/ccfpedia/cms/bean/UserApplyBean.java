@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserBean {
+public class UserApplyBean {
     private int id;
     private String name;
     private String email;
@@ -12,18 +12,19 @@ public class UserBean {
     private String account;
     private GroupBean group;
     private RoleBean role;
-    private int isDelete;
+    private int status;
 
-    public UserBean() {
+    public UserApplyBean() {
     }
 
-    public UserBean(UserApplyBean userApplyBean) {
-        this.name = userApplyBean.getName();
-        this.email = userApplyBean.getEmail();
-        this.password = userApplyBean.getPassword();
-        this.account = userApplyBean.getAccount();
-        this.group = userApplyBean.getGroup();
-        this.role = userApplyBean.getRole();
+    public UserApplyBean(String name, String email, String password, String account, GroupBean group, RoleBean role, int status) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.account = account;
+        this.group = group;
+        this.role = role;
+        this.status = status;
     }
 
     public int getId() {
@@ -83,11 +84,11 @@ public class UserBean {
         this.role = role;
     }
 
-    public int getIsDelete() {
-        return isDelete;
+    public int getStatus() {
+        return status;
     }
 
-    public void setIsDelete(int isDelete) {
-        this.isDelete = isDelete;
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

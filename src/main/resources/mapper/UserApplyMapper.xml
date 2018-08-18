@@ -1,39 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.ccf.ccfpedia.cms.dao.UserMapper">
-  <resultMap id="BaseResultMap" type="org.ccf.ccfpedia.cms.bean.UserBean">
+<mapper namespace="org.ccf.ccfpedia.cms.dao.UserApplyMapper">
+  <resultMap id="BaseResultMap" type="org.ccf.ccfpedia.cms.bean.UserApplyBean">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="account" jdbcType="VARCHAR" property="account" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <association column="group_id" property="group" select="org.ccf.ccfpedia.cms.dao.GroupMapper.selectByPrimaryKey" javaType="org.ccf.ccfpedia.cms.bean.GroupBean"/>
     <association column="role_id" property="role" select="org.ccf.ccfpedia.cms.dao.RoleMapper.selectByPrimaryKey" javaType="org.ccf.ccfpedia.cms.bean.RoleBean"/>
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, account, email, password, is_delete, group_id, role_id
+    id, name, account, email, password, status, group_id, role_id
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from user
+    from user_apply
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKeyList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_apply
+    <if test="idList != null">
+      where id in
+      <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
   </select>
   <select id="selectByAccount" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from user
-    where account = #{account,jdbcType=INTEGER} and is_delete = 0
+    from user_apply
+    where account = #{account,jdbcType=INTEGER} and status = 0
   </select>
-  <select id="selectByKeyword" resultMap="BaseResultMap">
+  <select id="selectByPaging" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from user
-    where is_delete = 0
-    <if test="keyword != null">
-      and name like CONCAT('%',#{keyword},'%')
+    from user_apply
+    <if test="status != null">
+      where status in
+      <foreach collection="status" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
     </if>
     order by update_time DESC
     <if test="limit != null">
@@ -45,17 +58,22 @@
   </select>
   <select id="count" resultType="java.lang.Integer">
     select count(*)
-    from user
-    where is_delete = 0
+    from user_apply
+    <if test="status != null">
+      where status in
+      <foreach collection="status" index="index" item="item" open="(" separator="," close=")">
+                      #{item}
+      </foreach>
+    </if>
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from user
+    delete from user_apply
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="org.ccf.ccfpedia.cms.bean.UserBean" useGeneratedKeys="true" keyProperty="id">
-    insert into user (name, password, account, email,
+  <insert id="insert" parameterType="org.ccf.ccfpedia.cms.bean.UserApplyBean" useGeneratedKeys="true" keyProperty="id">
+    insert into user_apply (name, password, account, email,
       role_id, group_id
       )
     values (#{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
@@ -63,8 +81,8 @@
       )
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="org.ccf.ccfpedia.cms.bean.UserBean">
-    update user
+  <update id="updateByPrimaryKeySelective" parameterType="org.ccf.ccfpedia.cms.bean.UserApplyBean">
+    update user_apply
     <set>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
@@ -78,8 +96,8 @@
       <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="isDelete != null">
-        is_delete = #{isDelete,jdbcType=INTEGER},
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="role.id != null">
         role_id = #{role.id,jdbcType=INTEGER},
