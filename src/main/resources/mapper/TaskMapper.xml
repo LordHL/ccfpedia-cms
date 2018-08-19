@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ccf.ccfpedia.cms.dao.TaskMapper">
+  <resultMap id="BaseResultMap" type="org.ccf.ccfpedia.cms.bean.TaskBean">
+    <id column="id" jdbcType="CHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="founder_id" jdbcType="INTEGER" property="founderId" />
+    <result column="creation_time" jdbcType="TIMESTAMP" property="creationTime" />
+    <result column="committee_id" jdbcType="INTEGER" property="committeeId" />
+    <result column="executor_id" jdbcType="INTEGER" property="executorId" />
+    <result column="deadline" jdbcType="TIMESTAMP" property="deadline" />
+    <result column="status_id" jdbcType="INTEGER" property="statusId" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name,description,founder_id,creation_time,committee_id,executor_id,deadline,status_id,memo
+  </sql>
+
+  <select id="selectByCommitteeId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `task`
+    where founder_id = #{id,jdbcType=CHAR}
+  </select>
+
+  <select id="count" resultType="java.lang.Integer" >
+    select count(*)
+    from `task`
+  </select>
+</mapper>

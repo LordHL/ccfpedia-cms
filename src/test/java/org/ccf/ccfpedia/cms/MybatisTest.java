@@ -1,14 +1,8 @@
 package org.ccf.ccfpedia.cms;
 
 import com.alibaba.fastjson.JSONObject;
-import org.ccf.ccfpedia.cms.bean.GroupBean;
-import org.ccf.ccfpedia.cms.bean.RoleBean;
-import org.ccf.ccfpedia.cms.bean.UserApplyBean;
-import org.ccf.ccfpedia.cms.bean.UserBean;
-import org.ccf.ccfpedia.cms.service.GroupService;
-import org.ccf.ccfpedia.cms.service.RoleService;
-import org.ccf.ccfpedia.cms.service.UserApplyService;
-import org.ccf.ccfpedia.cms.service.UserService;
+import org.ccf.ccfpedia.cms.bean.*;
+import org.ccf.ccfpedia.cms.service.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +26,8 @@ public class MybatisTest {
     private RoleService roleService;
     @Resource
     private GroupService groupService;
+    @Resource
+    private TaskService taskService;
 
     @Test
     public void testApplyList(){
@@ -75,6 +71,18 @@ public class MybatisTest {
     public void testCount() {
         int userCount = userService.getUserCount();
         System.out.println(userCount);
+    }
+
+    @Test
+    public void testOneGrouptemp() {
+        GroupBean role = groupService.getGroupById(2);
+        System.out.println(role.getName());
+    }
+
+    @Test
+    public void testTask() {
+        List<TaskViewBean> taskBean = taskService.getTaskViewList(1);
+        System.out.println(JSONObject.toJSON(taskBean));
     }
 
 }
