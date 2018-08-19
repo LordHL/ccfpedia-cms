@@ -74,13 +74,7 @@ public class MybatisTest {
     }
 
     @Test
-    public void testOneGrouptemp() {
-        GroupBean role = groupService.getGroupById(2);
-        System.out.println(role.getName());
-    }
-
-    @Test
-    public void testTask() {
+    public void testTaskView() {
         List<TaskViewBean> taskBean = taskService.getTaskViewList(1);
         System.out.println(JSONObject.toJSON(taskBean));
     }

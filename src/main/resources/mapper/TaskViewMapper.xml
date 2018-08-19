@@ -22,7 +22,7 @@
     task.*,task_status.name AS state_name
     from `task`
     INNER JOIN `task_status` on task.status_id = task_status.id
-    where task.id = #{id,jdbcType=CHAR}
+    where founder_id = #{id,jdbcType=CHAR}
   </select>
 
   <select id="count" resultType="java.lang.Integer" >
