@@ -21,6 +21,17 @@
     from user
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByPrimaryKeyList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    <if test="idList != null">
+      where id in
+      <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+  </select>
   <select id="selectByAccount" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

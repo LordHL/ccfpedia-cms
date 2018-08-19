@@ -12,6 +12,8 @@ public interface UserService {
 
     List<UserBean> getUserList(String keyword, Integer pageNo, Integer pageSize);
 
+    List<UserBean> getUserListByIdList(List<Integer> idList);
+
     int getUserCount();
 
     UserBean getUserByAccount(String account);

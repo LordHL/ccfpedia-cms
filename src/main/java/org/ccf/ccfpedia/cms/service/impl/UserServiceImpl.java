@@ -26,6 +26,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserBean> getUserListByIdList(List<Integer> idList){
+        return userMapper.selectByPrimaryKeyList(idList);
+    }
+
+    @Override
     public List<UserBean> getUserList(String keyword, Integer pageNo, Integer pageSize){
         Integer limit = null;
         Integer offset = null;
@@ -44,13 +49,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserBean login(String account, String password){
-        UserBean user = userMapper.selectByAccount(account);
-        if(user != null){
-            if(user.getPassword() != null && user.getPassword().equals(password)){
-                return user;
-            }
-        }
-        return null;
+        return userMapper.selectByAccount(account);
     }
 
     @Override

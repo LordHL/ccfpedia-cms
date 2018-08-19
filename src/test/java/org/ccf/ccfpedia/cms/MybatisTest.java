@@ -40,6 +40,7 @@ public class MybatisTest {
         List<UserApplyBean> userApplyList = userApplyService.getUserApplyList(list, 1, 10);
         System.out.println(userApplyList.size());
     }
+
     @Test
     public void testInsert() {
         UserBean user = new UserBean();

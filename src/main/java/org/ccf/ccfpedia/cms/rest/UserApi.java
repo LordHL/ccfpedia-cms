@@ -53,23 +53,37 @@ public class UserApi {
     @RequestMapping(value = "login", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp<UserBean> login(String account, String password) {
         RestResp<UserBean> resp = null;
-        UserBean user = userService.login(account, password);
-        if(user != null) {
-            resp = new RestResp<>(user);
+        UserBean user = userService.getUserByAccount(account);
+        if(user != null){
+            if(user.getPassword() != null && user.getPassword().equals(password)){
+                resp = new RestResp<>(user);
+            } else {
+                resp = new RestResp<>(401, "登录失败");
+            }
         } else {
-            resp = new RestResp<>(400, "登录失败");
+            UserApplyBean userApplyByAccount = userApplyService.getUserApplyByAccount(account);
+            if(userApplyByAccount.getStatus() == 0) {
+                resp = new RestResp<>(402, "审核中");
+            } else if(userApplyByAccount.getStatus() == 2) {
+                resp = new RestResp<>(403, "审核未通过");
+            } else {
+                resp = new RestResp<>(401, "登录失败");
+            }
         }
         return resp;
     }
 
     @ApiOperation("用户删除")
     @RequestMapping(value = "delete", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp<UserBean> delete(Integer id) {
+    public RestResp<UserBean> delete(String id) {
         RestResp<UserBean> resp = null;
-        UserBean user = userService.getUserById(id);
-        if(user != null) {
-            user.setIsDelete(1);
-            userService.update(user);
+        List<Integer> idList = JsonUtils.fromJson(id, new TypeToken<List<Integer>>() {}.getType());
+        List<UserBean> userList = userService.getUserListByIdList(idList);
+        if(userList != null) {
+            for(UserBean user : userList) {
+                user.setIsDelete(1);
+                userService.update(user);
+            }
             resp = new RestResp<>(200, "成功");
         } else {
             resp = new RestResp<>(400, "用户不存在");
@@ -130,6 +144,7 @@ public class UserApi {
                     } else if (2 == status) {
                         userApplyBean.setStatus(status);
                     }
+                    userApplyService.update(userApplyBean);
                 }
                 resp = new RestResp<>(200, "成功");
             } else {
