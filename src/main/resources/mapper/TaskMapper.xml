@@ -109,4 +109,12 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <update id="expertRejectTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
+    update task
+    <set>
+      status_id = 5 , memo = #{metion,jdbcType=VARCHAR},
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
 </mapper>

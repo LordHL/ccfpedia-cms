@@ -139,10 +139,15 @@ public class MybatisTest {
         System.out.println(taskService.deleteTask(taskBean));
     }
 
-    @Test//4.4工委专委确认任务完成
+    @Test//4.4、4.5工委专委确认任务完成
     public void testCompleteTask() {
         TaskBean taskBean = taskService.getTaskById(14);
         System.out.println(taskService.completeTask(taskBean));
+    }
+
+    @Test//4.6专委驳回任务
+    public void testExpertRejectTask() {
+        System.out.println(taskService.expertRejectTask(15,"测试专委驳回任务"));
     }
 
     @Test
