@@ -77,4 +77,26 @@ public class TaskApi {
         return resp;
     }
 
+    @ApiOperation("专委任务列表")
+    @RequestMapping(value = "expert/{id}/tasklist", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<TaskViewBean>> expertTaskViewList(@PathVariable("id") Integer id) {
+        List<TaskViewBean> expertTaskViewList = taskService.getExpertTaskViewList(id);
+        int taskCount = taskService.getExpertTaskCount(id);
+        DataArray<TaskViewBean> data = new DataArray<>();
+        data.setCount(taskCount);
+        data.setArray(expertTaskViewList);
+        return new RestResp<>(data);
+    }
+
+    @ApiOperation("专委任务状态列表")
+    @RequestMapping(value = "expert/{id}/taskstate/{statusId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<TaskViewBean>> expertTaskViewList(@PathVariable("id") Integer id, @PathVariable("statusId") Integer statusId) {
+        List<TaskViewBean> exepertTaskStatusViewList = taskService.getExpertStateViewList(id, statusId);
+        int taskCount = taskService.getExpertTaskStateCount(id, statusId);
+        DataArray<TaskViewBean> data = new DataArray<>();
+        data.setCount(taskCount);
+        data.setArray(exepertTaskStatusViewList);
+        return new RestResp<>(data);
+
+    }
 }

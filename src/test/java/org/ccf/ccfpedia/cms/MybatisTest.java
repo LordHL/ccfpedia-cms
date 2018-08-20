@@ -118,4 +118,16 @@ public class MybatisTest {
         System.out.println(taskService.addTask(taskBean));
     }
 
+    @Test
+    public void testExpertTaskView() {
+        List<TaskViewBean> taskBean = taskService.getExpertTaskViewList(2);
+        System.out.println(JSONObject.toJSON(taskBean));
+    }
+
+    @Test
+    public void testExpertTaskStateView() {
+        List<TaskViewBean> taskBean = taskService.getExpertStateViewList(2,2);
+        System.out.println(JSONObject.toJSON(taskBean));
+    }
+
 }

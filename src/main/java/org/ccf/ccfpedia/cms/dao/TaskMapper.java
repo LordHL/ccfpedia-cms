@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface TaskMapper {
     List<TaskBean> selectByCommitteeId(@Param("id") Integer id);
+    List<TaskBean> selectByExpertId(@Param("id") Integer id);
+
     int count();
     int addTask(TaskBean taskBean);
 }

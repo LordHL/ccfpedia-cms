@@ -18,4 +18,9 @@ public interface TaskViewMapper {
     int editAllCount(@Param("id") Integer id);
     int editStateCount(@Param("id") Integer id,@Param("statusId") Integer stateId);
     List<TaskViewBean> selectByEditAndState(@Param("id") Integer id,@Param("statusId") Integer stateId);
+
+    List<TaskViewBean> selectByExpertId(@Param("id") Integer id);
+    int allExpertCount(@Param("id") Integer id);
+    int expertStateCount(@Param("id") Integer id,@Param("statusId") Integer statusId);
+    List<TaskViewBean> selectByExpertAndState(@Param("id") Integer id,@Param("statusId") Integer statusId);
 }
