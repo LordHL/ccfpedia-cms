@@ -45,4 +45,26 @@ public class TaskApi {
         return new RestResp<>(data);
     }
 
+    @ApiOperation("编辑任务列表")
+    @RequestMapping(value = "edit/{id}/tasklist", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<TaskViewBean>> editTaskViewList(@PathVariable("id")Integer id) {
+        List<TaskViewBean> taskViewList = taskService.getEditTaskViewList(id);
+        int userCount = taskService.getEditTaskCount(id);
+        DataArray<TaskViewBean> data = new DataArray<>();
+        data.setCount(userCount);
+        data.setArray(taskViewList);
+        return new RestResp<>(data);
+    }
+
+    @ApiOperation("编辑任务状态列表")
+    @RequestMapping(value = "/edit/{id}/taskstate/{stateId}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<TaskViewBean>> editTaskStateList(@PathVariable("id")Integer id,@PathVariable("stateId")Integer stateId) {
+        List<TaskViewBean> taskViewList = taskService.getEditStateViewList(id,stateId);
+        int userCount = taskService.getEditTaskStateCount(id,stateId);
+        DataArray<TaskViewBean> data = new DataArray<>();
+        data.setCount(userCount);
+        data.setArray(taskViewList);
+        return new RestResp<>(data);
+    }
+
 }

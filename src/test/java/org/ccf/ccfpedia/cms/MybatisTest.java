@@ -73,10 +73,33 @@ public class MybatisTest {
         System.out.println(userCount);
     }
 
-    @Test
-    public void testTaskView() {
-        List<TaskViewBean> taskBean = taskService.getCommitteeStateViewList(1,1);
+    @Test//1.1查看工委所有任务
+    public void committeeTestTask() {
+        List<TaskViewBean> taskBean = taskService.getCommitteeTaskViewList(1);
+        int count=taskService.getCommitteeTaskCount(1);
         System.out.println(JSONObject.toJSON(taskBean));
+        System.out.println("count:"+count);
+    }
+    @Test//1.2查看工委各状态任务
+    public void committeeTestState() {
+        List<TaskViewBean> taskBean = taskService.getCommitteeStateViewList(1, 1);
+        int count = taskService.getCommitteeTaskStateCount(1, 1);
+        System.out.println(JSONObject.toJSON(taskBean));
+        System.out.println("count:"+count);
+    }
+    @Test//3.1查看编辑所有任务
+    public void editTestTask() {
+        List<TaskViewBean> taskBean = taskService.getEditTaskViewList(5);
+        int count=taskService.getEditTaskCount(5);
+        System.out.println(JSONObject.toJSON(taskBean));
+        System.out.println("count:"+count);
+    }
+    @Test//3.2查看编辑各状态任务
+    public void editTestState() {
+        List<TaskViewBean> taskBean = taskService.getEditStateViewList(5,1);
+        int count=taskService.getEditTaskStateCount(5,1);
+        System.out.println(JSONObject.toJSON(taskBean));
+        System.out.println("count:"+count);
     }
 
 }
