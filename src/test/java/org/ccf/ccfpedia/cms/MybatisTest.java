@@ -118,7 +118,7 @@ public class MybatisTest {
         System.out.println(taskService.addTask(taskBean));
     }
 
-    @Test//4.1工委专委修改任务
+    @Test//4.2工委专委修改任务
     public void testModifyTask() {
         TaskBean taskBean = new TaskBean();
         taskBean.setCommitteeId(3);
@@ -131,6 +131,12 @@ public class MybatisTest {
         taskBean.setMemo("工委测试修改任务");
         taskBean.setStatusId(1);
         System.out.println(taskService.modifyTask(taskBean));
+    }
+
+    @Test//4.3工委专委删除任务
+    public void testdeleteTask() {
+        TaskBean taskBean = taskService.getTaskById(14);
+        System.out.println(taskService.deleteTask(taskBean));
     }
 
     @Test

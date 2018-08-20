@@ -25,6 +25,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public TaskBean getTaskById(int id) {
+        TaskBean taskBean = taskMapper.selectByTaskId(id);
+        return taskBean;
+    }
+
+    @Override
     public List<TaskViewBean> getCommitteeTaskViewList(int id) {
         List<TaskViewBean> TaskViewList = taskViewMapper.selectByCommitteeId(id);
         return TaskViewList;
@@ -110,6 +116,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public int modifyTask(TaskBean taskBean) {
         return taskMapper.modifyTask(taskBean);
+    }
+
+    @Override
+    public int deleteTask(TaskBean taskBean) {
+        return taskMapper.deleteTask(taskBean);
     }
 
 }

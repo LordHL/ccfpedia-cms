@@ -36,6 +36,12 @@
     from `task`
   </select>
 
+  <select id="selectByTaskId" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+    select *
+    from `task`
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
   <insert id="addTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean" useGeneratedKeys="true" keyProperty="id">
     insert into task (name,description,founder_id,creation_time,committee_id,executor_id,deadline,status_id,memo)
     values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{founderId,jdbcType=INTEGER}, #{creationTime,jdbcType=TIMESTAMP},
@@ -76,5 +82,20 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <update id="deleteTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
+    update task
+    <set>
+      <if test="founderId != committeeId">
+        status_id = 3,
+      </if>
+      <if test="founderId == committeeId">
+        status_id = 8,
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
 
 </mapper>

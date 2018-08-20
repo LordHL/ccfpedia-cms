@@ -8,6 +8,8 @@ import java.util.List;
 public interface TaskService {
 
     List<TaskBean> getTaskList(int id );
+    //通过ID查询任务
+    TaskBean getTaskById(int id);
     //获取工委所有任务列表
     List<TaskViewBean> getCommitteeTaskViewList(int id);
     //获取工委个状态任务列表
@@ -28,6 +30,8 @@ public interface TaskService {
     int addTask(TaskBean taskBean);
     //工委专委修改任务
     int modifyTask(TaskBean taskBean);
+    //工委专委删除任务
+    int deleteTask(TaskBean taskBean);
 
     List<TaskBean> getExpertTaskList(int id );
     //获取专委所有任务列表

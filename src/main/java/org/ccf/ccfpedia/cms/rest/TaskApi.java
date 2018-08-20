@@ -78,7 +78,7 @@ public class TaskApi {
     }
 
     @ApiOperation("工委专委修改任务")
-    @RequestMapping(value = "modify", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "modify", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp modifyTask(@RequestBody TaskBean taskBean) {
         RestResp<TaskBean> resp = null;
         int temp = taskService.modifyTask(taskBean);
@@ -86,6 +86,20 @@ public class TaskApi {
             resp = new RestResp<>(200, "任务修改成功");
         }else{
             resp = new RestResp<>(400, "任务修改失败");
+        }
+        return resp;
+    }
+
+    @ApiOperation("工委专委删除任务")
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp deleteTask(@PathVariable("id")Integer id) {
+        RestResp<TaskBean> resp = null;
+        TaskBean taskBean = taskService.getTaskById(id);
+        int temp = taskService.deleteTask(taskBean);
+        if(temp==1){
+            resp = new RestResp<>(200, "任务删除成功");
+        }else{
+            resp = new RestResp<>(400, "任务删除失败");
         }
         return resp;
     }
