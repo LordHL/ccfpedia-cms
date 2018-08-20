@@ -43,4 +43,38 @@
       )
   </insert>
 
+  <update id="modifyTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
+    update task
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="founderId != null">
+        founder_id = #{founderId,jdbcType=INTEGER},
+      </if>
+      <if test="creationTime != null">
+        creation_time = #{creationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="committeeId != null">
+        committee_id = #{committeeId,jdbcType=INTEGER},
+      </if>
+      <if test="executorId != null">
+        executor_id = #{executorId,jdbcType=INTEGER},
+      </if>
+      <if test="deadline != null">
+        deadline = #{deadline,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusId != null">
+        status_id = #{statusId,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
 </mapper>

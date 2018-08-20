@@ -77,6 +77,19 @@ public class TaskApi {
         return resp;
     }
 
+    @ApiOperation("工委专委修改任务")
+    @RequestMapping(value = "modify", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp modifyTask(@RequestBody TaskBean taskBean) {
+        RestResp<TaskBean> resp = null;
+        int temp = taskService.modifyTask(taskBean);
+        if(temp==1){
+            resp = new RestResp<>(200, "任务修改成功");
+        }else{
+            resp = new RestResp<>(400, "任务修改失败");
+        }
+        return resp;
+    }
+
     @ApiOperation("专委任务列表")
     @RequestMapping(value = "expert/{id}/tasklist", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp<DataArray<TaskViewBean>> expertTaskViewList(@PathVariable("id") Integer id) {

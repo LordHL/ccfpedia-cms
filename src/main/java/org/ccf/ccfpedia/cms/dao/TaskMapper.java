@@ -12,7 +12,7 @@ import java.util.List;
 public interface TaskMapper {
     List<TaskBean> selectByCommitteeId(@Param("id") Integer id);
     List<TaskBean> selectByExpertId(@Param("id") Integer id);
-
+    int modifyTask(TaskBean taskBean);
     int count();
     int addTask(TaskBean taskBean);
 }

@@ -118,6 +118,21 @@ public class MybatisTest {
         System.out.println(taskService.addTask(taskBean));
     }
 
+    @Test//4.1工委专委修改任务
+    public void testModifyTask() {
+        TaskBean taskBean = new TaskBean();
+        taskBean.setCommitteeId(3);
+        taskBean.setId(14);
+        taskBean.setCreationTime(new Timestamp(new Date().getTime()));
+        taskBean.setDeadline(new Timestamp(new Date().getTime()));
+        taskBean.setDescription("工委测试修改任务");
+        taskBean.setFounderId(2);
+        taskBean.setName("工委测试修改任务");
+        taskBean.setMemo("工委测试修改任务");
+        taskBean.setStatusId(1);
+        System.out.println(taskService.modifyTask(taskBean));
+    }
+
     @Test
     public void testExpertTaskView() {
         List<TaskViewBean> taskBean = taskService.getExpertTaskViewList(2);
