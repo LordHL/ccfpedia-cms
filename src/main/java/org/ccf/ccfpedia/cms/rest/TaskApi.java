@@ -1,6 +1,7 @@
 package org.ccf.ccfpedia.cms.rest;
 
 import io.swagger.annotations.ApiOperation;
+import org.ccf.ccfpedia.cms.bean.EntryBean;
 import org.ccf.ccfpedia.cms.bean.TaskBean;
 import org.ccf.ccfpedia.cms.bean.TaskViewBean;
 import org.ccf.ccfpedia.cms.bean.resp.DataArray;
@@ -155,6 +156,17 @@ public class TaskApi {
             resp = new RestResp<>(400, "驳回失败");
         }
         return resp;
+    }
+
+    @ApiOperation("任务词条列表")
+    @RequestMapping(value = "taskentry/{id}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<EntryBean>> selectTaskEntryByTaskId(@PathVariable("id")Integer id) {
+        List<EntryBean> entryBeanList = taskService.getTaskEntryByTaskId(id);
+        int userCount = taskService.getTaskEntryCount(id);
+        DataArray<EntryBean> data = new DataArray<>();
+        data.setCount(userCount);
+        data.setArray(entryBeanList);
+        return new RestResp<>(data);
     }
 
     @ApiOperation("各状态任务列表")

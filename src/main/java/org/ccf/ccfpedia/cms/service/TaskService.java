@@ -1,5 +1,6 @@
 package org.ccf.ccfpedia.cms.service;
 
+import org.ccf.ccfpedia.cms.bean.EntryBean;
 import org.ccf.ccfpedia.cms.bean.TaskBean;
 import org.ccf.ccfpedia.cms.bean.TaskViewBean;
 
@@ -44,6 +45,10 @@ public interface TaskService {
     List<TaskViewBean> getTaskViewByState(int id);
     //获取各状态任务数量
     int taskViewStateCount(int id);
+    //获取任务中的词条
+    List<EntryBean> getTaskEntryByTaskId(int id);
+    //获取任务中的词条数量
+    int getTaskEntryCount(int id);
 
     List<TaskBean> getExpertTaskList(int id );
     //获取专委所有任务列表

@@ -1,7 +1,9 @@
 package org.ccf.ccfpedia.cms.service.impl;
 
+import org.ccf.ccfpedia.cms.bean.EntryBean;
 import org.ccf.ccfpedia.cms.bean.TaskBean;
 import org.ccf.ccfpedia.cms.bean.TaskViewBean;
+import org.ccf.ccfpedia.cms.dao.EntryMapper;
 import org.ccf.ccfpedia.cms.dao.TaskMapper;
 import org.ccf.ccfpedia.cms.dao.TaskViewMapper;
 import org.ccf.ccfpedia.cms.service.TaskService;
@@ -17,6 +19,8 @@ public class TaskServiceImpl implements TaskService {
     private TaskMapper taskMapper;
     @Autowired
     private TaskViewMapper taskViewMapper;
+    @Autowired
+    private EntryMapper entryMapper;
 
     @Override
     public List<TaskBean> getTaskList(int id){
@@ -142,6 +146,16 @@ public class TaskServiceImpl implements TaskService {
     public int taskViewStateCount(int id) {
         int count= taskViewMapper.taskViewStateCount(id);
         return count;
+    }
+
+    @Override
+    public List<EntryBean> getTaskEntryByTaskId(int id) {
+        return entryMapper.selectEntryByTaskId(id);
+    }
+
+    @Override
+    public int getTaskEntryCount(int id) {
+        return entryMapper.selectEntryCountByTaskId(id);
     }
 
 }

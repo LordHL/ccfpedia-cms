@@ -160,6 +160,14 @@ public class MybatisTest {
         System.out.println(taskService.editRejectTask(16,"测试编辑驳回任务"));
     }
 
+    @Test//4.9获取任务中的词条
+    public void testTaskEntry() {
+        List<EntryBean> taskBean = taskService.getTaskEntryByTaskId(1);
+        int count=taskService.getTaskEntryCount(1);
+        System.out.println(JSONObject.toJSON(taskBean));
+        System.out.println("count:"+count);
+    }
+
     @Test//4.10通过任务状态查询所有任务
     public void testSelectTaskByStatus() {
         List<TaskViewBean> taskBean = taskService.getTaskViewByState(1);
