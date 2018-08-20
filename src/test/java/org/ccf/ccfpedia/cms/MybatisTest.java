@@ -30,9 +30,12 @@ public class MybatisTest {
     private GroupService groupService;
     @Resource
     private TaskService taskService;
+    @Resource
+    private EntryService entryService;
+
 
     @Test
-    public void testApplyList(){
+    public void testApplyList() {
         List<Integer> list = new ArrayList<>();
         list.add(0);
         List<UserApplyBean> userApplyList = userApplyService.getUserApplyList(list, 1, 10);
@@ -78,35 +81,38 @@ public class MybatisTest {
     @Test//1.1查看工委所有任务
     public void committeeTestTask() {
         List<TaskViewBean> taskBean = taskService.getCommitteeTaskViewList(1);
-        int count=taskService.getCommitteeTaskCount(1);
+        int count = taskService.getCommitteeTaskCount(1);
         System.out.println(JSONObject.toJSON(taskBean));
-        System.out.println("count:"+count);
+        System.out.println("count:" + count);
     }
+
     @Test//1.2查看工委各状态任务
     public void committeeTestState() {
         List<TaskViewBean> taskBean = taskService.getCommitteeStateViewList(1, 1);
         int count = taskService.getCommitteeTaskStateCount(1, 1);
         System.out.println(JSONObject.toJSON(taskBean));
-        System.out.println("count:"+count);
+        System.out.println("count:" + count);
     }
+
     @Test//3.1查看编辑所有任务
     public void editTestTask() {
         List<TaskViewBean> taskBean = taskService.getEditTaskViewList(5);
-        int count=taskService.getEditTaskCount(5);
+        int count = taskService.getEditTaskCount(5);
         System.out.println(JSONObject.toJSON(taskBean));
-        System.out.println("count:"+count);
+        System.out.println("count:" + count);
     }
+
     @Test//3.2查看编辑各状态任务
     public void editTestState() {
-        List<TaskViewBean> taskBean = taskService.getEditStateViewList(5,1);
-        int count=taskService.getEditTaskStateCount(5,1);
+        List<TaskViewBean> taskBean = taskService.getEditStateViewList(5, 1);
+        int count = taskService.getEditTaskStateCount(5, 1);
         System.out.println(JSONObject.toJSON(taskBean));
-        System.out.println("count:"+count);
+        System.out.println("count:" + count);
     }
 
     @Test//4.1工委专委创建任务
     public void testAddTask() {
-       TaskBean taskBean = new TaskBean();
+        TaskBean taskBean = new TaskBean();
         taskBean.setCommitteeId(3);
         taskBean.setCreationTime(new Timestamp(new Date().getTime()));
         taskBean.setDeadline(new Timestamp(new Date().getTime()));
@@ -118,16 +124,40 @@ public class MybatisTest {
         System.out.println(taskService.addTask(taskBean));
     }
 
-    @Test
+    @Test//2.1查看专委的所有任务
     public void testExpertTaskView() {
         List<TaskViewBean> taskBean = taskService.getExpertTaskViewList(2);
         System.out.println(JSONObject.toJSON(taskBean));
     }
 
-    @Test
+    @Test//2.2查看专委各状态的任务
     public void testExpertTaskStateView() {
-        List<TaskViewBean> taskBean = taskService.getExpertStateViewList(2,2);
+        List<TaskViewBean> taskBean = taskService.getExpertStateViewList(2, 2);
         System.out.println(JSONObject.toJSON(taskBean));
     }
 
+    @Test//5.1查询一级词条分类列表
+    public void firstClassEntryList() {
+        List<FirstClassBean> firstClassBean = entryService.getFirstClassList();
+        int count = entryService.getExpertTaskStateCount();
+        System.out.println(JSONObject.toJSON(firstClassBean));
+        System.out.println("count:" + count);
+    }
+
+    @Test//5.2创建一级词条
+    public void testAddFirstClassEntry() {
+        FirstClassBean firstClassBean = new FirstClassBean();
+        firstClassBean.setName("测试一级词条");
+        entryService.addFirstClassEntry(firstClassBean);
+        System.out.println(JSONObject.toJSON(firstClassBean));
+    }
+
+    @Test//5.3修改一级词条
+    public void modifyfirstClassEntryList() {
+        FirstClassBean firstClassBean = new FirstClassBean();
+        firstClassBean.setId(13);
+        firstClassBean.setName("测试修改一级词条");
+        entryService.updateFirstClassEntry(firstClassBean);
+        System.out.println(JSONObject.toJSON(firstClassBean));
+    }
 }

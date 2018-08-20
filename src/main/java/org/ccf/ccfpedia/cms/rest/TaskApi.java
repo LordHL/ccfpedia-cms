@@ -1,10 +1,12 @@
 package org.ccf.ccfpedia.cms.rest;
 
 import io.swagger.annotations.ApiOperation;
+import org.ccf.ccfpedia.cms.bean.FirstClassBean;
 import org.ccf.ccfpedia.cms.bean.TaskBean;
 import org.ccf.ccfpedia.cms.bean.TaskViewBean;
 import org.ccf.ccfpedia.cms.bean.resp.DataArray;
 import org.ccf.ccfpedia.cms.bean.resp.RestResp;
+import org.ccf.ccfpedia.cms.service.EntryService;
 import org.ccf.ccfpedia.cms.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,6 +21,10 @@ public class TaskApi {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private EntryService entryService;
+
 
     @ApiOperation("工委任务列表")
     @RequestMapping(value = "committee/{id}/tasklist", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -98,5 +104,34 @@ public class TaskApi {
         data.setArray(exepertTaskStatusViewList);
         return new RestResp<>(data);
 
+    }
+
+    @ApiOperation("一级分类词条列表")
+    @RequestMapping(value = "/queryFirstClass", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<FirstClassBean>> expertTaskViewList() {
+        List<FirstClassBean> firstClassList = entryService.getFirstClassList();
+        int firstclassCount = entryService.getExpertTaskStateCount();
+        DataArray<FirstClassBean> data = new DataArray<>();
+        data.setCount(firstclassCount);
+        data.setArray(firstClassList);
+        return new RestResp<>(data);
+
+    }
+
+    @ApiOperation("新建一级分类词条")
+    @RequestMapping(value = "/addFirstClass", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public FirstClassBean addFirstClassEntry(@RequestBody FirstClassBean firstClassBean) {
+        entryService.addFirstClassEntry(firstClassBean);
+        return firstClassBean;
+    }
+
+
+    @ApiOperation("修改一级分类词条")
+    @RequestMapping(value = "/modifyFirstClass", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public FirstClassBean modifyFirstClassEntry(@RequestBody FirstClassBean firstClassBean){
+        if(firstClassBean != null){
+            entryService.updateFirstClassEntry(firstClassBean);
+        }
+        return firstClassBean;
     }
 }
