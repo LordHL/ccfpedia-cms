@@ -47,4 +47,34 @@
     where founder_id = #{id,jdbcType=INTEGER} and task.status_id = #{statusId,jdbcType=INTEGER}
   </select>
 
+
+  <select id="selectByExpertId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    task.*,task_status.name AS state_name
+    from `task`
+    INNER JOIN `task_status` on task.status_id = task_status.id
+    where committee_id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByExpertAndState" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    task.*,task_status.name AS state_name
+    from `task`
+    INNER JOIN `task_status` on task.status_id = task_status.id
+    where committee_id = #{id,jdbcType=INTEGER} and task.status_id = #{statusId,jdbcType=INTEGER}
+  </select>
+
+  <select id="allExpertCount" resultType="java.lang.Integer" >
+    select count(*)
+    from `task`
+    INNER JOIN `task_status` on task.status_id = task_status.id
+    where committee_id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="experStateCount" resultType="java.lang.Integer" >
+    select count(*)
+    from `task`
+    INNER JOIN `task_status` on task.status_id = task_status.id
+    where committee_id = #{id,jdbcType=INTEGER} and task.status_id = #{statusId,jdbcType=INTEGER}
+  </select>
 </mapper>

@@ -24,8 +24,8 @@ public class TaskApi {
     private TaskService taskService;
 
     @ApiOperation("工委任务列表")
-    @RequestMapping(value = "committee/{id}/tasklist", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp<DataArray<TaskViewBean>> committeeTaskViewList(@PathVariable("id")Integer id) {
+    @RequestMapping(value = "committee/{id}/tasklist", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<TaskViewBean>> committeeTaskViewList(@PathVariable("id") Integer id) {
         List<TaskViewBean> taskViewList = taskService.getCommitteeTaskViewList(id);
         int userCount = taskService.getCommitteeTaskCount(id);
         DataArray<TaskViewBean> data = new DataArray<>();
@@ -35,14 +35,36 @@ public class TaskApi {
     }
 
     @ApiOperation("工委任务状态列表")
-    @RequestMapping(value = "/committee/{id}/taskstate/{stateId}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp<DataArray<TaskViewBean>> committeeTaskStateList(@PathVariable("id")Integer id,@PathVariable("stateId")Integer stateId) {
-        List<TaskViewBean> taskViewList = taskService.getCommitteeStateViewList(id,stateId);
-        int userCount = taskService.getCommitteeTaskStateCount(id,stateId);
+    @RequestMapping(value = "/committee/{id}/taskstate/{stateId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<TaskViewBean>> committeeTaskStateList(@PathVariable("id") Integer id, @PathVariable("stateId") Integer stateId) {
+        List<TaskViewBean> taskViewList = taskService.getCommitteeStateViewList(id, stateId);
+        int userCount = taskService.getCommitteeTaskStateCount(id, stateId);
         DataArray<TaskViewBean> data = new DataArray<>();
         data.setCount(userCount);
         data.setArray(taskViewList);
         return new RestResp<>(data);
     }
 
+    @ApiOperation("专委任务列表")
+    @RequestMapping(value = "expert/{id}/tasklist", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<TaskViewBean>> expertTaskViewList(@PathVariable("id") Integer id) {
+        List<TaskViewBean> expertTaskViewList = taskService.getExpertTaskViewList(id);
+        int taskCount = taskService.getExpertTaskCount(id);
+        DataArray<TaskViewBean> data = new DataArray<>();
+        data.setCount(taskCount);
+        data.setArray(expertTaskViewList);
+        return new RestResp<>(data);
+    }
+
+    @ApiOperation("专委任务状态列表")
+    @RequestMapping(value = "expert/{id}/taskstate/{statusId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<TaskViewBean>> expertTaskViewList(@PathVariable("id") Integer id, @PathVariable("statusId") Integer statusId) {
+        List<TaskViewBean> exepertTaskStatusViewList = taskService.getExpertStateViewList(id, statusId);
+        int taskCount = taskService.getExpertTaskStateCount(id, statusId);
+        DataArray<TaskViewBean> data = new DataArray<>();
+        data.setCount(taskCount);
+        data.setArray(exepertTaskStatusViewList);
+        return new RestResp<>(data);
+
+    }
 }

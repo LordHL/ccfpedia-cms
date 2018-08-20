@@ -24,8 +24,17 @@
     where founder_id = #{id,jdbcType=CHAR}
   </select>
 
+  <select id="selectByExpertId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `task`
+    where committee_id = #{id,jdbcType=CHAR}
+  </select>
+
   <select id="count" resultType="java.lang.Integer" >
     select count(*)
     from `task`
   </select>
+
+
 </mapper>

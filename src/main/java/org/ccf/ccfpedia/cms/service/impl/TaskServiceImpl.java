@@ -48,4 +48,34 @@ public class TaskServiceImpl implements TaskService {
         return count;
     }
 
+
+    @Override
+    public List<TaskBean> getExpertTaskList(int id){
+        List<TaskBean> TaskList = taskMapper.selectByExpertId(id);
+        return TaskList;
+    }
+
+    @Override
+    public List<TaskViewBean> getExpertTaskViewList(int id) {
+        List<TaskViewBean> TaskViewList = taskViewMapper.selectByExpertId(id);
+        return TaskViewList;
+    }
+
+    @Override
+    public List<TaskViewBean> getExpertStateViewList(int id, int statusId) {
+        List<TaskViewBean> TaskViewList = taskViewMapper.selectByExpertAndState(id,statusId);
+        return TaskViewList;
+    }
+
+    @Override
+    public int getExpertTaskCount(int id) {
+        int count= taskViewMapper.allExpertCount(id);
+        return count;
+    }
+
+    @Override
+    public int getExpertTaskStateCount(int id, int statusId) {
+        int count= taskViewMapper.expertStateCount(id,statusId);
+        return count;
+    }
 }
