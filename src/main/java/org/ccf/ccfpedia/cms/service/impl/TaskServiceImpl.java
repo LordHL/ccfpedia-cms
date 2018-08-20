@@ -130,6 +130,9 @@ public class TaskServiceImpl implements TaskService {
     public int expertRejectTask(int id, String memo) { return taskMapper.expertRejectTask(id,memo);}
 
     @Override
+    public int editCompleteTask(int id) { return taskMapper.editCompleteTask(id);}
+
+    @Override
     public int editRejectTask(int id, String memo) { return taskMapper.editRejectTask(id,memo);}
 
 }
