@@ -112,7 +112,15 @@
   <update id="expertRejectTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
     update task
     <set>
-      status_id = 5 , memo = #{metion,jdbcType=VARCHAR},
+      status_id = 5 , memo = #{memo,jdbcType=VARCHAR},
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="editRejectTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
+    update task
+    <set>
+      status_id = 11 , memo = #{memo,jdbcType=VARCHAR},
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>

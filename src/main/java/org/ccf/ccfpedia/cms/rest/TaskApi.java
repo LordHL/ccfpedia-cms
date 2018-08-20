@@ -120,9 +120,22 @@ public class TaskApi {
 
     @ApiOperation("专委驳回任务")
     @RequestMapping(value = "taskstate/expertreject/{id}", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp commnitteeCompletedTask(@PathVariable("id")Integer id,@RequestBody String memo) {
+    public RestResp espertRejectTask(@PathVariable("id")Integer id,@RequestBody String memo) {
         RestResp<TaskBean> resp = null;
         int temp = taskService.expertRejectTask(id,memo);
+        if(temp==1){
+            resp = new RestResp<>(200, "驳回成功");
+        }else{
+            resp = new RestResp<>(400, "驳回失败");
+        }
+        return resp;
+    }
+
+    @ApiOperation("编辑驳回任务")
+    @RequestMapping(value = "taskstate/editreject/{id}", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp editRejectTask(@PathVariable("id")Integer id,@RequestBody String memo) {
+        RestResp<TaskBean> resp = null;
+        int temp = taskService.editRejectTask(id,memo);
         if(temp==1){
             resp = new RestResp<>(200, "驳回成功");
         }else{

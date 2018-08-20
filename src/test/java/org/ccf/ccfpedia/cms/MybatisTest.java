@@ -150,6 +150,11 @@ public class MybatisTest {
         System.out.println(taskService.expertRejectTask(15,"测试专委驳回任务"));
     }
 
+    @Test//4.7编辑驳回任务
+    public void testEditRejectTask() {
+        System.out.println(taskService.editRejectTask(16,"测试编辑驳回任务"));
+    }
+
     @Test
     public void testExpertTaskView() {
         List<TaskViewBean> taskBean = taskService.getExpertTaskViewList(2);

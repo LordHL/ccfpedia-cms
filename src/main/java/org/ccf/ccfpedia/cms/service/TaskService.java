@@ -36,6 +36,8 @@ public interface TaskService {
     int completeTask(TaskBean taskBean);
     //专委驳回任务
     int expertRejectTask(int id, String memo);
+    //编辑驳回任务
+    int editRejectTask(int id, String memo);
 
     List<TaskBean> getExpertTaskList(int id );
     //获取专委所有任务列表
