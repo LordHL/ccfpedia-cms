@@ -8,16 +8,13 @@ import org.ccf.ccfpedia.cms.bean.resp.RestResp;
 import org.ccf.ccfpedia.cms.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
 @RestController
-@RequestMapping(value = "role")
+@RequestMapping(value = "task")
 public class TaskApi {
 
     @Autowired
@@ -35,7 +32,7 @@ public class TaskApi {
     }
 
     @ApiOperation("工委任务状态列表")
-    @RequestMapping(value = "/committee/{id}/taskstate/{stateId}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "committee/{id}/taskstate/{stateId}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp<DataArray<TaskViewBean>> committeeTaskStateList(@PathVariable("id")Integer id,@PathVariable("stateId")Integer stateId) {
         List<TaskViewBean> taskViewList = taskService.getCommitteeStateViewList(id,stateId);
         int userCount = taskService.getCommitteeTaskStateCount(id,stateId);
@@ -57,7 +54,7 @@ public class TaskApi {
     }
 
     @ApiOperation("编辑任务状态列表")
-    @RequestMapping(value = "/edit/{id}/taskstate/{stateId}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "edit/{id}/taskstate/{stateId}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp<DataArray<TaskViewBean>> editTaskStateList(@PathVariable("id")Integer id,@PathVariable("stateId")Integer stateId) {
         List<TaskViewBean> taskViewList = taskService.getEditStateViewList(id,stateId);
         int userCount = taskService.getEditTaskStateCount(id,stateId);
@@ -65,6 +62,19 @@ public class TaskApi {
         data.setCount(userCount);
         data.setArray(taskViewList);
         return new RestResp<>(data);
+    }
+
+    @ApiOperation("工委专委新建任务")
+    @RequestMapping(value = "create", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp addTask(@RequestBody TaskBean taskBean) {
+        RestResp<TaskBean> resp = null;
+        int temp = taskService.addTask(taskBean);
+        if(temp==1){
+            resp = new RestResp<>(200, "任务创建成功");
+        }else{
+            resp = new RestResp<>(400, "任务创建失败");
+        }
+        return resp;
     }
 
 }

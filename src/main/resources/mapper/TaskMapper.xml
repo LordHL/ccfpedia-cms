@@ -28,4 +28,12 @@
     select count(*)
     from `task`
   </select>
+
+  <insert id="addTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean" useGeneratedKeys="true" keyProperty="id">
+    insert into task (name,description,founder_id,creation_time,committee_id,executor_id,deadline,status_id,memo)
+    values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{founderId,jdbcType=INTEGER}, #{creationTime,jdbcType=TIMESTAMP},
+      #{committeeId,jdbcType=INTEGER}, #{executorId,jdbcType=INTEGER},#{deadline,jdbcType=TIMESTAMP},#{statusId,jdbcType=INTEGER},#{memo,jdbcType=VARCHAR}
+      )
+  </insert>
+
 </mapper>

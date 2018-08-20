@@ -10,7 +10,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -100,6 +102,20 @@ public class MybatisTest {
         int count=taskService.getEditTaskStateCount(5,1);
         System.out.println(JSONObject.toJSON(taskBean));
         System.out.println("count:"+count);
+    }
+
+    @Test//4.1工委专委创建任务
+    public void testAddTask() {
+       TaskBean taskBean = new TaskBean();
+        taskBean.setCommitteeId(3);
+        taskBean.setCreationTime(new Timestamp(new Date().getTime()));
+        taskBean.setDeadline(new Timestamp(new Date().getTime()));
+        taskBean.setDescription("工委测试创建任务");
+        taskBean.setFounderId(2);
+        taskBean.setName("工委测试创建任务");
+        taskBean.setMemo("工委测试创建任务");
+        taskBean.setStatusId(1);
+        System.out.println(taskService.addTask(taskBean));
     }
 
 }

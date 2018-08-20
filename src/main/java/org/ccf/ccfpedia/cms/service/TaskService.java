@@ -24,5 +24,7 @@ public interface TaskService {
     int getEditTaskCount(int id);
     //获取编辑各状态任务数量
     int getEditTaskStateCount(int id,int statusId);
+    //工委专委新建任务
+    int addTask(TaskBean taskBean);
 
 }

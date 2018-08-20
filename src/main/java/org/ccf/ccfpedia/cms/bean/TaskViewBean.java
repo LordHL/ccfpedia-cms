@@ -2,16 +2,18 @@ package org.ccf.ccfpedia.cms.bean;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.sql.Timestamp;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TaskViewBean {
     private int id;
     private String name;
     private String description;
     private int founderId;
-    private Long creationTime;
+    private Timestamp creationTime;
     private int committeeId;
     private int executorId;
-    private Long deadline;
+    private Timestamp deadline;
     private String statusName;
     private String memo;
 
@@ -48,11 +50,11 @@ public class TaskViewBean {
         this.founderId = founderId;
     }
 
-    public Long getCreationTime() {
+    public Timestamp getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(Long creationTime) {
+    public void setCreationTime(Timestamp creationTime) {
         this.creationTime = creationTime;
     }
 
@@ -72,11 +74,11 @@ public class TaskViewBean {
         this.executorId = executorId;
     }
 
-    public Long getDeadline() {
+    public Timestamp getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Long deadline) {
+    public void setDeadline(Timestamp deadline) {
         this.deadline = deadline;
     }
 

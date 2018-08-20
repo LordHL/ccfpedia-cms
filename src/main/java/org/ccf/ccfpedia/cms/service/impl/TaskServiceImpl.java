@@ -72,4 +72,9 @@ public class TaskServiceImpl implements TaskService {
         return count;
     }
 
+    @Override
+    public int addTask(TaskBean taskBean) {
+        return taskMapper.addTask(taskBean);
+    }
+
 }
