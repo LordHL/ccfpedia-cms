@@ -150,14 +150,22 @@ public class MybatisTest {
         System.out.println(taskService.expertRejectTask(15,"测试专委驳回任务"));
     }
 
-    @Test//4.6编辑完成任务
+    @Test//4.7编辑完成任务
     public void testEditCompleteTask() {
         System.out.println(taskService.editCompleteTask(18));
     }
 
-    @Test//4.7编辑驳回任务
+    @Test//4.8编辑驳回任务
     public void testEditRejectTask() {
         System.out.println(taskService.editRejectTask(16,"测试编辑驳回任务"));
+    }
+
+    @Test//4.10通过任务状态查询所有任务
+    public void testSelectTaskByStatus() {
+        List<TaskViewBean> taskBean = taskService.getTaskViewByState(1);
+        int count = taskService.taskViewStateCount(1);
+        System.out.println(JSONObject.toJSON(taskBean));
+        System.out.println(count);
     }
 
     @Test

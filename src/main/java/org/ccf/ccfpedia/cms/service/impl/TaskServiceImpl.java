@@ -135,4 +135,13 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public int editRejectTask(int id, String memo) { return taskMapper.editRejectTask(id,memo);}
 
+    @Override
+    public List<TaskViewBean> getTaskViewByState(int id) { return taskViewMapper.selectTaskViewByState(id); }
+
+    @Override
+    public int taskViewStateCount(int id) {
+        int count= taskViewMapper.taskViewStateCount(id);
+        return count;
+    }
+
 }

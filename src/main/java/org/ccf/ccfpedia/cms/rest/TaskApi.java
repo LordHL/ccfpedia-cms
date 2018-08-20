@@ -157,6 +157,17 @@ public class TaskApi {
         return resp;
     }
 
+    @ApiOperation("各状态任务列表")
+    @RequestMapping(value = "taskstate/{id}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<TaskViewBean>> taskViewStateList(@PathVariable("id")Integer id) {
+        List<TaskViewBean> taskViewList = taskService.getTaskViewByState(id);
+        int userCount = taskService.taskViewStateCount(id);
+        DataArray<TaskViewBean> data = new DataArray<>();
+        data.setCount(userCount);
+        data.setArray(taskViewList);
+        return new RestResp<>(data);
+    }
+
     @ApiOperation("专委任务列表")
     @RequestMapping(value = "expert/{id}/tasklist", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp<DataArray<TaskViewBean>> expertTaskViewList(@PathVariable("id") Integer id) {

@@ -40,6 +40,10 @@ public interface TaskService {
     int editCompleteTask(int id);
     //编辑驳回任务
     int editRejectTask(int id, String memo);
+    //通过任务状态查询所有任务
+    List<TaskViewBean> getTaskViewByState(int id);
+    //获取各状态任务数量
+    int taskViewStateCount(int id);
 
     List<TaskBean> getExpertTaskList(int id );
     //获取专委所有任务列表
