@@ -104,6 +104,20 @@ public class TaskApi {
         return resp;
     }
 
+    @ApiOperation("工委专委确认任务完成")
+    @RequestMapping(value = "taskstate/completed/{id}", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp commnitteeCompletedTask(@PathVariable("id")Integer id) {
+        RestResp<TaskBean> resp = null;
+        TaskBean taskBean = taskService.getTaskById(id);
+        int temp = taskService.completeTask(taskBean);
+        if(temp==1){
+            resp = new RestResp<>(200, "任务成功");
+        }else{
+            resp = new RestResp<>(400, "任务失败");
+        }
+        return resp;
+    }
+
     @ApiOperation("专委任务列表")
     @RequestMapping(value = "expert/{id}/tasklist", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp<DataArray<TaskViewBean>> expertTaskViewList(@PathVariable("id") Integer id) {

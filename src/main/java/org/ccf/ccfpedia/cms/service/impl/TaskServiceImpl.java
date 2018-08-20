@@ -123,4 +123,7 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.deleteTask(taskBean);
     }
 
+    @Override
+    public int completeTask(TaskBean taskBean) { return taskMapper.completeTask(taskBean); }
+
 }

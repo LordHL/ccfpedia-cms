@@ -134,9 +134,15 @@ public class MybatisTest {
     }
 
     @Test//4.3工委专委删除任务
-    public void testdeleteTask() {
-        TaskBean taskBean = taskService.getTaskById(14);
+    public void testDeleteTask() {
+        TaskBean taskBean = taskService.getTaskById(16);
         System.out.println(taskService.deleteTask(taskBean));
+    }
+
+    @Test//4.4工委专委确认任务完成
+    public void testCompleteTask() {
+        TaskBean taskBean = taskService.getTaskById(14);
+        System.out.println(taskService.completeTask(taskBean));
     }
 
     @Test

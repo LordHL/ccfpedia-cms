@@ -96,6 +96,17 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-
+  <update id="completeTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
+    update task
+    <set>
+      <if test="founderId != committeeId">
+        status_id = 13,
+      </if>
+      <if test="founderId == committeeId">
+        status_id = 12,
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 
 </mapper>

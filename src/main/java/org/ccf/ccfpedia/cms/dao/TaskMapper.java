@@ -15,6 +15,7 @@ public interface TaskMapper {
     TaskBean selectByTaskId(@Param("id") Integer id);
     int modifyTask(TaskBean taskBean);
     int deleteTask(TaskBean taskBean);
+    int completeTask(TaskBean taskBean);
     int count();
     int addTask(TaskBean taskBean);
 }
