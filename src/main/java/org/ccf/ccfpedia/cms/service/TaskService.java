@@ -8,8 +8,13 @@ import java.util.List;
 public interface TaskService {
 
     List<TaskBean> getTaskList(int id );
-    int getCount();
-    List<TaskViewBean> getTaskViewList(int id);
-    int getViewCount();
+    //获取工委所有任务列表
+    List<TaskViewBean> getCommitteeTaskViewList(int id);
+    //获取工委个状态任务列表
+    List<TaskViewBean> getCommitteeStateViewList(int id,int stateId);
+    //获取工委所有任务数量
+    int getCommitteeTaskCount(int id);
+    //获取工委各状态任务数量
+    int getCommitteeTaskStateCount(int id,int statusId);
 
 }

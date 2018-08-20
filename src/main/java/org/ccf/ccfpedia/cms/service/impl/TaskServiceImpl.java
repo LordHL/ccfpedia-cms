@@ -25,22 +25,27 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public int getCount(){
-        int count= taskMapper.count();
-        return count;
-    }
-
-    @Override
-    public List<TaskViewBean> getTaskViewList(int id){
+    public List<TaskViewBean> getCommitteeTaskViewList(int id) {
         List<TaskViewBean> TaskViewList = taskViewMapper.selectByCommitteeId(id);
         return TaskViewList;
     }
 
     @Override
-    public int getViewCount(){
-        int count= taskViewMapper.count();
+    public List<TaskViewBean> getCommitteeStateViewList(int id, int stateId) {
+        List<TaskViewBean> TaskViewList = taskViewMapper.selectByCommitteeAndState(id,stateId);
+        return TaskViewList;
+    }
+
+    @Override
+    public int getCommitteeTaskCount(int id) {
+        int count= taskViewMapper.allCount(id);
         return count;
     }
 
+    @Override
+    public int getCommitteeTaskStateCount(int id, int statusId) {
+        int count= taskViewMapper.stateCount(id,statusId);
+        return count;
+    }
 
 }

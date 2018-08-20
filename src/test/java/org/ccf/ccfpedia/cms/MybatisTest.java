@@ -75,7 +75,7 @@ public class MybatisTest {
 
     @Test
     public void testTaskView() {
-        List<TaskViewBean> taskBean = taskService.getTaskViewList(1);
+        List<TaskViewBean> taskBean = taskService.getCommitteeStateViewList(1,1);
         System.out.println(JSONObject.toJSON(taskBean));
     }
 
