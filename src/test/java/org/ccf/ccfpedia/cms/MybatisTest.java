@@ -2,11 +2,12 @@ package org.ccf.ccfpedia.cms;
 
 import com.alibaba.fastjson.JSONObject;
 import org.ccf.ccfpedia.cms.bean.*;
+import org.ccf.ccfpedia.cms.dao.GroupFirstClassMapper;
 import org.ccf.ccfpedia.cms.service.*;
+import org.ccf.ccfpedia.cms.util.JsonUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
@@ -32,6 +33,11 @@ public class MybatisTest {
     private TaskService taskService;
     @Resource
     private EntryService entryService;
+    @Resource
+    private GroupClassService groupClassService;
+
+    @Resource
+    private GroupFirstClassMapper groupFirstClassMapper;
 
 
     @Test
@@ -62,8 +68,26 @@ public class MybatisTest {
 
     @Test
     public void testOneGroup() {
-        GroupBean role = groupService.getGroupById(1);
-        System.out.println(role.getName());
+        GroupBean group = groupService.getGroupById(1);
+        System.out.println(JsonUtils.toJson(group));
+    }
+
+    @Test
+    public void testGroupClass() {
+        List<FirstClassBean> firstClassBeans = groupFirstClassMapper.selectClassByGroupId(1);
+        System.out.println(JsonUtils.toJson(firstClassBeans));
+    }
+
+    @Test
+    public void testInsertMany() {
+        List<Integer> fidList = new ArrayList<>();
+        fidList.add(8);
+        fidList.add(9);
+
+        List<Integer> sidList = new ArrayList<>();
+        sidList.add(13);
+        sidList.add(14);
+        groupClassService.update(1, fidList, sidList);
     }
 
     @Test
@@ -176,6 +200,14 @@ public class MybatisTest {
     public void testSelectTaskByStatus() {
         List<TaskViewBean> taskBean = taskService.getTaskViewByState(1);
         int count = taskService.taskViewStateCount(1);
+        System.out.println(JSONObject.toJSON(taskBean));
+        System.out.println(count);
+    }
+
+    @Test//4.11任务列表
+    public void testSelectTaskViewList() {
+        List<TaskViewBean> taskBean = taskService.getTaskViewList(1,"任务",1,1,10);
+        int count = taskService.getCount(1,"任务",1);
         System.out.println(JSONObject.toJSON(taskBean));
         System.out.println(count);
     }

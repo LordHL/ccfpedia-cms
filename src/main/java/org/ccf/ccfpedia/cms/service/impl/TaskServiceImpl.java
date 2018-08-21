@@ -3,10 +3,12 @@ package org.ccf.ccfpedia.cms.service.impl;
 import org.ccf.ccfpedia.cms.bean.EntryBean;
 import org.ccf.ccfpedia.cms.bean.TaskBean;
 import org.ccf.ccfpedia.cms.bean.TaskViewBean;
+import org.ccf.ccfpedia.cms.bean.UserBean;
 import org.ccf.ccfpedia.cms.dao.EntryMapper;
 import org.ccf.ccfpedia.cms.dao.TaskMapper;
 import org.ccf.ccfpedia.cms.dao.TaskViewMapper;
 import org.ccf.ccfpedia.cms.service.TaskService;
+import org.ccf.ccfpedia.cms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +23,40 @@ public class TaskServiceImpl implements TaskService {
     private TaskViewMapper taskViewMapper;
     @Autowired
     private EntryMapper entryMapper;
+    @Autowired
+    private UserService userService;
+
 
     @Override
-    public List<TaskBean> getTaskList(int id){
-        List<TaskBean> TaskList = taskMapper.selectByCommitteeId(id);
-        return TaskList;
+    public List<TaskViewBean> getTaskViewList(Integer userId, String keyword, Integer status_id, Integer pageNo, Integer pageSize) {
+        Integer roleId = null;
+        if(userId != null){
+            UserBean user = userService.getUserById(userId);
+            roleId = user.getRole().getId();
+        }
+        Integer limit = null;
+        Integer offset = null;
+        if(pageNo != null && pageSize != null){
+            offset = (pageNo - 1) * pageSize;
+            limit = pageSize;
+        }
+        return taskViewMapper.selectTaskViewList(userId, roleId, keyword, status_id, limit, offset);
     }
 
     @Override
     public TaskBean getTaskById(int id) {
         TaskBean taskBean = taskMapper.selectByTaskId(id);
         return taskBean;
+    }
+
+    @Override
+    public int getCount(Integer userId, String keyword, Integer status_id) {
+        Integer roleId = null;
+        if(userId != null){
+            UserBean user = userService.getUserById(userId);
+            roleId = user.getRole().getId();
+        }
+        return taskViewMapper.getCount(userId, roleId, keyword, status_id);
     }
 
     @Override

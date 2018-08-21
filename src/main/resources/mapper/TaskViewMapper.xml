@@ -17,6 +17,61 @@
     id, name,description,founder_id,creation_time,committee_id,executor_id,deadline,status_name,memo
   </sql>
 
+  <select id="selectTaskViewList" resultMap="BaseResultMap">
+    select
+    task.*,task_status.name AS state_name
+    from `task`
+    INNER JOIN `task_status` on task.status_id = task_status.id
+    where true
+    <if test="userId != null">
+      <if test="roleId == 1">
+         and founder_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="roleId == 2">
+         and committee_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="roleId == 3">
+         and executor_id = #{userId,jdbcType=INTEGER}
+      </if>
+    </if>
+      <if test="statusId != null">
+          and status_id = #{statusId,jdbcType=INTEGER}
+      </if>
+      <if test="keyword != null">
+         and task.name like CONCAT('%',#{keyword},'%')
+      </if>
+      order by creation_time DESC
+    <if test=" pageNo!= null">
+      limit #{pageNo,jdbcType=INTEGER}
+    </if>
+    <if test="pageSize != null">
+      offset #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="getCount" resultType="java.lang.Integer">
+    select count(*)
+    from task
+    where true
+    <if test="userId != null">
+      <if test="roleId == 1">
+        and founder_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="roleId == 2">
+        and committee_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="roleId == 3">
+        and executor_id = #{userId,jdbcType=INTEGER}
+      </if>
+    </if>
+    <if test="statusId != null">
+      and status_id = #{statusId,jdbcType=INTEGER}
+    </if>
+    <if test="keyword != null">
+      and name like CONCAT('%',#{keyword},'%')
+    </if>
+  </select>
+
   <select id="selectByCommitteeId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     task.*,task_status.name AS state_name
