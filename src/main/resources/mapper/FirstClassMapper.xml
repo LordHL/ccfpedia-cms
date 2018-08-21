@@ -1,32 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.ccf.ccfpedia.cms.dao.EntryMapper">
-  <resultMap id="BaseResultMap" type="org.ccf.ccfpedia.cms.bean.EntryBean">
-    <id column="id" jdbcType="CHAR" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="first_class" jdbcType="INTEGER" property="firstClass" />
-    <result column="second_class" jdbcType="INTEGER" property="secondClass" />
-    <result column="category" jdbcType="INTEGER" property="category" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, name, status, first_class, second_class, category
-  </sql>
-
-  <select id="selectEntryByTaskId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from `entry`
-    INNER JOIN `task_entry` on entry.id = task_entry.entry_id
-    where Task_id = #{id,jdbcType=INTEGER}
-  </select>
-
-  <select id="selectEntryCountByTaskId" resultType="java.lang.Integer" >
-    select count(*)
-    from `task_entry`
-    where Task_id = #{id,jdbcType=INTEGER}
-  </select>
-
+<mapper namespace="org.ccf.ccfpedia.cms.dao.FirstClassMapper">
   <resultMap id="BaseResultMap" type="org.ccf.ccfpedia.cms.bean.FirstClassBean">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />

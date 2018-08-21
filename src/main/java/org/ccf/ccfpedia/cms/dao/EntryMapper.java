@@ -12,11 +12,6 @@ import java.util.List;
 @Mapper
 @Repository
 public interface EntryMapper {
-
-    List<FirstClassBean> getFirstClassEntryList();
-    int firstClassAllCount();
-    int addFirstClassEntry(FirstClassBean firstClassBean);
-    int updateByPrimaryKeySelective(FirstClassBean firstClassBean);
     List<EntryBean> selectEntryByTaskId(@Param("id") Integer id);
     int selectEntryCountByTaskId(@Param("id") Integer id);
 }
