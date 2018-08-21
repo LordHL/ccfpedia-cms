@@ -181,6 +181,14 @@ public class MybatisTest {
         System.out.println(count);
     }
 
+    @Test//4.11任务列表
+    public void testSelectTaskViewList() {
+        List<TaskViewBean> taskBean = taskService.getTaskViewList(1,"任务",1,1,10);
+        int count = taskService.getCount(1,"任务",1);
+        System.out.println(JSONObject.toJSON(taskBean));
+        System.out.println(count);
+    }
+
     @Test//2.1查看专委的所有任务
     public void testExpertTaskView() {
         List<TaskViewBean> taskBean = taskService.getExpertTaskViewList(2);
