@@ -2,6 +2,8 @@ package org.ccf.ccfpedia.cms.rest;
 
 import com.google.common.reflect.TypeToken;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.ccf.ccfpedia.cms.bean.GroupBean;
 import org.ccf.ccfpedia.cms.bean.RoleBean;
@@ -17,16 +19,13 @@ import org.ccf.ccfpedia.cms.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
 @RestController
-@RequestMapping(value = "user")
+@RequestMapping(value = "user", produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class UserApi {
 
     @Autowired
@@ -39,10 +38,10 @@ public class UserApi {
     private GroupService groupService;
 
     @ApiOperation("用户列表")
-    @RequestMapping(value = "list", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping("list")
     public RestResp<DataArray<UserBean>> list(String keyword, Integer pageNo, Integer pageSize) {
         List<UserBean> userList = userService.getUserList(keyword, pageNo, pageSize);
-        int userCount = userService.getUserCount();
+        int userCount = userService.getUserCount(keyword);
         DataArray<UserBean> data = new DataArray<>();
         data.setCount(userCount);
         data.setArray(userList);
@@ -50,7 +49,7 @@ public class UserApi {
     }
 
     @ApiOperation("用户登录")
-    @RequestMapping(value = "login", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping("login")
     public RestResp<UserBean> login(String account, String password) {
         RestResp<UserBean> resp = null;
         UserBean user = userService.getUserByAccount(account);
@@ -74,7 +73,7 @@ public class UserApi {
     }
 
     @ApiOperation("用户删除")
-    @RequestMapping(value = "delete", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping("delete")
     public RestResp<UserBean> delete(String id) {
         RestResp<UserBean> resp = null;
         List<Integer> idList = JsonUtils.fromJson(id, new TypeToken<List<Integer>>() {}.getType());
@@ -92,7 +91,7 @@ public class UserApi {
     }
 
     @ApiOperation("用户注册")
-    @RequestMapping(value = "sign", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping("sign")
     public RestResp login(String account, String password, String name, String email, Integer roleId, Integer groupId) {
         RestResp<UserBean> resp = null;
         RoleBean role = null;
@@ -116,7 +115,7 @@ public class UserApi {
     }
 
     @ApiOperation("审批列表")
-    @RequestMapping(value = "apply/list", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping("apply/list")
     public RestResp<DataArray<UserApplyBean>> getApplyList(String status, Integer pageNo, Integer pageSize) {
         List<Integer> statusList = JsonUtils.fromJson(status, new TypeToken<List<Integer>>() {}.getType());
         List<UserApplyBean> userApplyBeanList = userApplyService.getUserApplyList(statusList, pageNo, pageSize);
@@ -128,7 +127,7 @@ public class UserApi {
     }
 
     @ApiOperation("用户审批")
-    @RequestMapping(value = "approve", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping("approve")
     public RestResp<UserBean> approve(String id, Integer status) {
         RestResp<UserBean> resp = null;
         if(status == 1 || status == 2) {
@@ -157,7 +156,7 @@ public class UserApi {
     }
 
     @ApiOperation("权限修改")
-    @RequestMapping(value = "modify", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping("modify")
     public RestResp<UserBean> modify(Integer userId, Integer groupId, Integer roleId) {
         RestResp<UserBean> resp = null;
         UserBean user = userService.getUserById(userId);

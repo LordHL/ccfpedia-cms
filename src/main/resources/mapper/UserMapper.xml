@@ -58,6 +58,9 @@
     select count(*)
     from user
     where is_delete = 0
+    <if test="keyword != null">
+      and name like CONCAT('%',#{keyword},'%')
+    </if>
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -92,10 +95,10 @@
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
-      <if test="role.id != null">
+      <if test="role != null and role.id != null">
         role_id = #{role.id,jdbcType=INTEGER},
       </if>
-      <if test="group.id != null">
+      <if test="group != null and group.id != null">
         group_id = #{group.id,jdbcType=INTEGER},
       </if>
     </set>

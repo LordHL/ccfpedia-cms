@@ -43,8 +43,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int getUserCount(){
-        return userMapper.count();
+    public int getUserCount(String keyword){
+        return userMapper.count(keyword);
     }
 
     @Override

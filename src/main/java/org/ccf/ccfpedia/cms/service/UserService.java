@@ -14,7 +14,7 @@ public interface UserService {
 
     List<UserBean> getUserListByIdList(List<Integer> idList);
 
-    int getUserCount();
+    int getUserCount(String keyword);
 
     UserBean getUserByAccount(String account);
 
