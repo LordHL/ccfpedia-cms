@@ -14,6 +14,6 @@ public interface FirstClassMapper {
 
     List<FirstClassBean> getFirstClassEntryList();
     int firstClassAllCount();
-    int addFirstClassEntry(FirstClassBean firstCla0ssBean);
+    int addFirstClassEntry(FirstClassBean firstClassBean);
     int updateByPrimaryKeySelective(FirstClassBean firstClassBean);
 }

@@ -2,21 +2,11 @@ package org.ccf.ccfpedia.cms.bean;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.List;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GroupBean {
+public class SecondClassBean {
     private int id;
     private String name;
-    private List<FirstClassBean> firstClassList;
-
-    public List<FirstClassBean> getFirstClassList() {
-        return firstClassList;
-    }
-
-    public void setFirstClassList(List<FirstClassBean> firstClassList) {
-        this.firstClassList = firstClassList;
-    }
+    private int firstClass;
 
     public int getId() {
         return id;
@@ -32,5 +22,13 @@ public class GroupBean {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getFirstClass() {
+        return firstClass;
+    }
+
+    public void setFirstClassId(int firstClass) {
+        this.firstClass = firstClass;
     }
 }

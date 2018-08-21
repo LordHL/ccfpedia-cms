@@ -1,10 +1,7 @@
 package org.ccf.ccfpedia.cms.rest;
 
 import io.swagger.annotations.ApiOperation;
-import org.ccf.ccfpedia.cms.bean.EntryBean;
-import org.ccf.ccfpedia.cms.bean.FirstClassBean;
-import org.ccf.ccfpedia.cms.bean.TaskBean;
-import org.ccf.ccfpedia.cms.bean.TaskViewBean;
+import org.ccf.ccfpedia.cms.bean.*;
 import org.ccf.ccfpedia.cms.bean.resp.DataArray;
 import org.ccf.ccfpedia.cms.bean.resp.RestResp;
 import org.ccf.ccfpedia.cms.service.EntryService;
@@ -223,9 +220,9 @@ public class TaskApi {
 
     @ApiOperation("一级分类词条列表")
     @RequestMapping(value = "/queryFirstClass", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp<DataArray<FirstClassBean>> expertTaskViewList() {
+    public RestResp<DataArray<FirstClassBean>> firstClassEntryList() {
         List<FirstClassBean> firstClassList = entryService.getFirstClassList();
-        int firstclassCount = entryService.getExpertTaskStateCount();
+        int firstclassCount = entryService.getFirstClassEntryCount();
         DataArray<FirstClassBean> data = new DataArray<>();
         data.setCount(firstclassCount);
         data.setArray(firstClassList);
@@ -235,18 +232,81 @@ public class TaskApi {
 
     @ApiOperation("新建一级分类词条")
     @RequestMapping(value = "/addFirstClass", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public FirstClassBean addFirstClassEntry(@RequestBody FirstClassBean firstClassBean) {
-        entryService.addFirstClassEntry(firstClassBean);
-        return firstClassBean;
+    public RestResp addFirstClassEntry(@RequestBody FirstClassBean firstClassBean) {
+        RestResp<FirstClassBean> resp = null;
+        int temp = entryService.addFirstClassEntry(firstClassBean);
+        if(temp==1){
+            resp = new RestResp<>(200, "新建成功");
+        }else{
+            resp = new RestResp<>(400, "新建失败");
+        }
+        return resp;
     }
 
 
     @ApiOperation("修改一级分类词条")
     @RequestMapping(value = "/modifyFirstClass", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public FirstClassBean modifyFirstClassEntry(@RequestBody FirstClassBean firstClassBean){
+    public RestResp modifyFirstClassEntry(@RequestBody FirstClassBean firstClassBean){
+        RestResp<SecondClassBean> resp = null;
         if(firstClassBean != null){
             entryService.updateFirstClassEntry(firstClassBean);
+            resp= new RestResp<>(200, "修改成功");
+        }else{
+            resp = new RestResp<>(400, "修改失败");
         }
-        return firstClassBean;
+        return resp;
     }
+
+
+    @ApiOperation("二级分类词条列表")
+    @RequestMapping(value = "/querySecondClass", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<SecondClassBean>> secondClassEntryList() {
+        List<SecondClassBean> secondClassList = entryService.getSecondClassList();
+        int secondclassCount = entryService.getSecondClassEntryCount();
+        DataArray<SecondClassBean> data = new DataArray<>();
+        data.setCount(secondclassCount);
+        data.setArray(secondClassList);
+        return new RestResp<>(data);
+
+    }
+
+    @ApiOperation("新建二级分类词条")
+    @RequestMapping(value = "/addSecondClass", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp addSecondClassEntry(@RequestBody SecondClassBean secondClassBean) {
+        RestResp<SecondClassBean> resp = null;
+        int temp = entryService.addSecondClassEntry(secondClassBean);
+        if(temp==1){
+            resp = new RestResp<>(200, "新建成功");
+        }else{
+            resp = new RestResp<>(400, "新建失败");
+        }
+        return resp;
+    }
+
+
+    @ApiOperation("修改二级分类词条")
+    @RequestMapping(value = "/modifySecondClass", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp modifySecondClassEntry(@RequestBody SecondClassBean secondClassBean){
+        RestResp<SecondClassBean> resp = null;
+        if(secondClassBean != null){
+            entryService.updateSecondClassEntry(secondClassBean);
+            resp= new RestResp<>(200, "修改成功");
+        }else{
+            resp = new RestResp<>(400, "修改失败");
+        }
+        return resp;
+    }
+
+    @ApiOperation("一级分类下的二级词条列表")
+    @RequestMapping(value = "firstClass/{id}/secondClass", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<SecondClassBean>> secondClassEntryByFirstClassId(@PathVariable("firstClassId")Integer firstClassId) {
+        List<SecondClassBean> secondClassList = entryService.getSecondClassEntryByFirstClassId(firstClassId);
+        int secondClassCount = entryService.getSecondClassEntryByFirstCount(firstClassId);
+        DataArray<SecondClassBean> data = new DataArray<>();
+        data.setCount(secondClassCount);
+        data.setArray(secondClassList);
+        return new RestResp<>(data);
+    }
+
+
 }

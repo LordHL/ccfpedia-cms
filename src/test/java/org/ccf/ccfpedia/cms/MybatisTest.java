@@ -2,11 +2,12 @@ package org.ccf.ccfpedia.cms;
 
 import com.alibaba.fastjson.JSONObject;
 import org.ccf.ccfpedia.cms.bean.*;
+import org.ccf.ccfpedia.cms.dao.GroupFirstClassMapper;
 import org.ccf.ccfpedia.cms.service.*;
+import org.ccf.ccfpedia.cms.util.JsonUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
@@ -32,6 +33,11 @@ public class MybatisTest {
     private TaskService taskService;
     @Resource
     private EntryService entryService;
+    @Resource
+    private GroupClassService groupClassService;
+
+    @Resource
+    private GroupFirstClassMapper groupFirstClassMapper;
 
 
     @Test
@@ -62,8 +68,26 @@ public class MybatisTest {
 
     @Test
     public void testOneGroup() {
-        GroupBean role = groupService.getGroupById(1);
-        System.out.println(role.getName());
+        GroupBean group = groupService.getGroupById(1);
+        System.out.println(JsonUtils.toJson(group));
+    }
+
+    @Test
+    public void testGroupClass() {
+        List<FirstClassBean> firstClassBeans = groupFirstClassMapper.selectClassByGroupId(1);
+        System.out.println(JsonUtils.toJson(firstClassBeans));
+    }
+
+    @Test
+    public void testInsertMany() {
+        List<Integer> fidList = new ArrayList<>();
+        fidList.add(8);
+        fidList.add(9);
+
+        List<Integer> sidList = new ArrayList<>();
+        sidList.add(13);
+        sidList.add(14);
+        groupClassService.update(1, fidList, sidList);
     }
 
     @Test
@@ -121,7 +145,6 @@ public class MybatisTest {
         taskBean.setStatusId(1);
         System.out.println(taskService.addTask(taskBean));
     }
-
 
     @Test//4.2工委专委修改任务
     public void testModifyTask() {
@@ -204,7 +227,7 @@ public class MybatisTest {
     @Test//5.1查询一级词条分类列表
     public void firstClassEntryList() {
         List<FirstClassBean> firstClassBean = entryService.getFirstClassList();
-        int count = entryService.getExpertTaskStateCount();
+        int count = entryService.getFirstClassEntryCount();
         System.out.println(JSONObject.toJSON(firstClassBean));
         System.out.println("count:" + count);
     }
@@ -218,11 +241,46 @@ public class MybatisTest {
     }
 
     @Test//5.3修改一级词条
-    public void modifyfirstClassEntryList() {
+    public void modifyFirstClassEntryList() {
         FirstClassBean firstClassBean = new FirstClassBean();
         firstClassBean.setId(13);
         firstClassBean.setName("测试修改一级词条");
         entryService.updateFirstClassEntry(firstClassBean);
         System.out.println(JSONObject.toJSON(firstClassBean));
+    }
+
+    @Test//5.4查询二级词条分类列表
+    public void secondClassEntryList() {
+        List<SecondClassBean> secondClassBean = entryService.getSecondClassList();
+        int count = entryService.getSecondClassEntryCount();
+        System.out.println(JSONObject.toJSON(secondClassBean));
+        System.out.println("count:" + count);
+    }
+
+    @Test//5.5创建二级词条
+    public void testAddSecondClassEntry() {
+        SecondClassBean secondClassBean = new SecondClassBean();
+        secondClassBean.setName("测试二级词条");
+        secondClassBean.setFirstClassId(6);
+        entryService.addSecondClassEntry(secondClassBean);
+        System.out.println(JSONObject.toJSON(secondClassBean));
+    }
+
+    @Test//5.6修改二级词条
+    public void modifySecondClassEntryList() {
+        SecondClassBean secondClassBean = new SecondClassBean();
+        secondClassBean.setId(4);
+        secondClassBean.setName("测试修改二级词条");
+        secondClassBean.setFirstClassId(6);
+        entryService.updateSecondClassEntry(secondClassBean);
+        System.out.println(JSONObject.toJSON(secondClassBean));
+    }
+
+    @Test//5.7查询一级分类词条下的二级分类列表
+    public void secondClassEntryListByFirstClass() {
+        List<SecondClassBean> secondClassBean = entryService.getSecondClassEntryByFirstClassId(2);
+        int count = entryService.getSecondClassEntryByFirstCount(2);
+        System.out.println(JSONObject.toJSON(secondClassBean));
+        System.out.println("count:" + count);
     }
 }
