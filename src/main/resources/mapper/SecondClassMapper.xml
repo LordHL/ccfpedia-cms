@@ -43,15 +43,16 @@
     select
     <include refid="Base_Column_List" />
     from second_class
-    where true
-    <if test="firstClass !=null">
-      and first_class = #{firstClass,jdbcType=INTEGER}
-    </if>>
+    <if test="id != null">
+      where first_class = #{id, jdbcType=INTEGER}
+    </if>
   </select>
 
   <select id="secondClassCount" resultType="java.lang.Integer" >
-  select count(*)
-  from `second_class`
-  where first_class = #{firstClass,jdbcType=INTEGER}
+    select count(*)
+    from second_class
+    <if test="id != null">
+      where first_class = #{id, jdbcType=INTEGER}
+    </if>
   </select>
 </mapper>

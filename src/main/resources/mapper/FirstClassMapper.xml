@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.ccf.ccfpedia.cms.dao.FirstClassMapper">
-  <resultMap id="BaseResultMap" type="org.ccf.ccfpedia.cms.bean.FirstClassBean">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, name
-  </sql>
+<resultMap id="BaseResultMap" type="org.ccf.ccfpedia.cms.bean.FirstClassBean">
+  <id column="id" jdbcType="INTEGER" property="id" />
+  <result column="name" jdbcType="VARCHAR" property="name" />
+</resultMap>
+<sql id="Base_Column_List">
+  id, name
+</sql>
 
-  <select id="getFirstClassEntryList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from first_class
-  </select>
+<select id="getFirstClassEntryList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  select
+  <include refid="Base_Column_List" />
+  from first_class
+</select>
 
-  <select id="firstClassAllCount" resultType="java.lang.Integer" >
+<select id="firstClassAllCount" resultType="java.lang.Integer" >
   select count(*)
   from `first_class`
-  </select>
+</select>
 
-  <insert id="addFirstClassEntry" parameterType="org.ccf.ccfpedia.cms.bean.FirstClassBean" useGeneratedKeys="true" keyProperty="id">
-    insert into first_class (name)
-    values (#{name,jdbcType=VARCHAR})
-  </insert>
+<insert id="addFirstClassEntry" parameterType="org.ccf.ccfpedia.cms.bean.FirstClassBean" useGeneratedKeys="true" keyProperty="id">
+  insert into first_class (name)
+  values (#{name,jdbcType=VARCHAR})
+</insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="org.ccf.ccfpedia.cms.bean.FirstClassBean">
-    update first_class
-    <set>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+<update id="updateByPrimaryKeySelective" parameterType="org.ccf.ccfpedia.cms.bean.FirstClassBean">
+  update first_class
+  <set>
+    <if test="name != null">
+      name = #{name,jdbcType=VARCHAR},
+    </if>
+  </set>
+  where id = #{id,jdbcType=INTEGER}
+</update>
 
 </mapper>
