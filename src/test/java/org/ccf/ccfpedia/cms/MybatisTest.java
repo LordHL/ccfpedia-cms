@@ -121,7 +121,6 @@ public class MybatisTest {
         System.out.println(taskService.addTask(taskBean));
     }
 
-
     @Test//4.2工委专委修改任务
     public void testModifyTask() {
         TaskBean taskBean = new TaskBean();
@@ -195,7 +194,7 @@ public class MybatisTest {
     @Test//5.1查询一级词条分类列表
     public void firstClassEntryList() {
         List<FirstClassBean> firstClassBean = entryService.getFirstClassList();
-        int count = entryService.getExpertTaskStateCount();
+        int count = entryService.getFirstClassEntryCount();
         System.out.println(JSONObject.toJSON(firstClassBean));
         System.out.println("count:" + count);
     }
@@ -209,11 +208,46 @@ public class MybatisTest {
     }
 
     @Test//5.3修改一级词条
-    public void modifyfirstClassEntryList() {
+    public void modifyFirstClassEntryList() {
         FirstClassBean firstClassBean = new FirstClassBean();
         firstClassBean.setId(13);
         firstClassBean.setName("测试修改一级词条");
         entryService.updateFirstClassEntry(firstClassBean);
         System.out.println(JSONObject.toJSON(firstClassBean));
+    }
+
+    @Test//5.4查询二级词条分类列表
+    public void secondClassEntryList() {
+        List<SecondClassBean> secondClassBean = entryService.getSecondClassList();
+        int count = entryService.getSecondClassEntryCount();
+        System.out.println(JSONObject.toJSON(secondClassBean));
+        System.out.println("count:" + count);
+    }
+
+    @Test//5.5创建二级词条
+    public void testAddSecondClassEntry() {
+        SecondClassBean secondClassBean = new SecondClassBean();
+        secondClassBean.setName("测试二级词条");
+        secondClassBean.setFirstClassId(6);
+        entryService.addSecondClassEntry(secondClassBean);
+        System.out.println(JSONObject.toJSON(secondClassBean));
+    }
+
+    @Test//5.6修改二级词条
+    public void modifySecondClassEntryList() {
+        SecondClassBean secondClassBean = new SecondClassBean();
+        secondClassBean.setId(4);
+        secondClassBean.setName("测试修改二级词条");
+        secondClassBean.setFirstClassId(6);
+        entryService.updateSecondClassEntry(secondClassBean);
+        System.out.println(JSONObject.toJSON(secondClassBean));
+    }
+
+    @Test//5.7查询一级分类词条下的二级分类列表
+    public void secondClassEntryListByFirstClass() {
+        List<SecondClassBean> secondClassBean = entryService.getSecondClassEntryByFirstClassId(2);
+        int count = entryService.getSecondClassEntryByFirstCount(2);
+        System.out.println(JSONObject.toJSON(secondClassBean));
+        System.out.println("count:" + count);
     }
 }

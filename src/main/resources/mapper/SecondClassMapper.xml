@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ccf.ccfpedia.cms.dao.SecondClassMapper">
+  <resultMap id="BaseResultMap" type="org.ccf.ccfpedia.cms.bean.SecondClassBean">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="first_class" jdbcType="INTEGER" property="firstClass" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, first_class
+  </sql>
+
+  <select id="getSecondClassEntryList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from second_class
+  </select>
+
+  <select id="secondClassAllCount" resultType="java.lang.Integer" >
+  select count(*)
+  from `second_class`
+  </select>
+
+  <insert id="addSecondClassEntry" parameterType="org.ccf.ccfpedia.cms.bean.SecondClassBean" useGeneratedKeys="true" keyProperty="id">
+    insert into second_class (name,first_class)
+    values (#{name,jdbcType=VARCHAR}, #{firstClass,jdbcType=INTEGER})
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="org.ccf.ccfpedia.cms.bean.SecondClassBean">
+    update second_class
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="firstClass != null">
+        first_class = #{firstClass,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getSecondClassEntryListByFirstClassId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from second_class
+    where first_class = #{firstClass,jdbcType=INTEGER}
+  </select>
+
+  <select id="secondClassCount" resultType="java.lang.Integer" >
+  select count(*)
+  from `second_class`
+  where first_class = #{firstClass,jdbcType=INTEGER}
+  </select>
+</mapper>
