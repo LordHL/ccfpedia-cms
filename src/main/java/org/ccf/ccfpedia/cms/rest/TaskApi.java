@@ -219,7 +219,7 @@ public class TaskApi {
     }
 
     @ApiOperation("所有词条列表")
-    @RequestMapping(value = "/queryEntry", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/queryentry", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp<DataArray<EntryBean>> EntryList() {
         List<EntryBean> entryList = entryService.getEntryList();
         int entryCount = entryService.getEntryCount();
@@ -230,7 +230,7 @@ public class TaskApi {
     }
 
     @ApiOperation("新建词条")
-    @RequestMapping(value = "/addEntry", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/addentry", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp addEntry(@RequestBody EntryBean entryBean) {
         RestResp<SecondClassBean> resp = null;
         int temp = entryService.addEntry(entryBean);
@@ -243,7 +243,7 @@ public class TaskApi {
     }
 
     @ApiOperation("修改词条")
-    @RequestMapping(value = "/modifyEntry", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/modifyentry", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp modifyEntry(@RequestBody EntryBean entryBean){
         RestResp<EntryBean> resp = null;
         if(entryBean != null){
@@ -256,7 +256,7 @@ public class TaskApi {
     }
 
     @ApiOperation("删除词条")
-    @RequestMapping(value = "deleteEntry/{id}", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "deleteentry/{id}", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp deleteEntry(@PathVariable("id")Integer id) {
         RestResp<EntryBean> resp = null;
         int temp = entryService.deleteEntry(id);
