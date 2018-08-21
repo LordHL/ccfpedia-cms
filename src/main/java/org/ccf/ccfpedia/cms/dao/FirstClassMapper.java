@@ -15,7 +15,7 @@ public interface EntryMapper {
 
     List<FirstClassBean> getFirstClassEntryList();
     int firstClassAllCount();
-    int addFirstClassEntry(FirstClassBean firstClassBean);
+    int addFirstClassEntry(FirstClassBean firstCla0ssBean);
     int updateByPrimaryKeySelective(FirstClassBean firstClassBean);
     List<EntryBean> selectEntryByTaskId(@Param("id") Integer id);
     int selectEntryCountByTaskId(@Param("id") Integer id);

@@ -30,6 +30,9 @@ public class MybatisTest {
     private GroupService groupService;
     @Resource
     private TaskService taskService;
+    @Resource
+    private EntryService entryService;
+
 
     @Test
     public void testApplyList(){
@@ -118,6 +121,7 @@ public class MybatisTest {
         System.out.println(taskService.addTask(taskBean));
     }
 
+
     @Test//4.2工委专委修改任务
     public void testModifyTask() {
         TaskBean taskBean = new TaskBean();
@@ -176,16 +180,40 @@ public class MybatisTest {
         System.out.println(count);
     }
 
-    @Test
+    @Test//2.1查看专委的所有任务
     public void testExpertTaskView() {
         List<TaskViewBean> taskBean = taskService.getExpertTaskViewList(2);
         System.out.println(JSONObject.toJSON(taskBean));
     }
 
-    @Test
+    @Test//2.2查看专委各状态的任务
     public void testExpertTaskStateView() {
-        List<TaskViewBean> taskBean = taskService.getExpertStateViewList(2,2);
+        List<TaskViewBean> taskBean = taskService.getExpertStateViewList(2, 2);
         System.out.println(JSONObject.toJSON(taskBean));
     }
 
+    @Test//5.1查询一级词条分类列表
+    public void firstClassEntryList() {
+        List<FirstClassBean> firstClassBean = entryService.getFirstClassList();
+        int count = entryService.getExpertTaskStateCount();
+        System.out.println(JSONObject.toJSON(firstClassBean));
+        System.out.println("count:" + count);
+    }
+
+    @Test//5.2创建一级词条
+    public void testAddFirstClassEntry() {
+        FirstClassBean firstClassBean = new FirstClassBean();
+        firstClassBean.setName("测试一级词条");
+        entryService.addFirstClassEntry(firstClassBean);
+        System.out.println(JSONObject.toJSON(firstClassBean));
+    }
+
+    @Test//5.3修改一级词条
+    public void modifyfirstClassEntryList() {
+        FirstClassBean firstClassBean = new FirstClassBean();
+        firstClassBean.setId(13);
+        firstClassBean.setName("测试修改一级词条");
+        entryService.updateFirstClassEntry(firstClassBean);
+        System.out.println(JSONObject.toJSON(firstClassBean));
+    }
 }
