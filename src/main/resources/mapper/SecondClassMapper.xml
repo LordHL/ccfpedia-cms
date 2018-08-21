@@ -43,7 +43,10 @@
     select
     <include refid="Base_Column_List" />
     from second_class
-    where first_class = #{firstClass,jdbcType=INTEGER}
+    where true
+    <if test="firstClass !=null">
+      and first_class = #{firstClass,jdbcType=INTEGER}
+    </if>>
   </select>
 
   <select id="secondClassCount" resultType="java.lang.Integer" >

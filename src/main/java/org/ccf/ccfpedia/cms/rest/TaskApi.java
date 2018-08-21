@@ -206,23 +206,22 @@ public class TaskApi {
 
     }
 
-    @ApiOperation("一级分类词条列表")
-    @RequestMapping(value = "/queryFirstClass", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp<DataArray<FirstClassBean>> firstClassEntryList() {
-        List<FirstClassBean> firstClassList = entryService.getFirstClassList();
-        int firstclassCount = entryService.getFirstClassEntryCount();
-        DataArray<FirstClassBean> data = new DataArray<>();
-        data.setCount(firstclassCount);
-        data.setArray(firstClassList);
+    @ApiOperation("所有词条列表")
+    @RequestMapping(value = "/queryEntry", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<EntryBean>> EntryList() {
+        List<EntryBean> entryList = entryService.getEntryList();
+        int entryCount = entryService.getEntryCount();
+        DataArray<EntryBean> data = new DataArray<>();
+        data.setCount(entryCount);
+        data.setArray(entryList);
         return new RestResp<>(data);
-
     }
 
-    @ApiOperation("新建一级分类词条")
-    @RequestMapping(value = "/addFirstClass", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp addFirstClassEntry(@RequestBody FirstClassBean firstClassBean) {
-        RestResp<FirstClassBean> resp = null;
-        int temp = entryService.addFirstClassEntry(firstClassBean);
+    @ApiOperation("新建词条")
+    @RequestMapping(value = "/addEntry", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp addEntry(@RequestBody EntryBean entryBean) {
+        RestResp<SecondClassBean> resp = null;
+        int temp = entryService.addEntry(entryBean);
         if(temp==1){
             resp = new RestResp<>(200, "新建成功");
         }else{
@@ -231,13 +230,12 @@ public class TaskApi {
         return resp;
     }
 
-
-    @ApiOperation("修改一级分类词条")
-    @RequestMapping(value = "/modifyFirstClass", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp modifyFirstClassEntry(@RequestBody FirstClassBean firstClassBean){
-        RestResp<SecondClassBean> resp = null;
-        if(firstClassBean != null){
-            entryService.updateFirstClassEntry(firstClassBean);
+    @ApiOperation("修改词条")
+    @RequestMapping(value = "/modifyEntry", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp modifyEntry(@RequestBody EntryBean entryBean){
+        RestResp<EntryBean> resp = null;
+        if(entryBean != null){
+            entryService.updateEntry(entryBean);
             resp= new RestResp<>(200, "修改成功");
         }else{
             resp = new RestResp<>(400, "修改失败");
@@ -245,56 +243,29 @@ public class TaskApi {
         return resp;
     }
 
-
-    @ApiOperation("二级分类词条列表")
-    @RequestMapping(value = "/querySecondClass", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp<DataArray<SecondClassBean>> secondClassEntryList() {
-        List<SecondClassBean> secondClassList = entryService.getSecondClassList();
-        int secondclassCount = entryService.getSecondClassEntryCount();
-        DataArray<SecondClassBean> data = new DataArray<>();
-        data.setCount(secondclassCount);
-        data.setArray(secondClassList);
-        return new RestResp<>(data);
-
-    }
-
-    @ApiOperation("新建二级分类词条")
-    @RequestMapping(value = "/addSecondClass", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp addSecondClassEntry(@RequestBody SecondClassBean secondClassBean) {
-        RestResp<SecondClassBean> resp = null;
-        int temp = entryService.addSecondClassEntry(secondClassBean);
+    @ApiOperation("删除词条")
+    @RequestMapping(value = "deleteEntry/{id}", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp deleteEntry(@PathVariable("id")Integer id) {
+        RestResp<EntryBean> resp = null;
+        int temp = entryService.deleteEntry(id);
         if(temp==1){
-            resp = new RestResp<>(200, "新建成功");
+            resp = new RestResp<>(200, "词条删除成功");
         }else{
-            resp = new RestResp<>(400, "新建失败");
+            resp = new RestResp<>(400, "词条删除失败");
         }
         return resp;
     }
 
 
-    @ApiOperation("修改二级分类词条")
-    @RequestMapping(value = "/modifySecondClass", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp modifySecondClassEntry(@RequestBody SecondClassBean secondClassBean){
-        RestResp<SecondClassBean> resp = null;
-        if(secondClassBean != null){
-            entryService.updateSecondClassEntry(secondClassBean);
-            resp= new RestResp<>(200, "修改成功");
-        }else{
-            resp = new RestResp<>(400, "修改失败");
-        }
-        return resp;
-    }
 
-    @ApiOperation("一级分类下的二级词条列表")
-    @RequestMapping(value = "firstClass/{id}/secondClass", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp<DataArray<SecondClassBean>> secondClassEntryByFirstClassId(@PathVariable("firstClassId")Integer firstClassId) {
-        List<SecondClassBean> secondClassList = entryService.getSecondClassEntryByFirstClassId(firstClassId);
-        int secondClassCount = entryService.getSecondClassEntryByFirstCount(firstClassId);
-        DataArray<SecondClassBean> data = new DataArray<>();
-        data.setCount(secondClassCount);
-        data.setArray(secondClassList);
+    @ApiOperation("通过状态查询词条列表")
+    @RequestMapping(value = "entry/state/{id}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<EntryBean>> EntryByStateId(@PathVariable("status")Integer statusId) {
+        List<EntryBean> entryList = entryService.getEntryByStatus(statusId);
+        int entryCount = entryService.getSecondClassEntryByFirstCount(statusId);
+        DataArray<EntryBean> data = new DataArray<>();
+        data.setCount(entryCount);
+        data.setArray(entryList);
         return new RestResp<>(data);
     }
-
-
 }

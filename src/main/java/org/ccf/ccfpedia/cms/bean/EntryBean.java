@@ -4,18 +4,18 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EntryBean {
-    private String id;
+    private int id;
     private String name;
-    private String status;
+    private int status;
     private int firstClass;
     private int secondClass;
     private int category;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -27,11 +27,11 @@ public class EntryBean {
         this.name = name;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

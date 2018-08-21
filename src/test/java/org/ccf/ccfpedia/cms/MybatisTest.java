@@ -192,8 +192,8 @@ public class MybatisTest {
         System.out.println(JSONObject.toJSON(taskBean));
     }
 
-    @Test//5.1查询一级词条分类列表
-    public void firstClassEntryList() {
+    @Test//5.1查询一级分类列表
+    public void firstClassList() {
         List<FirstClassBean> firstClassBean = entryService.getFirstClassList();
         int count = entryService.getFirstClassEntryCount();
         System.out.println(JSONObject.toJSON(firstClassBean));
@@ -217,8 +217,8 @@ public class MybatisTest {
         System.out.println(JSONObject.toJSON(firstClassBean));
     }
 
-    @Test//5.4查询二级词条分类列表
-    public void secondClassEntryList() {
+    @Test//5.4查询二级分类列表
+    public void secondClassList() {
         List<SecondClassBean> secondClassBean = entryService.getSecondClassList();
         int count = entryService.getSecondClassEntryCount();
         System.out.println(JSONObject.toJSON(secondClassBean));
@@ -251,4 +251,64 @@ public class MybatisTest {
         System.out.println(JSONObject.toJSON(secondClassBean));
         System.out.println("count:" + count);
     }
+
+
+    @Test//6.1查询所有词条
+    public void EntryList() {
+        List<EntryBean> entryBean = entryService.getEntryList();
+        int count = entryService.getEntryCount();
+        System.out.println(JSONObject.toJSON(entryBean));
+        System.out.println("count:" + count);
+    }
+
+    @Test//6.2创建词条
+    public void testAddEntry() {
+        EntryBean entryBean = new EntryBean();
+        entryBean.setName("测试一级词条");
+        entryBean.setStatus(0);
+        entryBean.setFirstClass(2);
+        entryBean.setSecondClass(4);
+        entryBean.setCategory(0);
+        entryService.addEntry(entryBean);
+        System.out.println(JSONObject.toJSON(entryBean));
+    }
+
+    @Test//6.3修改词条
+    public void modifyEntryList() {
+        EntryBean entryBean = new EntryBean();
+        entryBean.setId(5);
+        entryBean.setName("测试修改词条");
+        entryService.updateEntry(entryBean);
+        System.out.println(JSONObject.toJSON(entryBean));
+    }
+
+    @Test//6.4删除词条
+    public void testDeleteEntry() {
+        System.out.println(entryService.deleteEntry(12));
+    }
+
+    @Test//6.5查询一级词条
+    public void firstClassEntryList() {
+        List<EntryBean> entryBean = entryService.getFirstClassEntry(2);
+        int count = entryService.getFirstClassEntryCount(2);
+        System.out.println(JSONObject.toJSON(entryBean));
+        System.out.println("count:" + count);
+    }
+
+    @Test//6.6查询二级词条
+    public void secondClassEntryList() {
+        List<EntryBean> entryBean = entryService.getSecondClassEntry(2);
+        int count = entryService.getSecondClassEntryCount(2);
+        System.out.println(JSONObject.toJSON(entryBean));
+        System.out.println("count:" + count);
+    }
+
+    @Test//6.7通过状态查询词条
+    public void EntryListByState() {
+        List<EntryBean> entryBean = entryService.getEntryByStatus(1);
+        int count = entryService.getEntryCountBystatus(1);
+        System.out.println(JSONObject.toJSON(entryBean));
+        System.out.println("count:" + count);
+    }
+
 }
