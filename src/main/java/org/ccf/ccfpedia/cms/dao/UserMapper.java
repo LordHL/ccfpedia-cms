@@ -19,7 +19,7 @@ public interface UserMapper {
 
     List<UserBean> selectByKeyword(@Param("keyword") String keyword, @Param("limit") Integer limit, @Param("offset") Integer offset);
 
-    int count();
+    int count(@Param("keyword") String keyword);
 
     int deleteByPrimaryKey(Integer id);
 

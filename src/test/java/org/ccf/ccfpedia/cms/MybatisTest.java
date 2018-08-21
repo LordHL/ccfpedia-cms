@@ -74,7 +74,8 @@ public class MybatisTest {
 
     @Test
     public void testCount() {
-        int userCount = userService.getUserCount();
+        String keyword = "王";
+        int userCount = userService.getUserCount(keyword);
         System.out.println(userCount);
     }
 
