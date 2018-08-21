@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ccf.ccfpedia.cms.dao.GroupSecondClassMapper">
+  <resultMap type="org.ccf.ccfpedia.cms.bean.FirstClassBean" id="classResultMap">
+    <result property="id" column="id"/>
+    <result property="name" column="name"/>
+  </resultMap>
+  <sql id="Class_Column_List">
+    id, name
+  </sql>
+
+  <select id="selectClassByGroupId" parameterType="java.lang.Integer" resultMap="classResultMap">
+    select
+    <include refid="Class_Column_List" />
+    from group_second_class,second_class
+    where group_id = #{id, jdbcType=INTEGER} and id = class_id
+  </select>
+
+  <insert id="insertMany" parameterType="java.util.List">
+    insert into group_second_class (group_id, class_id)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      ( #{item.groupId, jdbcType=INTEGER}, #{item.classId, jdbcType=INTEGER})
+    </foreach>
+  </insert>
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from group_second_class
+    where group_id = #{id, jdbcType=INTEGER}
+  </delete>
+</mapper>
