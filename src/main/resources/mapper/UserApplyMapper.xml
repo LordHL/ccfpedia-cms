@@ -99,10 +99,10 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
-      <if test="role.id != null">
+      <if test="role != null and role.id != null">
         role_id = #{role.id,jdbcType=INTEGER},
       </if>
-      <if test="group.id != null">
+      <if test="group != null and group.id != null">
         group_id = #{group.id,jdbcType=INTEGER},
       </if>
     </set>
