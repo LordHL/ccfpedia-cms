@@ -43,6 +43,10 @@ public interface EntryService {
     int getEntryCount();
     //新建词条
     int addEntry(EntryBean entryBean);
+    //获取词条表中新建词条的数量
+    EntryBean getAddEntryCount(String name);
+    //添加曾删除的列表
+    int addExistEntry(String name);
     //修改词条
     void updateEntry(EntryBean entryBean);
     //删除词条

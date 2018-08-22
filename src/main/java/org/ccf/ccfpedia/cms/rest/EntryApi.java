@@ -50,11 +50,28 @@ public class EntryApi {
     @RequestMapping(value = "/addentry", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp addEntry(@RequestBody EntryBean entryBean) {
         RestResp<SecondClassBean> resp = null;
-        int temp = entryService.addEntry(entryBean);
-        if(temp==1){
-            resp = new RestResp<>(200, "新建成功");
-        }else{
-            resp = new RestResp<>(400, "新建失败");
+        try {
+            EntryBean tempEntry=entryService.getAddEntryCount(entryBean.getName());
+            if(tempEntry == null)
+            {
+                entryService.addEntry(entryBean);
+                resp = new RestResp<>(200, "创建成功");
+            }
+            else {
+
+                if (entryBean.getStatus() == 2) {
+                    entryService.addExistEntry(entryBean.getName());
+                    resp = new RestResp<>(200, "创建成功");
+
+
+                } else {
+                    resp = new RestResp<>(400, "词条已存在");
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            resp = new RestResp<>(400, "创建失败");
+            return resp;
         }
         return resp;
     }

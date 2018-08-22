@@ -122,6 +122,16 @@ public class EntryServiceImpl implements EntryService {
     }
 
     @Override
+    public int addExistEntry(String name) {
+        return entryMapper.addExistEntry(name);
+    }
+
+    @Override
+    public EntryBean getAddEntryCount(String name) {
+        return entryMapper.addEntryCount(name);
+    }
+
+    @Override
     public void updateEntry(EntryBean entryBean) {
         entryMapper.updateByPrimaryKeySelective(entryBean);
     }

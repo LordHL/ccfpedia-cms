@@ -2,7 +2,9 @@ package org.ccf.ccfpedia.cms;
 
 import com.alibaba.fastjson.JSONObject;
 import org.ccf.ccfpedia.cms.bean.*;
+import org.ccf.ccfpedia.cms.bean.resp.RestResp;
 import org.ccf.ccfpedia.cms.dao.GroupFirstClassMapper;
+import org.ccf.ccfpedia.cms.rest.EntryApi;
 import org.ccf.ccfpedia.cms.service.*;
 import org.ccf.ccfpedia.cms.util.JsonUtils;
 import org.junit.Test;
@@ -295,14 +297,16 @@ public class MybatisTest {
     }
     */
 
+
     @Test//6.2创建词条
     public void testAddEntry() {
         EntryBean entryBean = new EntryBean();
-        entryBean.setName("测试一级词条");
-        entryBean.setStatus(0);
+        entryBean.setName("测试级词条");
         entryBean.setFirstClass(2);
-        entryBean.setSecondClass(4);
-        entryBean.setCategory(0);
+        entryBean.setSecondClass(3);
+        EntryBean eb=entryService.getAddEntryCount("测试级词条");
+        System.out.println(eb);
+        entryService.addExistEntry(entryBean.getName());
         entryService.addEntry(entryBean);
         System.out.println(JSONObject.toJSON(entryBean));
     }
@@ -312,6 +316,8 @@ public class MybatisTest {
         EntryBean entryBean = new EntryBean();
         entryBean.setId(5);
         entryBean.setName("测试修改词条");
+        entryBean.setFirstClass(1);
+        entryBean.setSecondClass(2);
         entryService.updateEntry(entryBean);
         System.out.println(JSONObject.toJSON(entryBean));
     }
@@ -353,5 +359,4 @@ public class MybatisTest {
         System.out.println(JSONObject.toJSON(entryBean));
         System.out.println(count);
     }
-
 }

@@ -21,6 +21,8 @@ public interface EntryMapper {
     List<EntryBean> getEntryList();
     int entryAllCount();
     int addEntry(EntryBean entryBean);
+    EntryBean addEntryCount(@Param("name")String name);
+    int addExistEntry(@Param("name")String name);
     int updateByPrimaryKeySelective(EntryBean entryBean);
     int deleteEntry(@Param("id") Integer id);
     List<EntryBean> getFirstClassEntry(@Param("firstClass") Integer firstClass);

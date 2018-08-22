@@ -10,7 +10,7 @@
     id, name, first_class
   </sql>
 
-  <select id="getSecondClassEntryList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="getSecondClassEntryList" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from second_class
@@ -48,7 +48,7 @@
     </if>
   </select>
 
-  <select id="secondClassCount" resultType="java.lang.Integer" >
+  <select id="secondClassCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
     select count(*)
     from second_class
     <if test="id != null">

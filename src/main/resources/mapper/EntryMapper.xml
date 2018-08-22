@@ -64,13 +64,13 @@
     where Task_id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectEntryCountByTaskId" resultType="java.lang.Integer" >
+  <select id="selectEntryCountByTaskId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
     select count(*)
     from `task_entry`
     where Task_id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="getEntryList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="getEntryList" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from `entry`
@@ -87,14 +87,23 @@
       #{category,jdbcType=INTEGER})
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="org.ccf.ccfpedia.cms.bean.EntryBean">
+  <select id="addEntryCount" resultType="org.ccf.ccfpedia.cms.bean.EntryBean" parameterType="java.lang.String">
+    select name,status
+    from `entry`
+    where entry.`name` = #{name,jdbcType=VARCHAR}
+  </select>
+
+  <update id="addExistEntry"  parameterType="java.lang.String" >
+    update entry
+    set status=0,category=1
+    where entry.name = #{name,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="java.lang.Integer">
     update `entry`
     <set>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="firstClass != null">
         first_class = #{firstClass,jdbcType=INTEGER},
@@ -102,14 +111,11 @@
       <if test="secondClass != null">
         second_class = #{secondClass,jdbcType=INTEGER},
       </if>
-      <if test="category != null">
-        category = #{category,jdbcType=INTEGER},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <update id="deleteEntry" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
+  <update id="deleteEntry" parameterType="java.lang.Integer">
     update `entry`
     <set>
         status = 2
@@ -138,19 +144,19 @@
     where status = #{status,jdbcType=INTEGER}
   </select>
 
-  <select id="firstClassEntryCount" resultType="java.lang.Integer" >
+  <select id="firstClassEntryCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
   select count(*)
   from `entry`
   where first_class = #{firstClass,jdbcType=INTEGER}
   </select>
 
-  <select id="secondClassEntryCount" resultType="java.lang.Integer" >
+  <select id="secondClassEntryCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
   select count(*)
   from `entry`
   where second_class = #{secondClass,jdbcType=INTEGER}
   </select>
 
-  <select id="EntryCountBystatus" resultType="java.lang.Integer" >
+  <select id="EntryCountBystatus" resultType="java.lang.Integer" parameterType="java.lang.Integer">
   select count(*)
   from `entry`
   where status = #{status,jdbcType=INTEGER}
