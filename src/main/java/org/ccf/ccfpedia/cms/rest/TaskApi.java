@@ -35,6 +35,17 @@ public class TaskApi {
         return new RestResp<>(data);
     }
 
+    @ApiOperation("新任务列表")
+    @RequestMapping(value = "taskviewlistnew", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<TaskViewBean>> taskViewListNew(Integer userid, Integer status_id, String keyword, Integer pageNo, Integer pageSize) {
+        List<TaskViewBean> taskViewList = taskService.getTaskViewListNew(userid, keyword, status_id, pageNo, pageSize);
+        int userCount = taskService.getCountNew(userid, keyword, status_id);
+        DataArray<TaskViewBean> data = new DataArray<>();
+        data.setCount(userCount);
+        data.setArray(taskViewList);
+        return new RestResp<>(data);
+    }
+
 
     @ApiOperation("工委任务列表")
     @RequestMapping(value = "committee/{id}/tasklist", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -134,11 +145,37 @@ public class TaskApi {
         return resp;
     }
 
+    @ApiOperation("确认任务完成")
+    @RequestMapping(value = "confirm", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp confirmTask(Integer userid,Integer taskId) {
+        RestResp<TaskBean> resp = null;
+        int temp = taskService.confirmTask(userid,taskId);
+        if(temp==1){
+            resp = new RestResp<>(200, "任务成功");
+        }else{
+            resp = new RestResp<>(400, "任务失败");
+        }
+        return resp;
+    }
+
     @ApiOperation("专委驳回任务")
     @RequestMapping(value = "taskstate/expertreject/{id}", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp espertRejectTask(@PathVariable("id")Integer id,@RequestBody String memo) {
         RestResp<TaskBean> resp = null;
         int temp = taskService.expertRejectTask(id,memo);
+        if(temp==1){
+            resp = new RestResp<>(200, "驳回成功");
+        }else{
+            resp = new RestResp<>(400, "驳回失败");
+        }
+        return resp;
+    }
+
+    @ApiOperation("驳回任务")
+    @RequestMapping(value = "reject", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp rejectTask(Integer userId,Integer taskId, String memo) {
+        RestResp<TaskBean> resp = null;
+        int temp = taskService.rejectTask(userId,taskId,memo);
         if(temp==1){
             resp = new RestResp<>(200, "驳回成功");
         }else{

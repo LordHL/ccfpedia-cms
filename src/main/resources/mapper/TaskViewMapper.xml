@@ -12,7 +12,11 @@
     <result column="deadline" jdbcType="TIMESTAMP" property="deadline" />
     <result column="state_name" jdbcType="VARCHAR" property="statusName" />
     <result column="memo" jdbcType="VARCHAR" property="memo" />
+      <result column="expertName" jdbcType="VARCHAR" property="expertName" />
   </resultMap>
+
+
+
   <sql id="Base_Column_List">
     id, name,description,founder_id,creation_time,committee_id,executor_id,deadline,status_name,memo
   </sql>
@@ -49,28 +53,88 @@
     </if>
   </select>
 
+    <select id="selectTaskViewListNew" resultMap="BaseResultMap">
+        select
+        task.*,task_status.name AS state_name,group.name as expertName
+        from `task`, `task_status` ,`user`, `group`
+        where task.status_id = task_status.id and user.group_id = group.id and task.committee_id = user.id
+        <if test="userId != null">
+            <if test="roleId == 1">
+                and founder_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="roleId == 2">
+                and committee_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="roleId == 3">
+                and executor_id = #{userId,jdbcType=INTEGER}
+            </if>
+        </if>
+        <if test="status != null">
+            and task.status_id in
+            <foreach collection="status" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="keyword != null">
+            and task.name like CONCAT('%',#{keyword},'%')
+        </if>
+        order by creation_time DESC
+        <if test=" pageNo!= null">
+            limit #{pageNo,jdbcType=INTEGER}
+        </if>
+        <if test="pageSize != null">
+            offset #{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+
   <select id="getCount" resultType="java.lang.Integer">
     select count(*)
     from task
-    where true
-    <if test="userId != null">
-      <if test="roleId == 1">
-        and founder_id = #{userId,jdbcType=INTEGER}
+      where true
+      <if test="userId != null">
+          <if test="roleId == 1">
+              and founder_id = #{userId,jdbcType=INTEGER}
+          </if>
+          <if test="roleId == 2">
+              and committee_id = #{userId,jdbcType=INTEGER}
+          </if>
+          <if test="roleId == 3">
+              and executor_id = #{userId,jdbcType=INTEGER}
+          </if>
       </if>
-      <if test="roleId == 2">
-        and committee_id = #{userId,jdbcType=INTEGER}
+      <if test="statusId != null">
+          and status_id = #{statusId,jdbcType=INTEGER}
       </if>
-      <if test="roleId == 3">
-        and executor_id = #{userId,jdbcType=INTEGER}
+      <if test="keyword != null">
+          and task.name like CONCAT('%',#{keyword},'%')
       </if>
-    </if>
-    <if test="statusId != null">
-      and status_id = #{statusId,jdbcType=INTEGER}
-    </if>
-    <if test="keyword != null">
-      and name like CONCAT('%',#{keyword},'%')
-    </if>
   </select>
+
+    <select id="getCountNew" resultType="java.lang.Integer">
+        select count(*)
+        from task
+        where true
+        <if test="userId != null">
+            <if test="roleId == 1">
+                and founder_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="roleId == 2">
+                and committee_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="roleId == 3">
+                and executor_id = #{userId,jdbcType=INTEGER}
+            </if>
+        </if>
+        <if test="status != null">
+            and status_id in
+            <foreach collection="status" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="keyword != null">
+            and name like CONCAT('%',#{keyword},'%')
+        </if>
+    </select>
 
   <select id="selectByCommitteeId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 

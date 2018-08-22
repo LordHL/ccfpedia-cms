@@ -10,10 +10,14 @@ public interface TaskService {
 
     //获取任务列表
     List<TaskViewBean> getTaskViewList(Integer userid, String keyword, Integer status_id, Integer pageNo, Integer pageSize );
+    //获取任务列表新
+    List<TaskViewBean> getTaskViewListNew(Integer userid, String keyword, Integer status_id, Integer pageNo, Integer pageSize );
     //通过ID查询任务
     TaskBean getTaskById(int id);
     //获取任务数量
      int getCount(Integer userId, String keyword, Integer status_id);
+    //获取任务数量
+    int getCountNew(Integer userId, String keyword, Integer status_id);
     //获取工委所有任务列表
     List<TaskViewBean> getCommitteeTaskViewList(int id);
     //获取工委个状态任务列表
@@ -38,8 +42,12 @@ public interface TaskService {
     int deleteTask(TaskBean taskBean);
     //工委专委完成任务
     int completeTask(TaskBean taskBean);
+    //工委专委完成任务
+    int confirmTask(Integer userId,Integer id);
     //专委驳回任务
-    int expertRejectTask(int id, String memo);
+    int expertRejectTask(int id,  String memo);
+    //驳回任务
+    int rejectTask(int userId, int taskId, String memo);
     //专委驳回任务
     int editCompleteTask(int id);
     //编辑驳回任务
