@@ -45,7 +45,9 @@ public interface TaskService {
     //工委专委完成任务
     int confirmTask(Integer userId,Integer id);
     //专委驳回任务
-    int expertRejectTask(int id, String memo);
+    int expertRejectTask(int id,  String memo);
+    //驳回任务
+    int rejectTask(int userId, int taskId, String memo);
     //专委驳回任务
     int editCompleteTask(int id);
     //编辑驳回任务

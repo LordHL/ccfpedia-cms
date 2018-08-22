@@ -375,6 +375,12 @@ public class TaskServiceImpl implements TaskService {
     public int expertRejectTask(int id, String memo) { return taskMapper.expertRejectTask(id,memo);}
 
     @Override
+    public int rejectTask(int userId, int taskId, String memo) {
+        UserBean user = userService.getUserById(userId);
+        int roleId = user.getRole().getId();
+        return taskMapper.rejectTask(roleId,taskId,memo);}
+
+    @Override
     public int editCompleteTask(int id) { return taskMapper.editCompleteTask(id);}
 
     @Override

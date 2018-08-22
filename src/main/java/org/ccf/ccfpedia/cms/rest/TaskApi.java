@@ -171,6 +171,19 @@ public class TaskApi {
         return resp;
     }
 
+    @ApiOperation("驳回任务")
+    @RequestMapping(value = "reject", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp rejectTask(Integer userId,Integer taskId, String memo) {
+        RestResp<TaskBean> resp = null;
+        int temp = taskService.rejectTask(userId,taskId,memo);
+        if(temp==1){
+            resp = new RestResp<>(200, "驳回成功");
+        }else{
+            resp = new RestResp<>(400, "驳回失败");
+        }
+        return resp;
+    }
+
     @ApiOperation("编辑确认任务完成")
     @RequestMapping(value = "taskstate/editcompleted/{id}", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp editCompletedTask(@PathVariable("id")Integer id) {
