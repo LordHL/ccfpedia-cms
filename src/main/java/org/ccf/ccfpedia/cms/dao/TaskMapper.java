@@ -17,6 +17,7 @@ public interface TaskMapper {
     int modifyTask(TaskBean taskBean);
     int deleteTask(TaskBean taskBean);
     int completeTask(TaskBean taskBean);
+    int confirmTask(@Param("roleId") Integer id,@Param("id") Integer taskId);
     int expertRejectTask(@Param("id") Integer id,@Param("memo")String memo);
     int editRejectTask(@Param("id") Integer id,@Param("memo")String memo);
     int count();

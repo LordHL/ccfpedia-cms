@@ -145,6 +145,19 @@ public class TaskApi {
         return resp;
     }
 
+    @ApiOperation("确认任务完成")
+    @RequestMapping(value = "confirm", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp confirmTask(Integer userid,Integer taskId) {
+        RestResp<TaskBean> resp = null;
+        int temp = taskService.confirmTask(userid,taskId);
+        if(temp==1){
+            resp = new RestResp<>(200, "任务成功");
+        }else{
+            resp = new RestResp<>(400, "任务失败");
+        }
+        return resp;
+    }
+
     @ApiOperation("专委驳回任务")
     @RequestMapping(value = "taskstate/expertreject/{id}", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp espertRejectTask(@PathVariable("id")Integer id,@RequestBody String memo) {

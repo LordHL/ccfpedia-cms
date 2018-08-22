@@ -42,6 +42,8 @@ public interface TaskService {
     int deleteTask(TaskBean taskBean);
     //工委专委完成任务
     int completeTask(TaskBean taskBean);
+    //工委专委完成任务
+    int confirmTask(Integer userId,Integer id);
     //专委驳回任务
     int expertRejectTask(int id, String memo);
     //专委驳回任务

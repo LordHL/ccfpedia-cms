@@ -109,6 +109,22 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <update id="confirmTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
+    update task
+    <set>
+      <if test="roleId == 1">
+        status_id = 12,
+      </if>
+      <if test="roleId == 2">
+        status_id = 13,
+      </if>
+      <if test="roleId == 3">
+        status_id = 10,
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
   <update id="expertRejectTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
     update task
     <set>
