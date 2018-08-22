@@ -21,7 +21,9 @@ public interface TaskViewMapper {
     List<TaskViewBean> selectTaskViewByState(@Param("id") Integer id);
     int taskViewStateCount(@Param("id") Integer id);
     List<TaskViewBean> selectTaskViewList(@Param("userId") Integer userid,@Param("roleId") Integer roleId,@Param("keyword") String keyword,@Param("statusId") Integer statusId,@Param("pageNo") Integer pageNo,@Param("pageSize") Integer pageSize);
+    List<TaskViewBean> selectTaskViewListNew(@Param("userId") Integer userid,@Param("roleId") Integer roleId,@Param("keyword") String keyword,@Param("status") List<Integer> idList,@Param("pageNo") Integer pageNo,@Param("pageSize") Integer pageSize);
     int getCount(@Param("userId") Integer userid,@Param("roleId") Integer roleId,@Param("keyword") String keyword,@Param("statusId") Integer statusId);
+    int getCountNew(@Param("userId") Integer userid,@Param("roleId") Integer roleId,@Param("keyword") String keyword,@Param("status") List<Integer> statusId);
 
     List<TaskViewBean> selectByExpertId(@Param("id") Integer id);
     int allExpertCount(@Param("id") Integer id);

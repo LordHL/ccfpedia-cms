@@ -16,6 +16,17 @@ public class TaskViewBean {
     private Timestamp deadline;
     private String statusName;
     private String memo;
+    private String expertName;
+
+    public String getExpertName() {
+        return expertName;
+    }
+
+    public void setExpertName(String expertName) {
+        this.expertName = expertName;
+    }
+
+
 
 
     public int getId() {

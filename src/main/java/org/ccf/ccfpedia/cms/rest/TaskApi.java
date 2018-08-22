@@ -35,6 +35,17 @@ public class TaskApi {
         return new RestResp<>(data);
     }
 
+    @ApiOperation("新任务列表")
+    @RequestMapping(value = "taskviewlistnew", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<TaskViewBean>> taskViewListNew(Integer userid, Integer status_id, String keyword, Integer pageNo, Integer pageSize) {
+        List<TaskViewBean> taskViewList = taskService.getTaskViewListNew(userid, keyword, status_id, pageNo, pageSize);
+        int userCount = taskService.getCountNew(userid, keyword, status_id);
+        DataArray<TaskViewBean> data = new DataArray<>();
+        data.setCount(userCount);
+        data.setArray(taskViewList);
+        return new RestResp<>(data);
+    }
+
 
     @ApiOperation("工委任务列表")
     @RequestMapping(value = "committee/{id}/tasklist", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)

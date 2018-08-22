@@ -10,10 +10,14 @@ public interface TaskService {
 
     //获取任务列表
     List<TaskViewBean> getTaskViewList(Integer userid, String keyword, Integer status_id, Integer pageNo, Integer pageSize );
+    //获取任务列表新
+    List<TaskViewBean> getTaskViewListNew(Integer userid, String keyword, Integer status_id, Integer pageNo, Integer pageSize );
     //通过ID查询任务
     TaskBean getTaskById(int id);
     //获取任务数量
      int getCount(Integer userId, String keyword, Integer status_id);
+    //获取任务数量
+    int getCountNew(Integer userId, String keyword, Integer status_id);
     //获取工委所有任务列表
     List<TaskViewBean> getCommitteeTaskViewList(int id);
     //获取工委个状态任务列表

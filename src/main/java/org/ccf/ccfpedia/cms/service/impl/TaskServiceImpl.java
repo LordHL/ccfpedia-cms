@@ -12,6 +12,7 @@ import org.ccf.ccfpedia.cms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,6 +45,112 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<TaskViewBean> getTaskViewListNew(Integer userId, String keyword, Integer status_id, Integer pageNo, Integer pageSize) {
+        List<Integer> status = new ArrayList<Integer>();
+        Integer roleId = null;
+        if(userId != null){
+            UserBean user = userService.getUserById(userId);
+            roleId = user.getRole().getId();
+        }
+        Integer limit = null;
+        Integer offset = null;
+        if(pageNo != null && pageSize != null){
+            offset = (pageNo - 1) * pageSize;
+            limit = pageSize;
+        }
+        if(status_id != null) {
+            if (roleId == 1) {//工委
+                switch (status_id) {
+                    case 1:
+                        status.add(1);
+                        status.add(2);
+                        status.add(4);
+                        status.add(5);
+                        status.add(6);
+                        status.add(7);
+                        status.add(8);
+                        status.add(9);
+                        status.add(10);
+                        status.add(11);
+                        status.add(12);
+                        status.add(13);
+                        break;
+                    case 2:
+                        status.add(4);
+                        status.add(6);
+                        status.add(7);
+                        status.add(8);
+                        status.add(9);
+                        status.add(10);
+                        status.add(11);
+                        break;
+                    case 3:
+                        status.add(5);
+                        break;
+                    case 4:
+                        status.add(1);
+                        status.add(2);
+                        status.add(12);
+                        break;
+                    case 5:
+                        status.add(13);
+                        break;
+                }
+            } else if (roleId == 2) {//专委
+                switch (status_id) {
+                    case 1:
+                        status.add(4);
+                        status.add(5);
+                        status.add(6);
+                        status.add(7);
+                        status.add(9);
+                        status.add(10);
+                        status.add(11);
+                        status.add(12);
+                        break;
+                    case 2:
+                        status.add(9);
+                        status.add(10);
+                        status.add(11);
+                        break;
+                    case 3:
+                        status.add(11);
+                        break;
+                    case 4:
+                        status.add(6);
+                        status.add(7);
+                        status.add(10);
+                        break;
+                    case 5:
+                        status.add(12);
+                        break;
+                }
+            } else if (roleId == 3) {//编辑
+                switch (status_id) {
+                    case 1:
+                        status.add(9);
+                        status.add(10);
+                        status.add(11);
+                        break;
+                    case 2:
+                        status.add(11);
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        status.add(9);
+                        break;
+                    case 5:
+                        status.add(10);
+                        break;
+                }
+            }
+        }
+
+        return taskViewMapper.selectTaskViewListNew(userId, roleId, keyword, status, limit, offset);
+    }
+
+    @Override
     public TaskBean getTaskById(int id) {
         TaskBean taskBean = taskMapper.selectByTaskId(id);
         return taskBean;
@@ -57,6 +164,105 @@ public class TaskServiceImpl implements TaskService {
             roleId = user.getRole().getId();
         }
         return taskViewMapper.getCount(userId, roleId, keyword, status_id);
+    }
+
+    @Override
+    public int getCountNew(Integer userId, String keyword, Integer status_id) {
+        List<Integer> status = new ArrayList<Integer>();
+        Integer roleId = null;
+        if(userId != null){
+            UserBean user = userService.getUserById(userId);
+            roleId = user.getRole().getId();
+        }
+        if(status_id != null) {
+            if (roleId == 1) {//工委
+                switch (status_id) {
+                    case 1:
+                        status.add(1);
+                        status.add(2);
+                        status.add(4);
+                        status.add(5);
+                        status.add(6);
+                        status.add(7);
+                        status.add(8);
+                        status.add(9);
+                        status.add(10);
+                        status.add(11);
+                        status.add(12);
+                        status.add(13);
+                        break;
+                    case 2:
+                        status.add(4);
+                        status.add(6);
+                        status.add(7);
+                        status.add(8);
+                        status.add(9);
+                        status.add(10);
+                        status.add(11);
+                        break;
+                    case 3:
+                        status.add(5);
+                        break;
+                    case 4:
+                        status.add(1);
+                        status.add(2);
+                        status.add(12);
+                        break;
+                    case 5:
+                        status.add(13);
+                        break;
+                }
+            } else if (roleId == 2) {//专委
+                switch (status_id) {
+                    case 1:
+                        status.add(4);
+                        status.add(5);
+                        status.add(6);
+                        status.add(7);
+                        status.add(9);
+                        status.add(10);
+                        status.add(11);
+                        status.add(12);
+                        break;
+                    case 2:
+                        status.add(9);
+                        status.add(10);
+                        status.add(11);
+                        break;
+                    case 3:
+                        status.add(11);
+                        break;
+                    case 4:
+                        status.add(6);
+                        status.add(7);
+                        status.add(10);
+                        break;
+                    case 5:
+                        status.add(12);
+                        break;
+                }
+            } else if (roleId == 3) {//编辑
+                switch (status_id) {
+                    case 1:
+                        status.add(9);
+                        status.add(10);
+                        status.add(11);
+                        break;
+                    case 2:
+                        status.add(11);
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        status.add(9);
+                        break;
+                    case 5:
+                        status.add(10);
+                        break;
+                }
+            }
+        }
+        return taskViewMapper.getCountNew(userId, roleId, keyword, status);
     }
 
     @Override
