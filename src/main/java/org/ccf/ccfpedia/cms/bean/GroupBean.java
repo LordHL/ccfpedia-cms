@@ -9,6 +9,7 @@ public class GroupBean {
     private int id;
     private String name;
     private List<FirstClassBean> firstClassList;
+    private List<SecondClassBean> secondClassList;
 
     public List<FirstClassBean> getFirstClassList() {
         return firstClassList;
@@ -16,6 +17,14 @@ public class GroupBean {
 
     public void setFirstClassList(List<FirstClassBean> firstClassList) {
         this.firstClassList = firstClassList;
+    }
+
+    public List<SecondClassBean> getSecondClassList() {
+        return secondClassList;
+    }
+
+    public void setSecondClassList(List<SecondClassBean> secondClassList) {
+        this.secondClassList = secondClassList;
     }
 
     public int getId() {

@@ -10,6 +10,8 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <collection property="firstClassList" column="id"
                 select="org.ccf.ccfpedia.cms.dao.GroupFirstClassMapper.selectClassByGroupId" />
+    <collection property="secondClassList" column="id"
+                select="org.ccf.ccfpedia.cms.dao.GroupSecondClassMapper.selectClassByGroupId" />
   </resultMap>
   <sql id="Base_Column_List">
     id, name
