@@ -31,6 +31,11 @@ public interface EntryService {
     //获取一级词条下二级词条数量
     int getSecondClassEntryByFirstCount(Integer firstClass);
 
+
+    //查询词条列表
+    List<EntryBean> getEntryViewList(String keywords,Integer status,Integer firstClass,Integer secondClass,Integer pageNo, Integer pageSize);
+    //获取词条列表数量
+    int getEntryViewCount(String keywords,Integer status,Integer firstClass,Integer secondClass);
     EntryBean getEntryById(Integer id);
     //查询词条列表
     List<EntryBean> getEntryList();

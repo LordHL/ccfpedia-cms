@@ -13,6 +13,49 @@
     id, name, status, first_class, second_class, category
   </sql>
 
+  <select id="getEntryViewList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `entry`
+    where status != 2
+    <if test="keywords != null">
+      and entry.name like CONCAT('%',#{keywords},'%')
+    </if>
+    <if test="status != null">
+      and status= #{status,jdbcType=INTEGER}
+    </if>
+    <if test="firstClass != null">
+      and first_class = #{firstClass,jdbcType=INTEGER}
+    </if>
+    <if test="secondClass != null">
+      and second_class = #{secondClass,jdbcType=INTEGER}
+    </if>
+    <if test=" pageNo!= null">
+      limit #{pageNo,jdbcType=INTEGER}
+    </if>
+    <if test="pageSize != null">
+      offset #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="entryViewCount" resultType="java.lang.Integer">
+    select count(*)
+    from entry
+    where status != 2
+    <if test="keywords != null">
+      and entry.name like CONCAT('%',#{keywords},'%')
+    </if>
+    <if test="status != null">
+      and status= #{status,jdbcType=INTEGER}
+    </if>
+    <if test="firstClass != null">
+      and first_class = #{firstClass,jdbcType=INTEGER}
+    </if>
+    <if test="secondClass != null">
+      and second_class = #{secondClass,jdbcType=INTEGER}
+    </if>
+  </select>
+
   <select id="selectEntryByTaskId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -69,7 +112,7 @@
   <update id="deleteEntry" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
     update `entry`
     <set>
-        status = 0
+        status = 2
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>

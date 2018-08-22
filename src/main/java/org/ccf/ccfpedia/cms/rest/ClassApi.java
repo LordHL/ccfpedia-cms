@@ -25,8 +25,8 @@ public class ClassApi {
 
 
     @ApiOperation("一级分类列表")
-    @RequestMapping(value = "first", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp<DataArray<FirstClassBean>> firstClassEntryList() {
+    @RequestMapping(value = "firstclass", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<FirstClassBean>> firstClassList() {
         List<FirstClassBean> firstClassList = entryService.getFirstClassList();
         int firstclassCount = entryService.getFirstClassEntryCount();
         DataArray<FirstClassBean> data = new DataArray<>();
@@ -37,8 +37,8 @@ public class ClassApi {
     }
 
     @ApiOperation("二级分类列表")
-    @RequestMapping(value = "second", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp<DataArray<SecondClassBean>> secondClassEntryList(Integer firstClassId) {
+    @RequestMapping(value = "secondclass", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<SecondClassBean>> secondClassList(Integer firstClassId) {
         List<SecondClassBean> secondClassList = entryService.getSecondClassEntryByFirstClassId(firstClassId);
         int secondclassCount = entryService.getSecondClassEntryByFirstCount(firstClassId);
         DataArray<SecondClassBean> data = new DataArray<>();
@@ -48,8 +48,8 @@ public class ClassApi {
     }
 
     @ApiOperation("新建一级分类")
-    @RequestMapping(value = "first/add", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp addFirstClassEntry(@RequestBody FirstClassBean firstClassBean) {
+    @RequestMapping(value = "firstclass/add", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp addFirstClass(@RequestBody FirstClassBean firstClassBean) {
         RestResp<FirstClassBean> resp = null;
         int temp = entryService.addFirstClassEntry(firstClassBean);
         if(temp==1){
@@ -62,8 +62,8 @@ public class ClassApi {
 
 
     @ApiOperation("修改一级分类")
-    @RequestMapping(value = "first/modify", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp modifyFirstClassEntry(@RequestBody FirstClassBean firstClassBean){
+    @RequestMapping(value = "firstclass/modify", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp modifyFirstClass(@RequestBody FirstClassBean firstClassBean){
         RestResp<SecondClassBean> resp = null;
         if(firstClassBean != null){
             entryService.updateFirstClassEntry(firstClassBean);
@@ -75,8 +75,8 @@ public class ClassApi {
     }
 
     @ApiOperation("新建二级分类")
-    @RequestMapping(value = "second/add", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp addSecondClassEntry(@RequestBody SecondClassBean secondClassBean) {
+    @RequestMapping(value = "secondclass/add", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp addSecondClass(@RequestBody SecondClassBean secondClassBean) {
         RestResp<SecondClassBean> resp = null;
         int temp = entryService.addSecondClassEntry(secondClassBean);
         if(temp==1){
@@ -89,8 +89,8 @@ public class ClassApi {
 
 
     @ApiOperation("修改二级分类")
-    @RequestMapping(value = "second/modify", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp modifySecondClassEntry(@RequestBody SecondClassBean secondClassBean){
+    @RequestMapping(value = "secondclass/modify", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp modifySecondClass(@RequestBody SecondClassBean secondClassBean){
         RestResp<SecondClassBean> resp = null;
         if(secondClassBean != null){
             entryService.updateSecondClassEntry(secondClassBean);
@@ -100,10 +100,10 @@ public class ClassApi {
         }
         return resp;
     }
-
+    /*
     @ApiOperation("查询一级词条")
     @RequestMapping(value = "first/entry/{id}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp<DataArray<EntryBean>> EntryByFirstClassId(@PathVariable("firstClass")Integer firstClass) {
+    public RestResp<DataArray<EntryBean>> ByFirstClassId(@PathVariable("firstClass")Integer firstClass) {
         List<EntryBean> firstClassEntry = entryService.getFirstClassEntry(firstClass);
         int firstClassCount = entryService.getFirstClassEntryCount(firstClass);
         DataArray<EntryBean> data = new DataArray<>();
@@ -122,4 +122,5 @@ public class ClassApi {
         data.setArray(secondClassEntry);
         return new RestResp<>(data);
     }
+    */
 }

@@ -225,7 +225,7 @@ public class MybatisTest {
     }
 
     @Test//5.1查询一级分类列表
-    public void firstClassList() {
+    public void testFirstClassList() {
         List<FirstClassBean> firstClassBean = entryService.getFirstClassList();
         int count = entryService.getFirstClassEntryCount();
         System.out.println(JSONObject.toJSON(firstClassBean));
@@ -241,7 +241,7 @@ public class MybatisTest {
     }
 
     @Test//5.3修改一级词条
-    public void modifyFirstClassEntryList() {
+    public void testModifyFirstClassEntryList() {
         FirstClassBean firstClassBean = new FirstClassBean();
         firstClassBean.setId(13);
         firstClassBean.setName("测试修改一级词条");
@@ -250,7 +250,7 @@ public class MybatisTest {
     }
 
     @Test//5.4查询二级分类列表
-    public void secondClassList() {
+    public void testSecondClassList() {
         List<SecondClassBean> secondClassBean = entryService.getSecondClassList();
         int count = entryService.getSecondClassEntryCount();
         System.out.println(JSONObject.toJSON(secondClassBean));
@@ -261,37 +261,39 @@ public class MybatisTest {
     public void testAddSecondClassEntry() {
         SecondClassBean secondClassBean = new SecondClassBean();
         secondClassBean.setName("测试二级词条");
-        secondClassBean.setFirstClassId(6);
+        secondClassBean.setFirstClass(6);
         entryService.addSecondClassEntry(secondClassBean);
         System.out.println(JSONObject.toJSON(secondClassBean));
     }
 
     @Test//5.6修改二级词条
-    public void modifySecondClassEntryList() {
+    public void testModifySecondClassEntryList() {
         SecondClassBean secondClassBean = new SecondClassBean();
         secondClassBean.setId(4);
         secondClassBean.setName("测试修改二级词条");
-        secondClassBean.setFirstClassId(6);
+        secondClassBean.setFirstClass(6);
         entryService.updateSecondClassEntry(secondClassBean);
         System.out.println(JSONObject.toJSON(secondClassBean));
     }
 
-    @Test//5.7查询一级分类词条下的二级分类列表
-    public void secondClassEntryListByFirstClass() {
-        List<SecondClassBean> secondClassBean = entryService.getSecondClassEntryByFirstClassId(2);
-        int count = entryService.getSecondClassEntryByFirstCount(2);
+
+    @Test//5.7查询二级分类
+    public void testSecondClassListView() {
+        List<SecondClassBean> secondClassBean = entryService.getSecondClassEntryByFirstClassId(null);
+        int count = entryService.getSecondClassEntryByFirstCount(null);
         System.out.println(JSONObject.toJSON(secondClassBean));
         System.out.println("count:" + count);
     }
 
-
+    /*
     @Test//6.1查询所有词条
-    public void EntryList() {
+    public void testEntryList() {
         List<EntryBean> entryBean = entryService.getEntryList();
         int count = entryService.getEntryCount();
         System.out.println(JSONObject.toJSON(entryBean));
         System.out.println("count:" + count);
     }
+    */
 
     @Test//6.2创建词条
     public void testAddEntry() {
@@ -306,7 +308,7 @@ public class MybatisTest {
     }
 
     @Test//6.3修改词条
-    public void modifyEntryList() {
+    public void testModifyEntryList() {
         EntryBean entryBean = new EntryBean();
         entryBean.setId(5);
         entryBean.setName("测试修改词条");
@@ -318,9 +320,9 @@ public class MybatisTest {
     public void testDeleteEntry() {
         System.out.println(entryService.deleteEntry(12));
     }
-
+    /*
     @Test//6.5查询一级词条
-    public void firstClassEntryList() {
+    public void testFirstClassEntryList() {
         List<EntryBean> entryBean = entryService.getFirstClassEntry(2);
         int count = entryService.getFirstClassEntryCount(2);
         System.out.println(JSONObject.toJSON(entryBean));
@@ -328,7 +330,7 @@ public class MybatisTest {
     }
 
     @Test//6.6查询二级词条
-    public void secondClassEntryList() {
+    public void testSecondClassEntryList() {
         List<EntryBean> entryBean = entryService.getSecondClassEntry(2);
         int count = entryService.getSecondClassEntryCount(2);
         System.out.println(JSONObject.toJSON(entryBean));
@@ -336,11 +338,20 @@ public class MybatisTest {
     }
 
     @Test//6.7通过状态查询词条
-    public void EntryListByState() {
+    public void testEntryListByState() {
         List<EntryBean> entryBean = entryService.getEntryByStatus(1);
         int count = entryService.getEntryCountBystatus(1);
         System.out.println(JSONObject.toJSON(entryBean));
         System.out.println("count:" + count);
+    }
+    */
+
+    @Test//6.8查询词条列表
+    public void testSelectEntryViewList() {
+        List<EntryBean> entryBean = entryService.getEntryViewList("",1,null,null,1,10);
+        int count = entryService.getEntryViewCount("",1,null,null);
+        System.out.println(JSONObject.toJSON(entryBean));
+        System.out.println(count);
     }
 
 }

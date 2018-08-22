@@ -28,7 +28,7 @@ public class SecondClassBean {
         return firstClass;
     }
 
-    public void setFirstClassId(int firstClass) {
+    public void setFirstClass(int firstClass) {
         this.firstClass = firstClass;
     }
 }

@@ -16,6 +16,8 @@ public interface EntryMapper {
     List<EntryBean> selectEntryByTaskId(@Param("id") Integer id);
     int selectEntryCountByTaskId(@Param("id") Integer id);
     EntryBean getEntryById(@Param("id") Integer id);
+    List<EntryBean> getEntryViewList(@Param("keywords") String keywords,@Param("status") Integer status,@Param("firstClass") Integer firstClass,@Param("secondClass") Integer secondClass,@Param("pageNo") Integer pageNo,@Param("pageSize") Integer pageSize);
+    int entryViewCount(@Param("keywords") String keywords,@Param("status") Integer status,@Param("firstClass") Integer firstClass,@Param("secondClass") Integer secondClass);
     List<EntryBean> getEntryList();
     int entryAllCount();
     int addEntry(EntryBean entryBean);

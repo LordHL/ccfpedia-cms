@@ -78,14 +78,31 @@ public class EntryServiceImpl implements EntryService {
     }
 
     @Override
-    public int getSecondClassEntryByFirstCount(Integer firstClassId) {
-        int count = secondClassMapper.secondClassCount(firstClassId);
+    public int getSecondClassEntryByFirstCount(Integer firstClass) {
+        int count = secondClassMapper.secondClassCount(firstClass);
         return count;
     }
 
     @Override
     public EntryBean getEntryById(Integer id){
         return entryMapper.getEntryById(id);
+    }
+
+    @Override
+    public List<EntryBean> getEntryViewList(String keywords,Integer status,Integer firstClass,Integer secondClass,Integer pageNo, Integer pageSize){
+        Integer limit = null;
+        Integer offset = null;
+        if(pageNo != null && pageSize != null) {
+            offset = (pageNo - 1) * pageSize;
+            limit = pageSize;
+        }
+        return entryMapper.getEntryViewList(keywords,status,firstClass,secondClass,limit,offset);
+    }
+
+    @Override
+    public int getEntryViewCount(String keywords,Integer status,Integer firstClass,Integer secondClass) {
+        int count= entryMapper.entryViewCount(keywords,status,firstClass,secondClass);
+        return count;
     }
 
     @Override
