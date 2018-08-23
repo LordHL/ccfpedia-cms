@@ -13,6 +13,8 @@ public interface UserMapper {
 
     UserBean selectByPrimaryKey(Integer id);
 
+    UserBean selectSimpleByPrimaryKey(Integer id);
+
     List<UserBean> selectByPrimaryKeyList(@Param("idList") List<Integer> idList);
 
     UserBean selectByAccount(String account);

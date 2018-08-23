@@ -9,11 +9,11 @@ public class TaskViewBean {
     private int id;
     private String name;
     private String description;
-    private int founderId;
-    private Timestamp creationTime;
-    private int committeeId;
-    private int executorId;
-    private Timestamp deadline;
+    private UserBean founder;
+    private String creationTime;
+    private UserBean committee;
+    private UserBean executor;
+    private String deadline;
     private String statusName;
     private String memo;
     private String expertName;
@@ -25,9 +25,6 @@ public class TaskViewBean {
     public void setExpertName(String expertName) {
         this.expertName = expertName;
     }
-
-
-
 
     public int getId() {
         return id;
@@ -53,43 +50,19 @@ public class TaskViewBean {
         this.description = description;
     }
 
-    public int getFounderId() {
-        return founderId;
-    }
-
-    public void setFounderId(int founderId) {
-        this.founderId = founderId;
-    }
-
-    public Timestamp getCreationTime() {
+    public String getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(Timestamp creationTime) {
+    public void setCreationTime(String creationTime) {
         this.creationTime = creationTime;
     }
 
-    public int getCommitteeId() {
-        return committeeId;
-    }
-
-    public void setCommitteeId(int committeeId) {
-        this.committeeId = committeeId;
-    }
-
-    public int getExecutorId() {
-        return executorId;
-    }
-
-    public void setExecutorId(int executorId) {
-        this.executorId = executorId;
-    }
-
-    public Timestamp getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Timestamp deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 
@@ -109,5 +82,27 @@ public class TaskViewBean {
         this.memo = memo;
     }
 
+    public UserBean getFounder() {
+        return founder;
+    }
 
+    public void setFounder(UserBean founder) {
+        this.founder = founder;
+    }
+
+    public UserBean getCommittee() {
+        return committee;
+    }
+
+    public void setCommittee(UserBean committee) {
+        this.committee = committee;
+    }
+
+    public UserBean getExecutor() {
+        return executor;
+    }
+
+    public void setExecutor(UserBean executor) {
+        this.executor = executor;
+    }
 }

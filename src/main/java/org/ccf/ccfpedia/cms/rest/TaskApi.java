@@ -39,6 +39,11 @@ public class TaskApi {
     @RequestMapping(value = "taskviewlistnew", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp<DataArray<TaskViewBean>> taskViewListNew(Integer userid, Integer status_id, String keyword, Integer pageNo, Integer pageSize) {
         List<TaskViewBean> taskViewList = taskService.getTaskViewListNew(userid, keyword, status_id, pageNo, pageSize);
+        if(taskViewList != null){
+            for(TaskViewBean taskViewBean : taskViewList){
+                taskViewBean.setExpertName("XXX专委");
+            }
+        }
         int userCount = taskService.getCountNew(userid, keyword, status_id);
         DataArray<TaskViewBean> data = new DataArray<>();
         data.setCount(userCount);
