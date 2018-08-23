@@ -9,7 +9,7 @@
     <result column="deadline" jdbcType="TIMESTAMP" property="deadline" />
     <result column="state_name" jdbcType="VARCHAR" property="statusName" />
     <result column="memo" jdbcType="VARCHAR" property="memo" />
-      <result column="expertName" jdbcType="VARCHAR" property="expertName" />
+      <association column="expert_id" property="expert" select="org.ccf.ccfpedia.cms.dao.GroupMapper.selectSimpleByPrimaryKey" javaType="org.ccf.ccfpedia.cms.bean.GroupBean"/>
       <association column="founder_id" property="founder" select="org.ccf.ccfpedia.cms.dao.UserMapper.selectSimpleByPrimaryKey" javaType="org.ccf.ccfpedia.cms.bean.UserBean"/>
       <association column="committee_id" property="committee" select="org.ccf.ccfpedia.cms.dao.UserMapper.selectSimpleByPrimaryKey" javaType="org.ccf.ccfpedia.cms.bean.UserBean"/>
       <association column="executor_id" property="executor" select="org.ccf.ccfpedia.cms.dao.UserMapper.selectSimpleByPrimaryKey" javaType="org.ccf.ccfpedia.cms.bean.UserBean"/>
@@ -56,7 +56,7 @@
 
     <select id="selectTaskViewListNew" resultMap="BaseResultMap">
         select
-        task.*,task_status.name AS state_name,group.name as expertName
+        task.*,task_status.name AS state_name,group.id as expert_id
         from `task`, `task_status` ,`user`, `group`
         where task.status_id = task_status.id and user.group_id = group.id and task.committee_id = user.id
         <if test="userId != null">

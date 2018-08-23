@@ -14,6 +14,8 @@ public interface GroupMapper {
 
     GroupBean selectByPrimaryKey(Integer id);
 
+    GroupBean selectSimpleByPrimaryKey(Integer id);
+
     List<GroupBean> selectByPaging(@Param("limit") Integer limit, @Param("offset") Integer offset);
 
     int count();

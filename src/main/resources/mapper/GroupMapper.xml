@@ -23,6 +23,13 @@
     from `group`
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectSimpleByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `group`
+    where id = #{id,jdbcType=INTEGER}
+  </select>
   <select id="selectByPaging" parameterType="java.lang.Integer" resultMap="ClassResultMap">
     select
     <include refid="Base_Column_List" />

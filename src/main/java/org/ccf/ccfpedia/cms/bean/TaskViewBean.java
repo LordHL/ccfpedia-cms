@@ -16,14 +16,14 @@ public class TaskViewBean {
     private String deadline;
     private String statusName;
     private String memo;
-    private String expertName;
+    private GroupBean expert;
 
-    public String getExpertName() {
-        return expertName;
+    public GroupBean getExpert() {
+        return expert;
     }
 
-    public void setExpertName(String expertName) {
-        this.expertName = expertName;
+    public void setExpert(GroupBean expert) {
+        this.expert = expert;
     }
 
     public int getId() {
