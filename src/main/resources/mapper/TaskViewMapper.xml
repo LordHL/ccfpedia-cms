@@ -13,7 +13,7 @@
       <association column="founder_id" property="founder" select="org.ccf.ccfpedia.cms.dao.UserMapper.selectSimpleByPrimaryKey" javaType="org.ccf.ccfpedia.cms.bean.UserBean"/>
       <association column="committee_id" property="committee" select="org.ccf.ccfpedia.cms.dao.UserMapper.selectSimpleByPrimaryKey" javaType="org.ccf.ccfpedia.cms.bean.UserBean"/>
       <association column="executor_id" property="executor" select="org.ccf.ccfpedia.cms.dao.UserMapper.selectSimpleByPrimaryKey" javaType="org.ccf.ccfpedia.cms.bean.UserBean"/>
-      <collection column="task.id" property="entry" select="org.ccf.ccfpedia.cms.dao.EntryMapper.selectEntryByTaskId" />
+      <collection column="id" property="entry" select="org.ccf.ccfpedia.cms.dao.EntryMapper.selectEntryByTaskId" />
   </resultMap>
 
   <sql id="Base_Column_List">
