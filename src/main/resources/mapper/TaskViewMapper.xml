@@ -7,7 +7,7 @@
     <result column="description" jdbcType="VARCHAR" property="description" />
       <result column="creation_time" jdbcType="TIMESTAMP" property="creationTime" />
     <result column="deadline" jdbcType="TIMESTAMP" property="deadline" />
-    <result column="state_name" jdbcType="VARCHAR" property="statusName" />
+    <result column="status_id" jdbcType="INTEGER" property="statusId" />
     <result column="memo" jdbcType="VARCHAR" property="memo" />
       <association column="expert_id" property="expert" select="org.ccf.ccfpedia.cms.dao.GroupMapper.selectSimpleByPrimaryKey" javaType="org.ccf.ccfpedia.cms.bean.GroupBean"/>
       <association column="founder_id" property="founder" select="org.ccf.ccfpedia.cms.dao.UserMapper.selectSimpleByPrimaryKey" javaType="org.ccf.ccfpedia.cms.bean.UserBean"/>
@@ -17,14 +17,13 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, name,description,founder_id,creation_time,committee_id,executor_id,deadline,status_name,memo
+    id, name,description,founder_id,creation_time,committee_id,executor_id,deadline,status_id,memo
   </sql>
 
   <select id="selectTaskViewList" resultMap="BaseResultMap">
     select
-    task.*,task_status.name AS state_name
+      <include refid="Base_Column_List" />
     from `task`
-    INNER JOIN `task_status` on task.status_id = task_status.id
     where true
     <if test="userId != null">
       <if test="roleId == 1">
@@ -54,9 +53,9 @@
 
     <select id="selectTaskViewListNew" resultMap="BaseResultMap">
         select
-        task.*,task_status.name AS state_name,group.id as expert_id
-        from `task`, `task_status` ,`user`, `group`
-        where task.status_id = task_status.id and user.group_id = group.id and task.committee_id = user.id
+        task.*,`group`.id as expert_id
+        from `task`, `user`, `group`
+        where user.group_id = `group`.id and task.committee_id = user.id
         <if test="userId != null">
             <if test="roleId == 1">
                 and founder_id = #{userId,jdbcType=INTEGER}
@@ -87,10 +86,10 @@
     </select>
 
     <select id="selectById" resultMap="BaseResultMap">
-        select
-        task.*,task_status.name AS state_name,group.id as expert_id
-        from `task`, `task_status` ,`user`, `group`, `task_entry`
-        where task.status_id = task_status.id and user.group_id = group.id and task.committee_id = user.id and task.id = task_entry.Task_id
+        select distinct
+        task.*,group.id as expert_id
+        from `task`,`user`, `group`, `task_entry`
+        where user.group_id = group.id and task.committee_id = user.id and task.id = task_entry.Task_id
         and task.id = #{taskId,jdbcType=INTEGER}
     </select>
 
@@ -145,69 +144,60 @@
 
   <select id="selectByCommitteeId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
-    task.*,task_status.name AS state_name
+      <include refid="Base_Column_List" />
     from `task`
-    INNER JOIN `task_status` on task.status_id = task_status.id
     where founder_id = #{id,jdbcType=INTEGER}
   </select>
 
   <select id="selectByCommitteeAndState" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
-    task.*,task_status.name AS state_name
+      <include refid="Base_Column_List" />
     from `task`
-    INNER JOIN `task_status` on task.status_id = task_status.id
-    where founder_id = #{id,jdbcType=INTEGER} and task.status_id = #{statusId,jdbcType=INTEGER}
+    where founder_id = #{id,jdbcType=INTEGER} and status_id = #{statusId,jdbcType=INTEGER}
   </select>
 
   <select id="committeeAllCount" resultType="java.lang.Integer" >
     select count(*)
     from `task`
-    INNER JOIN `task_status` on task.status_id = task_status.id
     where founder_id = #{id,jdbcType=INTEGER}
   </select>
 
   <select id="committeeStateCount" resultType="java.lang.Integer" >
     select count(*)
     from `task`
-    INNER JOIN `task_status` on task.status_id = task_status.id
-    where founder_id = #{id,jdbcType=INTEGER} and task.status_id = #{statusId,jdbcType=INTEGER}
+    where founder_id = #{id,jdbcType=INTEGER} and status_id = #{statusId,jdbcType=INTEGER}
   </select>
 
   <select id="selectByEditId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
-    task.*,task_status.name AS state_name
+      <include refid="Base_Column_List" />
     from `task`
-    INNER JOIN `task_status` on task.status_id = task_status.id
     where executor_id = #{id,jdbcType=INTEGER}
   </select>
 
   <select id="selectByEditAndState" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
-    task.*,task_status.name AS state_name
+      <include refid="Base_Column_List" />
     from `task`
-    INNER JOIN `task_status` on task.status_id = task_status.id
-    where executor_id = #{id,jdbcType=INTEGER} and task.status_id = #{statusId,jdbcType=INTEGER}
+    where executor_id = #{id,jdbcType=INTEGER} and status_id = #{statusId,jdbcType=INTEGER}
   </select>
 
   <select id="editAllCount" resultType="java.lang.Integer" >
     select count(*)
     from `task`
-    INNER JOIN `task_status` on task.status_id = task_status.id
     where executor_id = #{id,jdbcType=INTEGER}
   </select>
 
   <select id="editStateCount" resultType="java.lang.Integer" >
     select count(*)
     from `task`
-    INNER JOIN `task_status` on task.status_id = task_status.id
-    where executor_id = #{id,jdbcType=INTEGER} and task.status_id = #{statusId,jdbcType=INTEGER}
+    where executor_id = #{id,jdbcType=INTEGER} and status_id = #{statusId,jdbcType=INTEGER}
   </select>
 
   <select id="selectTaskViewByState" resultType="java.lang.Integer" resultMap="BaseResultMap" >
     select
-    task.*,task_status.name AS state_name
+      <include refid="Base_Column_List" />
     from `task`
-    INNER JOIN `task_status` on task.status_id = task_status.id
     where status_id = #{id,jdbcType=INTEGER}
   </select>
 
@@ -222,31 +212,27 @@
 
   <select id="selectByExpertId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
-    task.*,task_status.name AS state_name
+      <include refid="Base_Column_List" />
     from `task`
-    INNER JOIN `task_status` on task.status_id = task_status.id
     where committee_id = #{id,jdbcType=INTEGER}
   </select>
 
   <select id="selectByExpertAndState" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
-    task.*,task_status.name AS state_name
+      <include refid="Base_Column_List" />
     from `task`
-    INNER JOIN `task_status` on task.status_id = task_status.id
-    where committee_id = #{id,jdbcType=INTEGER} and task.status_id = #{statusId,jdbcType=INTEGER}
+    where committee_id = #{id,jdbcType=INTEGER} and status_id = #{statusId,jdbcType=INTEGER}
   </select>
 
   <select id="allExpertCount" resultType="java.lang.Integer" >
     select count(*)
     from `task`
-    INNER JOIN `task_status` on task.status_id = task_status.id
     where committee_id = #{id,jdbcType=INTEGER}
   </select>
 
   <select id="experStateCount" resultType="java.lang.Integer" >
     select count(*)
     from `task`
-    INNER JOIN `task_status` on task.status_id = task_status.id
-    where committee_id = #{id,jdbcType=INTEGER} and task.status_id = #{statusId,jdbcType=INTEGER}
+    where committee_id = #{id,jdbcType=INTEGER} and status_id = #{statusId,jdbcType=INTEGER}
   </select>
 </mapper>

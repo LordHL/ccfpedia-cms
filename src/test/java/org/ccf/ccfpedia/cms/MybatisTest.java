@@ -94,7 +94,7 @@ public class MybatisTest {
 
     @Test
     public void testList() {
-        List<UserBean> userList = userService.getUserList("王", 1, 10);
+        List<UserBean> userList = userService.getUserList("王", 1, 1, 10);
         System.out.println(JSONObject.toJSON(userList));
     }
 
@@ -216,7 +216,7 @@ public class MybatisTest {
 
     @Test//任务详情
     public void testTaskView() {
-        TaskViewBean taskBean = taskService.getTaskView(1);
+        TaskViewBean taskBean = taskService.getTaskView(1, 1);
         System.out.println(JSONObject.toJSON(taskBean));
     }
 

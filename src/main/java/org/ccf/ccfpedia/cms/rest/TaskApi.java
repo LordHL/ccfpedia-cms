@@ -6,6 +6,7 @@ import org.ccf.ccfpedia.cms.bean.resp.DataArray;
 import org.ccf.ccfpedia.cms.bean.resp.RestResp;
 import org.ccf.ccfpedia.cms.service.EntryService;
 import org.ccf.ccfpedia.cms.service.TaskService;
+import org.ccf.ccfpedia.cms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,8 @@ public class TaskApi {
 
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private EntryService entryService;
@@ -48,13 +51,15 @@ public class TaskApi {
     }
 
     @ApiOperation("任务详情")
-    @RequestMapping(value = "taskview/{id}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp<DataArray<TaskViewBean>> taskView(Integer taskId) {
-        List<TaskViewBean> taskViewList = new ArrayList<>();
-        taskViewList.add(taskService.getTaskView(taskId));
-        DataArray<TaskViewBean> data = new DataArray<>();
-        data.setArray(taskViewList);
-        return new RestResp<>(data);
+    @RequestMapping(value = "taskview", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<TaskViewBean> taskView(Integer userId, Integer taskId) {
+        UserBean user = userService.getUserById(userId);
+        if(user != null){
+            TaskViewBean taskView = taskService.getTaskView(user.getRole().getId(), taskId);
+            return new RestResp<>(taskView);
+        } else {
+            return new RestResp<>(400, "用户不存在");
+        }
     }
 
 
@@ -116,7 +121,7 @@ public class TaskApi {
     }
 
     @ApiOperation("工委专委修改任务")
-    @RequestMapping(value = "modify", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "modify", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp modifyTask(@RequestBody TaskBean taskBean) {
         RestResp<TaskBean> resp = null;
         int temp = taskService.modifyTask(taskBean);
@@ -129,7 +134,7 @@ public class TaskApi {
     }
 
     @ApiOperation("工委专委删除任务")
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp deleteTask(@PathVariable("id")Integer id) {
         RestResp<TaskBean> resp = null;
         TaskBean taskBean = taskService.getTaskById(id);
@@ -143,7 +148,7 @@ public class TaskApi {
     }
 
     @ApiOperation("工委专委确认任务完成")
-    @RequestMapping(value = "taskstate/completed/{id}", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "taskstate/completed/{id}", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp commnitteeCompletedTask(@PathVariable("id")Integer id) {
         RestResp<TaskBean> resp = null;
         TaskBean taskBean = taskService.getTaskById(id);
@@ -157,7 +162,7 @@ public class TaskApi {
     }
 
     @ApiOperation("确认任务完成")
-    @RequestMapping(value = "confirm", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "confirm", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp confirmTask(Integer userid,Integer taskId) {
         RestResp<TaskBean> resp = null;
         int temp = taskService.confirmTask(userid,taskId);
@@ -170,7 +175,7 @@ public class TaskApi {
     }
 
     @ApiOperation("专委驳回任务")
-    @RequestMapping(value = "taskstate/expertreject/{id}", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "taskstate/expertreject/{id}", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp espertRejectTask(@PathVariable("id")Integer id,@RequestBody String memo) {
         RestResp<TaskBean> resp = null;
         int temp = taskService.expertRejectTask(id,memo);
@@ -183,7 +188,7 @@ public class TaskApi {
     }
 
     @ApiOperation("驳回任务")
-    @RequestMapping(value = "reject", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "reject", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp rejectTask(Integer userId,Integer taskId, String memo) {
         RestResp<TaskBean> resp = null;
         int temp = taskService.rejectTask(userId,taskId,memo);
@@ -196,7 +201,7 @@ public class TaskApi {
     }
 
     @ApiOperation("编辑确认任务完成")
-    @RequestMapping(value = "taskstate/editcompleted/{id}", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "taskstate/editcompleted/{id}", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp editCompletedTask(@PathVariable("id")Integer id) {
         RestResp<TaskBean> resp = null;
         int temp = taskService.editCompleteTask(id);
@@ -209,7 +214,7 @@ public class TaskApi {
     }
 
     @ApiOperation("编辑驳回任务")
-    @RequestMapping(value = "taskstate/editreject/{id}", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "taskstate/editreject/{id}", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp editRejectTask(@PathVariable("id")Integer id,@RequestBody String memo) {
         RestResp<TaskBean> resp = null;
         int temp = taskService.editRejectTask(id,memo);

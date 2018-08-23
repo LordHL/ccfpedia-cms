@@ -31,14 +31,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserBean> getUserList(String keyword, Integer pageNo, Integer pageSize){
+    public List<UserBean> getUserList(String keyword, Integer groupId, Integer pageNo, Integer pageSize){
         Integer limit = null;
         Integer offset = null;
         if(pageNo != null && pageSize != null){
             offset = (pageNo - 1) * pageSize;
             limit = pageSize;
         }
-        List<UserBean> userList = userMapper.selectByKeyword(keyword, limit, offset);
+        List<UserBean> userList = userMapper.selectByKeyword(keyword, groupId, limit, offset);
         return userList;
     }
 

@@ -1,9 +1,6 @@
 package org.ccf.ccfpedia.cms.service.impl;
 
-import org.ccf.ccfpedia.cms.bean.EntryBean;
-import org.ccf.ccfpedia.cms.bean.TaskBean;
-import org.ccf.ccfpedia.cms.bean.TaskViewBean;
-import org.ccf.ccfpedia.cms.bean.UserBean;
+import org.ccf.ccfpedia.cms.bean.*;
 import org.ccf.ccfpedia.cms.dao.EntryMapper;
 import org.ccf.ccfpedia.cms.dao.TaskMapper;
 import org.ccf.ccfpedia.cms.dao.TaskViewMapper;
@@ -45,8 +42,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskViewBean getTaskView(Integer taskId) {
-        return taskViewMapper.selectById(taskId);
+    public TaskViewBean getTaskView(Integer roleId, Integer taskId) {
+        TaskViewBean taskViewBean = taskViewMapper.selectById(taskId);
+        taskViewBean.setStatus(getTaskStatusBeanByRoleIdAndStatusId(roleId, taskViewBean.getStatusId()));
+        return taskViewBean;
     }
 
     @Override
@@ -151,8 +150,11 @@ public class TaskServiceImpl implements TaskService {
                 }
             }
         }
-
-        return taskViewMapper.selectTaskViewListNew(userId, roleId, keyword, status, limit, offset);
+        List<TaskViewBean> taskViewBeans = taskViewMapper.selectTaskViewListNew(userId, roleId, keyword, status, limit, offset);
+        for(TaskViewBean taskViewBean : taskViewBeans){
+            taskViewBean.setStatus(getTaskStatusBeanByRoleIdAndStatusId(roleId, taskViewBean.getStatusId()));
+        }
+        return taskViewBeans;
     }
 
     @Override
@@ -408,6 +410,56 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public int getTaskEntryCount(int id) {
         return entryMapper.selectEntryCountByTaskId(id);
+    }
+
+    private TaskStatusBean getTaskStatusBeanByRoleIdAndStatusId(int roleId, int statusId){
+        TaskStatusBean statusBean = new TaskStatusBean();
+        List<Integer> ongoingList = new ArrayList<>();
+        List<Integer> backList = new ArrayList<>();
+        List<Integer> tocompleteList = new ArrayList<>();
+        List<Integer> completedList = new ArrayList<>();
+        if(roleId == 1){
+            ongoingList.add(4);
+            ongoingList.add(6);
+            ongoingList.add(7);
+            ongoingList.add(8);
+            ongoingList.add(9);
+            ongoingList.add(10);
+            ongoingList.add(11);
+            backList.add(5);
+            tocompleteList.add(1);
+            tocompleteList.add(2);
+            tocompleteList.add(12);
+            completedList.add(13);
+        } else if (roleId == 2){
+            ongoingList.add(9);
+            ongoingList.add(10);
+            ongoingList.add(11);
+            backList.add(11);
+            tocompleteList.add(6);
+            tocompleteList.add(7);
+            tocompleteList.add(10);
+            completedList.add(12);
+        } else if(roleId == 3){
+            ongoingList.add(11);
+            tocompleteList.add(9);
+            completedList.add(10);
+        }
+
+        if(ongoingList.contains(statusId)){
+            statusBean.setId(2);
+            statusBean.setName("进行中");
+        } else if(backList.contains(statusId)){
+            statusBean.setId(3);
+            statusBean.setName("被退回");
+        } else if(tocompleteList.contains(statusId)){
+            statusBean.setId(4);
+            statusBean.setName("待完成");
+        } else if(completedList.contains(statusId)){
+            statusBean.setId(5);
+            statusBean.setName("已完成");
+        }
+        return statusBean;
     }
 
 }

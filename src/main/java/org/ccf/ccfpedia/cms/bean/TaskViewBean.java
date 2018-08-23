@@ -15,10 +15,19 @@ public class TaskViewBean {
     private UserBean committee;
     private UserBean executor;
     private String deadline;
-    private String statusName;
+    private Integer statusId;
+    private TaskStatusBean status;
     private String memo;
     private GroupBean expert;
     private List<EntryBean> entry;
+
+    public TaskStatusBean getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatusBean status) {
+        this.status = status;
+    }
 
     public GroupBean getExpert() {
         return expert;
@@ -48,6 +57,14 @@ public class TaskViewBean {
         return description;
     }
 
+    public Integer getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -68,13 +85,6 @@ public class TaskViewBean {
         this.deadline = deadline;
     }
 
-    public String getStatusName() {
-        return statusName;
-    }
-
-    public void setStatusName(String statusId) {
-        this.statusName = statusId;
-    }
 
     public String getMemo() {
         return memo;

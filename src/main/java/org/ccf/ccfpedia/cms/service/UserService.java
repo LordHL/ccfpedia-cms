@@ -10,7 +10,7 @@ public interface UserService {
 
     UserBean getUserById(Integer id);
 
-    List<UserBean> getUserList(String keyword, Integer pageNo, Integer pageSize);
+    List<UserBean> getUserList(String keyword, Integer groupId, Integer pageNo, Integer pageSize);
 
     List<UserBean> getUserListByIdList(List<Integer> idList);
 

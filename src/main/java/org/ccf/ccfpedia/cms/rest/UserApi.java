@@ -39,8 +39,8 @@ public class UserApi {
 
     @ApiOperation("用户列表")
     @GetMapping("list")
-    public RestResp<DataArray<UserBean>> list(String keyword, Integer pageNo, Integer pageSize) {
-        List<UserBean> userList = userService.getUserList(keyword, pageNo, pageSize);
+    public RestResp<DataArray<UserBean>> list(String keyword, Integer groupId, Integer pageNo, Integer pageSize) {
+        List<UserBean> userList = userService.getUserList(keyword, groupId, pageNo, pageSize);
         int userCount = userService.getUserCount(keyword);
         DataArray<UserBean> data = new DataArray<>();
         data.setCount(userCount);
