@@ -10,6 +10,8 @@ public interface TaskService {
 
     //获取任务列表
     List<TaskViewBean> getTaskViewList(Integer userid, String keyword, Integer status_id, Integer pageNo, Integer pageSize );
+    //获取任务
+    TaskViewBean getTaskView(Integer taskId );
     //获取任务列表新
     List<TaskViewBean> getTaskViewListNew(Integer userid, String keyword, Integer status_id, Integer pageNo, Integer pageSize );
     //通过ID查询任务

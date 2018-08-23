@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -42,6 +43,16 @@ public class TaskApi {
         int userCount = taskService.getCountNew(userid, keyword, status_id);
         DataArray<TaskViewBean> data = new DataArray<>();
         data.setCount(userCount);
+        data.setArray(taskViewList);
+        return new RestResp<>(data);
+    }
+
+    @ApiOperation("任务详情")
+    @RequestMapping(value = "taskview/{id}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<DataArray<TaskViewBean>> taskView(Integer taskId) {
+        List<TaskViewBean> taskViewList = new ArrayList<>();
+        taskViewList.add(taskService.getTaskView(taskId));
+        DataArray<TaskViewBean> data = new DataArray<>();
         data.setArray(taskViewList);
         return new RestResp<>(data);
     }

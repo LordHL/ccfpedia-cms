@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface TaskViewMapper {
     List<TaskViewBean> selectByCommitteeId(@Param("id") Integer id);
+    TaskViewBean selectById(@Param("taskId") Integer id);
     int committeeAllCount(@Param("id") Integer id);
     int committeeStateCount(@Param("id") Integer id,@Param("statusId") Integer stateId);
     List<TaskViewBean> selectByCommitteeAndState(@Param("id") Integer id,@Param("statusId") Integer stateId);

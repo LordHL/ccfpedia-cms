@@ -3,6 +3,7 @@ package org.ccf.ccfpedia.cms.bean;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TaskViewBean {
@@ -17,6 +18,7 @@ public class TaskViewBean {
     private String statusName;
     private String memo;
     private GroupBean expert;
+    private List<EntryBean> entry;
 
     public GroupBean getExpert() {
         return expert;
@@ -104,5 +106,13 @@ public class TaskViewBean {
 
     public void setExecutor(UserBean executor) {
         this.executor = executor;
+    }
+
+    public List<EntryBean> getEntry() {
+        return entry;
+    }
+
+    public void setEntry(List<EntryBean> entry) {
+        this.entry = entry;
     }
 }

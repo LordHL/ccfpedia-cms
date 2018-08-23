@@ -9,6 +9,7 @@
     <result column="second_class" jdbcType="INTEGER" property="secondClass" />
     <result column="category" jdbcType="INTEGER" property="category" />
   </resultMap>
+
   <sql id="Base_Column_List">
     id, name, status, first_class, second_class, category
   </sql>

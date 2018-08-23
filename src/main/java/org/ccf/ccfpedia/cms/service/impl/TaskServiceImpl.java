@@ -45,6 +45,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public TaskViewBean getTaskView(Integer taskId) {
+        return taskViewMapper.selectById(taskId);
+    }
+
+    @Override
     public List<TaskViewBean> getTaskViewListNew(Integer userId, String keyword, Integer status_id, Integer pageNo, Integer pageSize) {
         List<Integer> status = new ArrayList<Integer>();
         Integer roleId = null;
