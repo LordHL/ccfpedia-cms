@@ -2,6 +2,7 @@ package org.ccf.ccfpedia.cms.service.impl;
 
 import org.ccf.ccfpedia.cms.bean.*;
 import org.ccf.ccfpedia.cms.dao.EntryMapper;
+import org.ccf.ccfpedia.cms.dao.TaskEntryMapper;
 import org.ccf.ccfpedia.cms.dao.TaskMapper;
 import org.ccf.ccfpedia.cms.dao.TaskViewMapper;
 import org.ccf.ccfpedia.cms.service.TaskService;
@@ -19,6 +20,8 @@ public class TaskServiceImpl implements TaskService {
     private TaskMapper taskMapper;
     @Autowired
     private TaskViewMapper taskViewMapper;
+    @Autowired
+    private TaskEntryMapper taskEntryMapper;
     @Autowired
     private EntryMapper entryMapper;
     @Autowired
@@ -352,11 +355,30 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public int addTask(TaskBean taskBean) {
+        List<EntryBean> entry = taskBean.getEntry();
+        int number = entry.size();
+        TaskEntryBean taskEntry = new TaskEntryBean();
+        for(int i = 0;i<number;i++){
+            taskEntry.setTaskId(taskBean.getId());
+            taskEntry.setName(entry.get(i).getName());
+            taskEntry.setEntryId(entry.get(i).getId());
+            taskEntryMapper.create(taskEntry);
+        }
         return taskMapper.addTask(taskBean);
     }
 
     @Override
     public int modifyTask(TaskBean taskBean) {
+        taskEntryMapper.delete(taskBean.getId());
+        List<EntryBean> entry = taskBean.getEntry();
+        int number = entry.size();
+        for(int i = 0;i<number;i++){
+            TaskEntryBean taskEntryBean = new TaskEntryBean();
+            taskEntryBean.setEntryId(entry.get(i).getId());
+            taskEntryBean.setName(entry.get(i).getName());
+            taskEntryBean.setTaskId(taskBean.getId());
+            taskEntryMapper.create(taskEntryBean);
+        }
         return taskMapper.modifyTask(taskBean);
     }
 

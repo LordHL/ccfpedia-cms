@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ccf.ccfpedia.cms.dao.TaskEntryMapper">
+<resultMap id="BaseResultMap" type="org.ccf.ccfpedia.cms.bean.EntryBean">
+  <id column="entry_id" jdbcType="INTEGER" property="entryId" />
+  <result column="entry" jdbcType="VARCHAR" property="name" />
+  <result column="Task_id" jdbcType="INTEGER" property="taskId" />
+</resultMap>
+<sql id="Base_Column_List">
+  id, name
+</sql>
+
+
+<insert id="create" parameterType="org.ccf.ccfpedia.cms.bean.TaskEntryBean">
+  insert into task_entry (entry_id, entry, Task_id)
+  values (#{entryId,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{taskId,jdbcType=INTEGER})
+</insert>
+
+  <delete id="delete" >
+  delete from task_entry
+  where Task_id = #{taskId,jdbcType=VARCHAR}
+</delete>
+
+
+</mapper>

@@ -152,11 +152,25 @@ public class MybatisTest {
     public void testModifyTask() {
         TaskBean taskBean = new TaskBean();
         taskBean.setCommitteeId(3);
-        taskBean.setId(14);
+        taskBean.setId(1);
         taskBean.setCreationTime(new Timestamp(new Date().getTime()));
         taskBean.setDeadline(new Timestamp(new Date().getTime()));
         taskBean.setDescription("工委测试修改任务");
         taskBean.setFounderId(2);
+        List<EntryBean> entry = new ArrayList<>();
+        EntryBean temp = new EntryBean();
+        temp.setName("petritest");
+        temp.setId(1);
+        entry.add(temp);
+        temp = new EntryBean();
+        temp.setName("人工智能test");
+        temp.setId(4);
+        entry.add(temp);
+        temp = new EntryBean();
+        temp.setName("网络与数据通信test");
+        temp.setId(5);
+        entry.add(temp);
+        taskBean.setEntry(entry);
         taskBean.setName("工委测试修改任务");
         taskBean.setMemo("工委测试修改任务");
         taskBean.setStatusId(1);
