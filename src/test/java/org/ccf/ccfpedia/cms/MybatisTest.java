@@ -214,10 +214,22 @@ public class MybatisTest {
         System.out.println(count);
     }
 
-    @Test//任务详情
+    @Test//4.12任务详情
     public void testTaskView() {
         TaskViewBean taskBean = taskService.getTaskView(1);
         System.out.println(JSONObject.toJSON(taskBean));
+    }
+
+
+    @Test//4.13用户确认任务完成
+    public void testConfirm() {
+
+        System.out.println(taskService.confirmTask(1,5));
+    }
+
+    @Test//4.8用户驳回任务
+    public void testReject() {
+        System.out.println(taskService.rejectTask(64,1,"测试用户驳回任务"));
     }
 
     @Test//2.1查看专委的所有任务
