@@ -89,8 +89,7 @@
         select distinct
         task.*,group.id as expert_id
         from `task`,`user`, `group`, `task_entry`
-        where user.group_id = group.id and task.committee_id = user.id and task.id = task_entry.Task_id
-        and task.id = #{taskId,jdbcType=INTEGER}
+        where  task.id = #{taskId,jdbcType=INTEGER}
     </select>
 
   <select id="getCount" resultType="java.lang.Integer">
