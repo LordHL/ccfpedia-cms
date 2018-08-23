@@ -55,7 +55,7 @@
         select
         task.*,`group`.id as expert_id
         from `task`, `user`, `group`
-        where user.group_id = `group`.id and task.committee_id = user.id
+        where true
         <if test="userId != null">
             <if test="roleId == 1">
                 and founder_id = #{userId,jdbcType=INTEGER}
