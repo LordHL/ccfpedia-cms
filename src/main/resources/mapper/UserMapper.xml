@@ -15,6 +15,10 @@
     id, name, account, email, password, is_delete, group_id, role_id
   </sql>
 
+  <sql id="Simple_Column_List">
+    id, name, account
+  </sql>
+
   <select id="selectSimpleByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id,name
     from user
@@ -44,6 +48,12 @@
     from user
     where account = #{account,jdbcType=INTEGER} and is_delete = 0
   </select>
+  <select id="getLeaderByGroup" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where group_id = #{id,jdbcType=INTEGER} and role_id = 2 and is_delete = 0
+  </select>
   <select id="selectByKeyword" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -61,6 +71,32 @@
     </if>
     <if test="offset != null">
       offset #{offset,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectEditorListByGroupId" resultMap="BaseResultMap">
+    select
+    <include refid="Simple_Column_List" />
+    from user
+    where is_delete = 0
+      and role_id = 3
+    <if test="groupId != null">
+      and group_id = #{groupId,jdbcType=INTEGER}
+    </if>
+    order by update_time DESC
+    <if test="limit != null">
+      limit #{limit,jdbcType=INTEGER}
+    </if>
+    <if test="offset != null">
+      offset #{offset,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="countEditorListByGroupId" resultType="java.lang.Integer">
+    select count(*)
+    from user
+    where is_delete = 0
+    and role_id = 3
+    <if test="groupId != null">
+      and group_id = #{groupId,jdbcType=INTEGER}
     </if>
   </select>
   <select id="count" resultType="java.lang.Integer">

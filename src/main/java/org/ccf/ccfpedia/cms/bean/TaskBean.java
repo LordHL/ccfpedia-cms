@@ -2,7 +2,6 @@ package org.ccf.ccfpedia.cms.bean;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -10,25 +9,50 @@ public class TaskBean {
     private int id;
     private String name;
     private String description;
-    private int founderId;
-    private Timestamp creationTime;
-    private int committeeId;
-    private int executorId;
-    private Timestamp deadline;
-    private int statusId;
-    private List<EntryBean> entry;
+    private UserBean founder;
+    private String creationTime;
+    private UserBean committee;
+    private UserBean executor;
+    private String deadline;
+    private Integer statusId;
+    private TaskStatusBean status;
     private String memo;
+    private GroupBean group;
+    private List<EntryBean> entry;
+    private List<EntityBean> entityList;
+    private List<String> newEntryList;
 
-    public List<EntryBean> getEntry() {
-        return entry;
+    public List<EntityBean> getEntityList() {
+        return entityList;
     }
 
-    public void setEntry(List<EntryBean> entry) {
-        this.entry = entry;
+    public void setEntityList(List<EntityBean> entityList) {
+        this.entityList = entityList;
     }
 
+    public List<String> getNewEntryList() {
+        return newEntryList;
+    }
 
+    public void setNewEntryList(List<String> newEntryList) {
+        this.newEntryList = newEntryList;
+    }
 
+    public TaskStatusBean getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatusBean status) {
+        this.status = status;
+    }
+
+    public GroupBean getGroup() {
+        return group;
+    }
+
+    public void setGroup(GroupBean group) {
+        this.group = group;
+    }
 
     public int getId() {
         return id;
@@ -50,57 +74,34 @@ public class TaskBean {
         return description;
     }
 
+    public Integer getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public int getFounderId() {
-        return founderId;
-    }
-
-    public void setFounderId(int founderId) {
-        this.founderId = founderId;
-    }
-
-    public Timestamp getCreationTime() {
+    public String getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(Timestamp creationTime) {
+    public void setCreationTime(String creationTime) {
         this.creationTime = creationTime;
     }
 
-    public int getCommitteeId() {
-        return committeeId;
-    }
-
-    public void setCommitteeId(int committeeId) {
-        this.committeeId = committeeId;
-    }
-
-    public int getExecutorId() {
-        return executorId;
-    }
-
-    public void setExecutorId(int executorId) {
-        this.executorId = executorId;
-    }
-
-    public Timestamp getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Timestamp deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 
-    public int getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
-    }
 
     public String getMemo() {
         return memo;
@@ -110,5 +111,35 @@ public class TaskBean {
         this.memo = memo;
     }
 
+    public UserBean getFounder() {
+        return founder;
+    }
 
+    public void setFounder(UserBean founder) {
+        this.founder = founder;
+    }
+
+    public UserBean getCommittee() {
+        return committee;
+    }
+
+    public void setCommittee(UserBean committee) {
+        this.committee = committee;
+    }
+
+    public UserBean getExecutor() {
+        return executor;
+    }
+
+    public void setExecutor(UserBean executor) {
+        this.executor = executor;
+    }
+
+    public List<EntryBean> getEntry() {
+        return entry;
+    }
+
+    public void setEntry(List<EntryBean> entry) {
+        this.entry = entry;
+    }
 }

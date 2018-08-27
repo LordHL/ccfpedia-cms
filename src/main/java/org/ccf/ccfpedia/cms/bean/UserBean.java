@@ -12,6 +12,7 @@ public class UserBean {
     private String account;
     private GroupBean group;
     private RoleBean role;
+    @JsonIgnore
     private int isDelete;
 
     public UserBean() {

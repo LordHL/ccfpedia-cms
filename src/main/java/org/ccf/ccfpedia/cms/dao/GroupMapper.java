@@ -12,9 +12,9 @@ import java.util.List;
 @Repository
 public interface GroupMapper {
 
-    GroupBean selectByPrimaryKey(Integer id);
+    GroupBean selectByPrimaryKey(@Param("id") Integer id);
 
-    GroupBean selectSimpleByPrimaryKey(Integer id);
+    GroupBean selectSimpleByPrimaryKey(@Param("id") Integer id);
 
     List<GroupBean> selectByPaging(@Param("limit") Integer limit, @Param("offset") Integer offset);
 

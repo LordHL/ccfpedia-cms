@@ -10,9 +10,14 @@ import java.util.List;
 @Mapper
 @Repository
 public interface TaskMapper {
-    List<TaskBean> selectByCommitteeId(@Param("id") Integer id);
-    List<TaskBean> selectByExpertId(@Param("id") Integer id);
-    TaskBean selectByTaskId(@Param("id") Integer id);
+    TaskBean selectById(@Param("taskId") Integer id);
+    List<TaskBean> selectTaskViewByState(@Param("id") Integer id);
+    int taskViewStateCount(@Param("id") Integer id);
+    List<TaskBean> selectTaskViewList(@Param("userId") Integer userId, @Param("roleId") Integer roleId, @Param("keyword") String keyword, @Param("status") List<Integer> idList, @Param("limit") Integer limit, @Param("offset") Integer offset);
+    int getCountNew(@Param("userId") Integer userid,@Param("roleId") Integer roleId,@Param("keyword") String keyword,@Param("status") List<Integer> statusId);
+
+
+    int addTask(TaskBean taskBean);
     int editCompleteTask(@Param("id") Integer id);
     int modifyTask(TaskBean taskBean);
     int deleteTask(TaskBean taskBean);
@@ -21,6 +26,4 @@ public interface TaskMapper {
     int expertRejectTask(@Param("id") Integer id,@Param("memo")String memo);
     int rejectTask(@Param("roleId") Integer userId,@Param("taskId") Integer taskId,@Param("memo")String memo);
     int editRejectTask(@Param("id") Integer id,@Param("memo")String memo);
-    int count();
-    int addTask(TaskBean taskBean);
 }

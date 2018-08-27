@@ -12,6 +12,10 @@ public interface UserService {
 
     List<UserBean> getUserList(String keyword, Integer groupId, Integer pageNo, Integer pageSize);
 
+    List<UserBean> getEditorListByGroupId(Integer groupId, Integer pageNo, Integer pageSize);
+
+    int getEditorCountByGroupId(Integer groupId);
+
     List<UserBean> getUserListByIdList(List<Integer> idList);
 
     int getUserCount(String keyword);
@@ -21,4 +25,6 @@ public interface UserService {
     UserBean login(String account, String password);
 
     void update(UserBean user);
+
+    UserBean getLeaderByGroup(Integer id);
 }

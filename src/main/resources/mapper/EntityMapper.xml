@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ccf.ccfpedia.cms.dao.EntityMapper">
+  <resultMap id="BaseResultMap" type="org.ccf.ccfpedia.cms.bean.EntityBean">
+    <result column="task_id" jdbcType="INTEGER" property="taskId" />
+    <result column="entity_id" jdbcType="INTEGER" property="entityId" />
+  </resultMap>
+
+  <resultMap id="EntityResultMap" type="org.ccf.ccfpedia.cms.bean.EntityBean">
+    <id column="entity_id" jdbcType="INTEGER" property="id" />
+    <result column="task_id" jdbcType="INTEGER" property="taskId" />
+    <result column="page_title" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    task_id, entity_id
+  </sql>
+
+  <select id="getEntityByName" resultType="org.ccf.ccfpedia.cms.bean.EntityBean" parameterType="java.lang.String">
+    select page_id as entity_id, page_title as `name`
+    from page
+    where page_title = #{name, jdbcType=VARCHAR}
+    limit 1
+  </select>
+
+  <select id="getEntityListByTaskId" resultMap="EntityResultMap" parameterType="java.lang.Integer">
+    select task_id, entity_id, page_title
+    from task_entity
+    left join page on task_entity.entity_id = page.page_id
+    where task_entity.task_id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getEntityListWithFirstClass" resultMap="BaseResultMap">
+    select page_id as id, page_title as name, entity.task_id as task_id
+    from page
+    left join (select min(task_id) as task_id, entity_id from task_entity group by entity_id) as entity ON page.page_id = entity.entity_id
+    where true
+    <if test="keyword != null">
+      and page_title like CONCAT('%',#{keyword},'%')
+    </if>
+    <if test="classId != null">
+      and page_id in
+      (select cl_from as pid
+      from first_class
+      LEFT JOIN categorylinks on first_class.`name` = categorylinks.cl_to
+      where id = #{classId,jdbcType=INTEGER})
+    </if>
+    <if test=" limit!= null">
+      limit #{limit,jdbcType=INTEGER}
+    </if>
+    <if test="offset != null">
+      offset #{offset,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="getEntityListWithSecondClass" resultMap="BaseResultMap">
+    select page_id as id, page_title as name, entity.task_id as task_id
+    from page
+    left join (select min(task_id) as task_id, entity_id from task_entity group by entity_id) as entity ON page.page_id = entity.entity_id
+    where true
+    <if test="keyword != null">
+      and page_title like CONCAT('%',#{keyword},'%')
+    </if>
+    <if test="classId != null">
+      and page_id in
+      (select cl_from as pid
+      from second_class
+      LEFT JOIN categorylinks on second_class.`name` = categorylinks.cl_to
+      where id = #{classId,jdbcType=INTEGER})
+    </if>
+    <if test=" limit!= null">
+      limit #{limit,jdbcType=INTEGER}
+    </if>
+    <if test="offset != null">
+      offset #{offset,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="getEntityListWithNoClass" resultMap="BaseResultMap">
+    select
+    page_id as id, page_title as name, entity.task_id as task_id
+    from page
+    left join (select min(task_id) as task_id, entity_id from task_entity group by entity_id) as entity ON page.page_id = entity.entity_id
+    <if test="keyword != null">
+      where page_title like CONCAT('%',#{keyword},'%')
+    </if>
+    <if test=" limit!= null">
+      limit #{limit,jdbcType=INTEGER}
+    </if>
+    <if test="offset != null">
+      offset #{offset,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="getEntityCountWithFirstClass" resultType="java.lang.Integer">
+    select count(*)
+    from page
+    left join (select min(task_id) as task_id, entity_id from task_entity group by entity_id) as entity ON page.page_id = entity.entity_id
+    where true
+    <if test="keyword != null">
+      and page_title like CONCAT('%',#{keyword},'%')
+    </if>
+    <if test="classId != null">
+      and page_id in
+      (select cl_from as pid
+      from first_class
+      LEFT JOIN categorylinks on first_class.`name` = categorylinks.cl_to
+      where id = #{classId,jdbcType=INTEGER})
+    </if>
+  </select>
+
+  <select id="getEntityCountWithSecondClass" resultType="java.lang.Integer">
+    select count(*)
+    from page
+    left join (select min(task_id) as task_id, entity_id from task_entity group by entity_id) as entity ON page.page_id = entity.entity_id
+    where true
+    <if test="keyword != null">
+      and page_title like CONCAT('%',#{keyword},'%')
+    </if>
+    <if test="classId != null">
+      and page_id in
+      (select cl_from as pid
+      from second_class
+      LEFT JOIN categorylinks on second_class.`name` = categorylinks.cl_to
+      where id = #{classId,jdbcType=INTEGER})
+    </if>
+  </select>
+
+  <select id="getEntityCountWithNoClass" resultType="java.lang.Integer">
+    select count(*)
+    from page
+    left join (select min(task_id) as task_id, entity_id from task_entity group by entity_id) as entity ON page.page_id = entity.entity_id
+    <if test="keyword != null">
+      where page_title like CONCAT('%',#{keyword},'%')
+    </if>
+  </select>
+
+</mapper>

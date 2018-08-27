@@ -1,16 +1,20 @@
 package org.ccf.ccfpedia.cms.rest;
 
 import io.swagger.annotations.ApiOperation;
+import org.ccf.ccfpedia.cms.bean.EntityBean;
 import org.ccf.ccfpedia.cms.bean.EntryBean;
-import org.ccf.ccfpedia.cms.bean.FirstClassBean;
 import org.ccf.ccfpedia.cms.bean.SecondClassBean;
+import org.ccf.ccfpedia.cms.bean.UserBean;
 import org.ccf.ccfpedia.cms.bean.resp.DataArray;
 import org.ccf.ccfpedia.cms.bean.resp.RestResp;
-import org.ccf.ccfpedia.cms.service.EntryService;
+import org.ccf.ccfpedia.cms.service.EntityService;
+import org.ccf.ccfpedia.cms.service.UserService;
+import org.ccf.ccfpedia.cms.util.MediawikiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,85 +23,49 @@ import java.util.List;
 public class EntryApi {
 
     @Autowired
-    private EntryService entryService;
+    private EntityService entityService;
+    @Autowired
+    private UserService userService;
 
+
+    @ApiOperation("根据名称查询词条")
+    @RequestMapping(value = "search", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<EntityBean> search(String name) {
+        EntityBean entity = entityService.getEntityByName(name);
+        return new RestResp<>(entity);
+    }
 
     @ApiOperation("查询词条列表")
     @RequestMapping(value = "/entrylist", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp<DataArray<EntryBean>> EntryViewList(String keywords,Integer status,Integer firstClass,Integer secondClass,Integer pageNo, Integer pageSize) {
-        List<EntryBean> entryViewList = entryService.getEntryViewList(keywords,status,firstClass,secondClass,pageNo,pageSize);
-        int entryCount = entryService.getEntryViewCount(keywords,status,firstClass,secondClass);
+    public RestResp<DataArray<EntryBean>> EntryViewList(String keywords,Integer firstClass,Integer secondClass,Integer pageNo, Integer pageSize) {
+        List<EntityBean> entityList = entityService.getEntityList(keywords,firstClass,secondClass,pageNo,pageSize);
+        List<EntryBean> entryList = new ArrayList<>();
+        if(entityList != null){
+            for(EntityBean entity : entityList){
+                entryList.add(new EntryBean(entity));
+            }
+        }
+        int count = entityService.getEntityCount(keywords,firstClass,secondClass);
         DataArray<EntryBean> data = new DataArray<>();
-        data.setCount(entryCount);
-        data.setArray(entryViewList);
-        return new RestResp<>(data);
-    }
-
-    /*
-    @ApiOperation("所有词条列表")
-    @RequestMapping(value = "/queryentry", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp<DataArray<EntryBean>> EntryList() {
-        List<EntryBean> entryList = entryService.getEntryList();
-        int entryCount = entryService.getEntryCount();
-        DataArray<EntryBean> data = new DataArray<>();
-        data.setCount(entryCount);
+        data.setCount(count);
         data.setArray(entryList);
         return new RestResp<>(data);
     }
-    */
 
-    @ApiOperation("新建词条")
-    @RequestMapping(value = "/addentry", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp addEntry(@RequestBody EntryBean entryBean) {
-        RestResp<SecondClassBean> resp = null;
-        try {
-            EntryBean tempEntry=entryService.getAddEntryCount(entryBean.getName());
-            if(tempEntry == null)
-            {
-                entryService.addEntry(entryBean);
-                resp = new RestResp<>(200, "创建成功");
+    @ApiOperation("词条编辑地址")
+    @RequestMapping(value = "url", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<String> entryUrl(Integer userId, String word) {
+        RestResp<String> resp = null;
+        UserBean user = userService.getUserById(userId);
+        if(user != null){
+            if(word != null && !word.equals("")) {
+                String url = MediawikiUtils.getURL(user.getName(), user.getAccount(), word);
+                resp = new RestResp<>(url);
+            } else {
+                resp = new RestResp<>(400, "词条不符合要求");
             }
-            else {
-
-                if (entryBean.getStatus() == 2) {
-                    entryService.addExistEntry(entryBean.getName());
-                    resp = new RestResp<>(200, "创建成功");
-
-
-                } else {
-                    resp = new RestResp<>(400, "词条已存在");
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            resp = new RestResp<>(400, "创建失败");
-            return resp;
-        }
-        return resp;
-    }
-
-    @ApiOperation("修改词条")
-    @RequestMapping(value = "/modifyentry", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp modifyEntry(@RequestBody EntryBean entryBean){
-        RestResp<EntryBean> resp = null;
-        if(entryBean != null){
-            entryService.updateEntry(entryBean);
-            resp= new RestResp<>(200, "修改成功");
-        }else{
-            resp = new RestResp<>(400, "修改失败");
-        }
-        return resp;
-    }
-
-    @ApiOperation("删除词条")
-    @RequestMapping(value = "deleteentry/{id}", method = RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp deleteEntry(@PathVariable("id")Integer id) {
-        RestResp<EntryBean> resp = null;
-        int temp = entryService.deleteEntry(id);
-        if(temp==1){
-            resp = new RestResp<>(200, "词条删除成功");
-        }else{
-            resp = new RestResp<>(400, "词条删除失败");
+        } else {
+            resp = new RestResp<>(400, "用户不存在");
         }
         return resp;
     }

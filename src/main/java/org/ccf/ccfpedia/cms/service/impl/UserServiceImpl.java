@@ -43,6 +43,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserBean> getEditorListByGroupId(Integer groupId, Integer pageNo, Integer pageSize){
+        Integer limit = null;
+        Integer offset = null;
+        if(pageNo != null && pageSize != null){
+            offset = (pageNo - 1) * pageSize;
+            limit = pageSize;
+        }
+        List<UserBean> userList = userMapper.selectEditorListByGroupId(groupId, limit, offset);
+        return userList;
+    }
+
+    @Override
+    public int getEditorCountByGroupId(Integer groupId){
+        return userMapper.countEditorListByGroupId(groupId);
+    }
+
+    @Override
     public int getUserCount(String keyword){
         return userMapper.count(keyword);
     }
@@ -61,5 +78,10 @@ public class UserServiceImpl implements UserService {
     public UserBean getUserByAccount(String account){
         UserBean user = userMapper.selectByAccount(account);
         return user;
+    }
+
+    @Override
+    public UserBean getLeaderByGroup(Integer id){
+        return userMapper.getLeaderByGroup(id);
     }
 }

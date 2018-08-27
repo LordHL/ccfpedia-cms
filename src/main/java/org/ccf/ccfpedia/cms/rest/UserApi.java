@@ -48,6 +48,17 @@ public class UserApi {
         return new RestResp<>(data);
     }
 
+    @ApiOperation("专委编辑列表")
+    @GetMapping("editor/list")
+    public RestResp<DataArray<UserBean>> list(Integer groupId, Integer pageNo, Integer pageSize) {
+        List<UserBean> userList = userService.getEditorListByGroupId(groupId, pageNo, pageSize);
+        int userCount = userService.getEditorCountByGroupId(groupId);
+        DataArray<UserBean> data = new DataArray<>();
+        data.setCount(userCount);
+        data.setArray(userList);
+        return new RestResp<>(data);
+    }
+
     @ApiOperation("用户登录")
     @PostMapping("login")
     public RestResp<UserBean> login(String account, String password) {
@@ -61,10 +72,14 @@ public class UserApi {
             }
         } else {
             UserApplyBean userApplyByAccount = userApplyService.getUserApplyByAccount(account);
-            if(userApplyByAccount.getStatus() == 0) {
-                resp = new RestResp<>(402, "审核中");
-            } else if(userApplyByAccount.getStatus() == 2) {
-                resp = new RestResp<>(403, "审核未通过");
+            if(userApplyByAccount != null) {
+                if (userApplyByAccount.getStatus() == 0) {
+                    resp = new RestResp<>(402, "审核中");
+                } else if (userApplyByAccount.getStatus() == 2) {
+                    resp = new RestResp<>(403, "审核未通过");
+                } else {
+                    resp = new RestResp<>(401, "登录失败");
+                }
             } else {
                 resp = new RestResp<>(401, "登录失败");
             }

@@ -7,9 +7,22 @@ public class EntryBean {
     private int id;
     private String name;
     private int status;
-    private int firstClass;
-    private int secondClass;
     private int category;
+
+    public EntryBean() {
+    }
+
+    public EntryBean(EntityBean entity){
+        if(entity.getId() > 0){
+            this.id = entity.getId();
+        } else {
+            this.category = 1;
+        }
+        this.name = entity.getName();
+        if(entity.getTaskId() > 0){
+            this.status = 1;
+        }
+    }
 
     public int getId() {
         return id;
@@ -35,22 +48,6 @@ public class EntryBean {
         this.status = status;
     }
 
-    public int getFirstClass() {
-        return firstClass;
-    }
-
-    public void setFirstClass(int firstClass) {
-        this.firstClass = firstClass;
-    }
-
-    public int getSecondClass() {
-        return secondClass;
-    }
-
-    public void setSecondClass(int secondClass) {
-        this.secondClass = secondClass;
-    }
-
     public int getCategory() {
         return category;
     }
@@ -58,7 +55,5 @@ public class EntryBean {
     public void setCategory(int category) {
         this.category = category;
     }
-
-
 
 }

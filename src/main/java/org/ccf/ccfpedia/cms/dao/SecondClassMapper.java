@@ -12,10 +12,9 @@ import java.util.List;
 @Repository
 public interface SecondClassMapper {
 
-    List<SecondClassBean> getSecondClassEntryList();
-    int secondClassAllCount();
-    int addSecondClassEntry(SecondClassBean secondClassBean);
-    int updateByPrimaryKeySelective(SecondClassBean secondClassBean);
-    List<SecondClassBean> getSecondClassEntryListByFirstClassId(@Param("id") Integer id);
-    int secondClassCount(@Param("id") Integer id);
+    List<SecondClassBean> list(@Param("firstClassId") Integer firstClassId);
+    int count(@Param("firstClassId") Integer firstClassId);
+
+    List<SecondClassBean> listByGroupId(@Param("groupId") Integer groupId, @Param("firstClassId") Integer firstClassId);
+    int countByGroupId(@Param("groupId") Integer groupId, @Param("firstClassId") Integer firstClassId);
 }

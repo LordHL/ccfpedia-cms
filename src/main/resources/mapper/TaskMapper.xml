@@ -2,164 +2,235 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.ccf.ccfpedia.cms.dao.TaskMapper">
   <resultMap id="BaseResultMap" type="org.ccf.ccfpedia.cms.bean.TaskBean">
-    <id column="id" jdbcType="CHAR" property="id" />
+    <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="founder_id" jdbcType="INTEGER" property="founderId" />
-    <result column="creation_time" jdbcType="TIMESTAMP" property="creationTime" />
-    <result column="committee_id" jdbcType="INTEGER" property="committeeId" />
-    <result column="executor_id" jdbcType="INTEGER" property="executorId" />
+      <result column="creation_time" jdbcType="TIMESTAMP" property="creationTime" />
     <result column="deadline" jdbcType="TIMESTAMP" property="deadline" />
     <result column="status_id" jdbcType="INTEGER" property="statusId" />
     <result column="memo" jdbcType="VARCHAR" property="memo" />
+      <association column="group_id" property="group" select="org.ccf.ccfpedia.cms.dao.GroupMapper.selectSimpleByPrimaryKey" javaType="org.ccf.ccfpedia.cms.bean.GroupBean"/>
+      <association column="founder_id" property="founder" select="org.ccf.ccfpedia.cms.dao.UserMapper.selectSimpleByPrimaryKey" javaType="org.ccf.ccfpedia.cms.bean.UserBean"/>
+      <association column="committee_id" property="committee" select="org.ccf.ccfpedia.cms.dao.UserMapper.selectSimpleByPrimaryKey" javaType="org.ccf.ccfpedia.cms.bean.UserBean"/>
+      <association column="executor_id" property="executor" select="org.ccf.ccfpedia.cms.dao.UserMapper.selectSimpleByPrimaryKey" javaType="org.ccf.ccfpedia.cms.bean.UserBean"/>
+      <collection column="id" property="entityList" select="org.ccf.ccfpedia.cms.dao.EntityMapper.getEntityListByTaskId" />
+      <collection column="id" property="newEntryList" select="org.ccf.ccfpedia.cms.dao.TaskNewEntryMapper.getEntryListByTaskId" />
   </resultMap>
+
   <sql id="Base_Column_List">
-    id, name,description,founder_id,creation_time,committee_id,executor_id,deadline,status_id,memo
+    id, name,description,founder_id,creation_time,committee_id,executor_id,deadline,status_id,group_id,memo
   </sql>
 
-  <select id="selectByCommitteeId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from `task`
-    where founder_id = #{id,jdbcType=CHAR}
-  </select>
+    <select id="selectTaskViewList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from task
+        where true
+        <if test="userId != null">
+            <if test="roleId == 1">
+                and founder_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="roleId == 2">
+                and committee_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="roleId == 3">
+                and executor_id = #{userId,jdbcType=INTEGER}
+            </if>
+        </if>
+        <if test="status != null">
+            and status_id in
+            <foreach collection="status" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="keyword != null">
+            and task.name like CONCAT('%',#{keyword},'%')
+        </if>
+        order by creation_time DESC
+        <if test=" limit!= null">
+            limit #{limit,jdbcType=INTEGER}
+        </if>
+        <if test="offset != null">
+            offset #{offset,jdbcType=INTEGER}
+        </if>
+    </select>
 
-  <select id="selectByExpertId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from `task`
-    where committee_id = #{id,jdbcType=CHAR}
-  </select>
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from task
+        where  id = #{taskId,jdbcType=INTEGER}
+    </select>
 
-  <select id="count" resultType="java.lang.Integer" >
-    select count(*)
-    from `task`
-  </select>
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(*)
+        from task
+        where true
+        <if test="userId != null">
+            <if test="roleId == 1">
+                and founder_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="roleId == 2">
+                and committee_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="roleId == 3">
+                and executor_id = #{userId,jdbcType=INTEGER}
+            </if>
+        </if>
+        <if test="statusId != null">
+            and status_id = #{statusId,jdbcType=INTEGER}
+        </if>
+        <if test="keyword != null">
+            and task.name like CONCAT('%',#{keyword},'%')
+        </if>
+    </select>
 
-  <select id="selectByTaskId" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
-    select *
-    from `task`
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+    <select id="getCountNew" resultType="java.lang.Integer">
+        select count(*)
+        from task
+        where true
+        <if test="userId != null">
+            <if test="roleId == 1">
+                and founder_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="roleId == 2">
+                and committee_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="roleId == 3">
+                and executor_id = #{userId,jdbcType=INTEGER}
+            </if>
+        </if>
+        <if test="status != null">
+            and status_id in
+            <foreach collection="status" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="keyword != null">
+            and name like CONCAT('%',#{keyword},'%')
+        </if>
+    </select>
 
-  <insert id="addTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean" useGeneratedKeys="true" keyProperty="id">
-    insert into task (name,description,founder_id,creation_time,committee_id,executor_id,deadline,status_id,memo)
-    values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{founderId,jdbcType=INTEGER}, #{creationTime,jdbcType=TIMESTAMP},
-      #{committeeId,jdbcType=INTEGER}, #{executorId,jdbcType=INTEGER},#{deadline,jdbcType=TIMESTAMP},#{statusId,jdbcType=INTEGER},#{memo,jdbcType=VARCHAR}
-      )
-  </insert>
+    <insert id="addTask" keyProperty="id" useGeneratedKeys="true" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean" >
+        insert into task (name,description,founder_id,committee_id,executor_id,deadline,status_id,memo,group_id)
+        values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{founder.id,jdbcType=INTEGER},
+        #{committee.id,jdbcType=INTEGER}, #{executor.id,jdbcType=INTEGER},#{deadline,jdbcType=TIMESTAMP},#{statusId,jdbcType=INTEGER},#{memo,jdbcType=VARCHAR},#{group.id,jdbcType=INTEGER}
+        )
+    </insert>
 
-  <update id="modifyTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
-    update task
-    <set>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="founderId != null">
-        founder_id = #{founderId,jdbcType=INTEGER},
-      </if>
-      <if test="creationTime != null">
-        creation_time = #{creationTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="committeeId != null">
-        committee_id = #{committeeId,jdbcType=INTEGER},
-      </if>
-      <if test="executorId != null">
-        executor_id = #{executorId,jdbcType=INTEGER},
-      </if>
-      <if test="deadline != null">
-        deadline = #{deadline,jdbcType=TIMESTAMP},
-      </if>
-      <if test="statusId != null">
-        status_id = #{statusId,jdbcType=INTEGER},
-      </if>
-      <if test="memo != null">
-        memo = #{memo,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <update id="modifyTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
+        update task
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="founder != null and founder.id != null">
+                founder_id = #{founder.id,jdbcType=INTEGER},
+            </if>
+            <if test="creationTime != null">
+                creation_time = #{creationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="committee != null and committee.id != null">
+                committee_id = #{committee.id,jdbcType=INTEGER},
+            </if>
+            <if test="group != null and group.id != null">
+                group_id = #{group.id,jdbcType=INTEGER},
+            </if>
+            <if test="executor != null and executor.id != null">
+                executor_id = #{executor.id, jdbcType=INTEGER},
+            </if>
+            <if test="deadline != null">
+                deadline = #{deadline,jdbcType=TIMESTAMP},
+            </if>
+            <if test="statusId != null">
+                status_id = #{statusId,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
-  <update id="deleteTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
-    update task
-    <set>
-      <if test="founderId != committeeId">
-        status_id = 3,
-      </if>
-      <if test="founderId == committeeId">
-        status_id = 8,
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <update id="deleteTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
+        update task
+        <set>
+            <if test="founder.id != committee.id">
+                status_id = 3,
+            </if>
+            <if test="founder.id == committee.id">
+                status_id = 8,
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
-  <update id="completeTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
-    update task
-    <set>
-      <if test="founderId != committeeId">
-        status_id = 13,
-      </if>
-      <if test="founderId == committeeId">
-        status_id = 12,
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <update id="completeTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
+        update task
+        <set>
+            <if test="founder.id != committee.id">
+                status_id = 13,
+            </if>
+            <if test="founder.id == committee.id">
+                status_id = 12,
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
-  <update id="confirmTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
-    update task
-    <set>
-      <if test="roleId == 1">
-        status_id = 12,
-      </if>
-      <if test="roleId == 2">
-        status_id = 13,
-      </if>
-      <if test="roleId == 3">
-        status_id = 10,
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <update id="confirmTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
+        update task
+        <set>
+            <if test="roleId == 1">
+                status_id = 13,
+            </if>
+            <if test="roleId == 2">
+                status_id = 12,
+            </if>
+            <if test="roleId == 3">
+                status_id = 10,
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
-  <update id="rejectTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
-    update task
-    <set>
-      <if test="roleId == 2">
-        status_id = 5, memo = #{memo,jdbcType=VARCHAR},
-      </if>
-      <if test="roleId == 3">
-        status_id = 11, memo = #{memo,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{taskId,jdbcType=INTEGER}
-  </update>
+    <update id="rejectTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
+        update task
+        <set>
+            <if test="roleId == 2">
+                status_id = 5, memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId == 3">
+                status_id = 11, memo = #{memo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{taskId,jdbcType=INTEGER}
+    </update>
 
-  <update id="expertRejectTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
-    update task
-    <set>
-      status_id = 5 , memo = #{memo,jdbcType=VARCHAR},
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <update id="expertRejectTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
+        update task
+        <set>
+            status_id = 5 , memo = #{memo,jdbcType=VARCHAR},
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
-  <update id="editCompleteTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
-    update task
-    <set>
-      status_id = 10,
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <update id="editCompleteTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
+        update task
+        <set>
+            status_id = 10,
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
-  <update id="editRejectTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
-    update task
-    <set>
-      status_id = 11 , memo = #{memo,jdbcType=VARCHAR},
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-
+    <update id="editRejectTask" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean">
+        update task
+        <set>
+            status_id = 11 , memo = #{memo,jdbcType=VARCHAR},
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

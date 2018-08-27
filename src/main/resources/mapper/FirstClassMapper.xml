@@ -9,30 +9,31 @@
   id, name
 </sql>
 
-<select id="getFirstClassEntryList" resultMap="BaseResultMap">
+<select id="list" resultMap="BaseResultMap">
   select
   <include refid="Base_Column_List" />
   from first_class
 </select>
 
-<select id="firstClassAllCount" resultType="java.lang.Integer" >
+  <select id="listByGroupId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from group_first_class
+    left join first_class on class_id = id
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </select>
+
+<select id="count" resultType="java.lang.Integer" >
   select count(*)
   from `first_class`
 </select>
 
-<insert id="addFirstClassEntry" parameterType="org.ccf.ccfpedia.cms.bean.FirstClassBean" useGeneratedKeys="true" keyProperty="id">
-  insert into first_class (name)
-  values (#{name,jdbcType=VARCHAR})
-</insert>
 
-<update id="updateByPrimaryKeySelective" parameterType="org.ccf.ccfpedia.cms.bean.FirstClassBean">
-  update first_class
-  <set>
-    <if test="name != null">
-      name = #{name,jdbcType=VARCHAR},
-    </if>
-  </set>
-  where id = #{id,jdbcType=INTEGER}
-</update>
+  <select id="countByGroupId" resultType="java.lang.Integer" >
+    select count(*)
+    from group_first_class
+    left join first_class on class_id = id
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </select>
 
 </mapper>

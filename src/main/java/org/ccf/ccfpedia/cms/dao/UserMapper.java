@@ -21,6 +21,10 @@ public interface UserMapper {
 
     List<UserBean> selectByKeyword(@Param("keyword") String keyword, @Param("groupId") Integer groupId, @Param("limit") Integer limit, @Param("offset") Integer offset);
 
+    List<UserBean> selectEditorListByGroupId(@Param("groupId") Integer groupId, @Param("limit") Integer limit, @Param("offset") Integer offset);
+
+    int countEditorListByGroupId(@Param("groupId") Integer groupId);
+
     int count(@Param("keyword") String keyword);
 
     int deleteByPrimaryKey(Integer id);
@@ -28,4 +32,6 @@ public interface UserMapper {
     int insert(UserBean user);
 
     int updateByPrimaryKeySelective(UserBean user);
+
+    UserBean getLeaderByGroup(Integer id);
 }

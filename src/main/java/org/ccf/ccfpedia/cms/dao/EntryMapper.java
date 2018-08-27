@@ -16,7 +16,6 @@ public interface EntryMapper {
     List<EntryBean> selectEntryByTaskId(@Param("id") Integer id);
     int selectEntryCountByTaskId(@Param("id") Integer id);
     EntryBean getEntryById(@Param("id") Integer id);
-    List<EntryBean> getEntryViewList(@Param("keywords") String keywords,@Param("status") Integer status,@Param("firstClass") Integer firstClass,@Param("secondClass") Integer secondClass,@Param("pageNo") Integer pageNo,@Param("pageSize") Integer pageSize);
     int entryViewCount(@Param("keywords") String keywords,@Param("status") Integer status,@Param("firstClass") Integer firstClass,@Param("secondClass") Integer secondClass);
     List<EntryBean> getEntryList();
     int entryAllCount();
@@ -31,5 +30,9 @@ public interface EntryMapper {
     int secondClassEntryCount(@Param("secondClass") Integer secondClass);
     List<EntryBean> getEntryBystatus(@Param("status") Integer stateId);
     int EntryCountBystatus(@Param("status") Integer stateId);
+
+    EntryBean getEntryByName(String name);
+    List<EntryBean> getEntryListWithFirstClass(@Param("keyword") String keyword,@Param("classId") Integer classId,@Param("limit") Integer limit,@Param("offset") Integer offset);
+    List<EntryBean> getEntryListWithSecondClass(@Param("keyword") String keyword,@Param("classId") Integer classId,@Param("limit") Integer limit,@Param("offset") Integer offset);
 
 }

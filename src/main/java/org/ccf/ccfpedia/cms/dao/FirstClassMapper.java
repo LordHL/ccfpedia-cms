@@ -12,8 +12,9 @@ import java.util.List;
 @Repository
 public interface FirstClassMapper {
 
-    List<FirstClassBean> getFirstClassEntryList();
-    int firstClassAllCount();
-    int addFirstClassEntry(FirstClassBean firstClassBean);
-    int updateByPrimaryKeySelective(FirstClassBean firstClassBean);
+    List<FirstClassBean> list();
+    int count();
+
+    List<FirstClassBean> listByGroupId(Integer groupId);
+    int countByGroupId(Integer groupId);
 }
