@@ -139,9 +139,14 @@
             <if test="group != null and group.id != null">
                 group_id = #{group.id,jdbcType=INTEGER},
             </if>
-            <if test="executor != null and executor.id != null">
-                executor_id = #{executor.id, jdbcType=INTEGER},
-            </if>
+            <choose>
+                <when test="executor != null and executor.id != null">
+                    executor_id = #{executor.id, jdbcType=INTEGER},
+                </when>
+                <otherwise>
+                    executor_id = null,
+                </otherwise>
+            </choose>
             <if test="deadline != null">
                 deadline = #{deadline,jdbcType=TIMESTAMP},
             </if>

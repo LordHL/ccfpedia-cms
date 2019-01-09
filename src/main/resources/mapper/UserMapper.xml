@@ -21,20 +21,20 @@
 
   <select id="selectSimpleByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id,name
-    from user
+    from user2
     where id = #{id,jdbcType=INTEGER}
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from user
+    from user2
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectByPrimaryKeyList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from user
+    from user2
     <if test="idList != null">
       where id in
       <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
@@ -45,19 +45,19 @@
   <select id="selectByAccount" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from user
+    from user2
     where account = #{account,jdbcType=INTEGER} and is_delete = 0
   </select>
   <select id="getLeaderByGroup" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from user
+    from user2
     where group_id = #{id,jdbcType=INTEGER} and role_id = 2 and is_delete = 0
   </select>
   <select id="selectByKeyword" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from user
+    from user2
     where is_delete = 0
     <if test="keyword != null">
       and name like CONCAT('%',#{keyword},'%')
@@ -76,7 +76,7 @@
   <select id="selectEditorListByGroupId" resultMap="BaseResultMap">
     select
     <include refid="Simple_Column_List" />
-    from user
+    from user2
     where is_delete = 0
       and role_id = 3
     <if test="groupId != null">
@@ -92,7 +92,7 @@
   </select>
   <select id="countEditorListByGroupId" resultType="java.lang.Integer">
     select count(*)
-    from user
+    from user2
     where is_delete = 0
     and role_id = 3
     <if test="groupId != null">
@@ -101,7 +101,7 @@
   </select>
   <select id="count" resultType="java.lang.Integer">
     select count(*)
-    from user
+    from user2
     where is_delete = 0
     <if test="keyword != null">
       and name like CONCAT('%',#{keyword},'%')
@@ -109,12 +109,12 @@
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from user
+    delete from user2
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
   <insert id="insert" parameterType="org.ccf.ccfpedia.cms.bean.UserBean" useGeneratedKeys="true" keyProperty="id">
-    insert into user (name, password, account, email,
+    insert into user2 (name, password, account, email,
       role_id, group_id
       )
     values (#{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
@@ -123,7 +123,7 @@
   </insert>
 
   <update id="updateByPrimaryKeySelective" parameterType="org.ccf.ccfpedia.cms.bean.UserBean">
-    update user
+    update user2
     <set>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},

@@ -59,7 +59,7 @@ public class EntryApi {
         UserBean user = userService.getUserById(userId);
         if(user != null){
             if(word != null && !word.equals("")) {
-                String url = MediawikiUtils.getURL(user.getName(), user.getAccount(), word);
+                String url = MediawikiUtils.getURL(user.getName(), user.getPassword(), word);
                 resp = new RestResp<>(url);
             } else {
                 resp = new RestResp<>(400, "词条不符合要求");

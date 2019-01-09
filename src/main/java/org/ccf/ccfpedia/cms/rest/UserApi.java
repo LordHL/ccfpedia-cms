@@ -105,6 +105,29 @@ public class UserApi {
         return resp;
     }
 
+    @ApiOperation("修改密码")
+    @PostMapping("password/update")
+    public RestResp<UserBean> updatePassword(Integer userId, String oldPassword, String newPassword) {
+        RestResp<UserBean> resp = null;
+        UserBean user = userService.getUserById(userId);
+        if(user != null) {
+            if(oldPassword != null && oldPassword.equals(user.getPassword())) {
+                if (newPassword != null && !newPassword.equals(oldPassword)) {
+                    user.setPassword(newPassword);
+                    userService.update(user);
+                    resp = new RestResp<>(200, "成功");
+                } else {
+                    resp = new RestResp<>(400, "新密码无效");
+                }
+            } else {
+                resp = new RestResp<>(400, "密码错误");
+            }
+        } else {
+            resp = new RestResp<>(400, "用户不存在");
+        }
+        return resp;
+    }
+
     @ApiOperation("用户注册")
     @PostMapping("sign")
     public RestResp login(String account, String password, String name, String email, Integer roleId, Integer groupId) {
@@ -172,9 +195,9 @@ public class UserApi {
 
     @ApiOperation("权限修改")
     @PostMapping("modify")
-    public RestResp<UserBean> modify(Integer userId, Integer groupId, Integer roleId) {
+    public RestResp<UserBean> modify(Integer id, Integer groupId, Integer roleId) {
         RestResp<UserBean> resp = null;
-        UserBean user = userService.getUserById(userId);
+        UserBean user = userService.getUserById(id);
         if(user != null){
             if(roleId != null) {
                 RoleBean role = roleService.getRoleById(roleId);

@@ -45,6 +45,7 @@
       LEFT JOIN categorylinks on first_class.`name` = categorylinks.cl_to
       where id = #{classId,jdbcType=INTEGER})
     </if>
+    order by page.page_id asc
     <if test=" limit!= null">
       limit #{limit,jdbcType=INTEGER}
     </if>
@@ -68,6 +69,7 @@
       LEFT JOIN categorylinks on second_class.`name` = categorylinks.cl_to
       where id = #{classId,jdbcType=INTEGER})
     </if>
+    order by page.page_id asc
     <if test=" limit!= null">
       limit #{limit,jdbcType=INTEGER}
     </if>
@@ -81,9 +83,13 @@
     page_id as id, page_title as name, entity.task_id as task_id
     from page
     left join (select min(task_id) as task_id, entity_id from task_entity group by entity_id) as entity ON page.page_id = entity.entity_id
+    where page_id not in (select distinct cl_from from categorylinks)
+    and page_title not in (select distinct cl_to from categorylinks)
+    and page_title != '首页'
     <if test="keyword != null">
-      where page_title like CONCAT('%',#{keyword},'%')
+      and page_title like CONCAT('%',#{keyword},'%')
     </if>
+    order by page_id asc
     <if test=" limit!= null">
       limit #{limit,jdbcType=INTEGER}
     </if>
@@ -127,11 +133,15 @@
   </select>
 
   <select id="getEntityCountWithNoClass" resultType="java.lang.Integer">
-    select count(*)
+    select
+    count(*)
     from page
     left join (select min(task_id) as task_id, entity_id from task_entity group by entity_id) as entity ON page.page_id = entity.entity_id
+    where page_id not in (select distinct cl_from from categorylinks)
+    and page_title not in (select distinct cl_to from categorylinks)
+    and page_title != '首页'
     <if test="keyword != null">
-      where page_title like CONCAT('%',#{keyword},'%')
+      and page_title like CONCAT('%',#{keyword},'%')
     </if>
   </select>
 
