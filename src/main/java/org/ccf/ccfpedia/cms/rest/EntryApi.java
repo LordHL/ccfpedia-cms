@@ -69,5 +69,14 @@ public class EntryApi {
         }
         return resp;
     }
+    @ApiOperation("根据名称查询新增词条是否存在")
+    @RequestMapping(value = "search/add", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp<String> searchIsExist(String name) {
+        boolean flag = entityService.entityIsExist(name);
+        if(flag){
+            return new RestResp<>(200,"新增词条存在");
+        }
+        return new RestResp<>(400,"新增词条不存在");
+    }
 
 }

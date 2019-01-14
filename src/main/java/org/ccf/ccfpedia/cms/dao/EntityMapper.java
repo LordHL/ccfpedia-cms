@@ -25,4 +25,6 @@ public interface EntityMapper {
     int getEntityCountWithNoClass(@Param("keyword") String keyword);
 
     List<EntityBean> getEntityListByTaskId(@Param("id") Integer id);
+    //查询新增词条是否存在
+    List<String> entityIsExist(@Param("name") String name);
 }

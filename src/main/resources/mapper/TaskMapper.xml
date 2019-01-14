@@ -26,6 +26,9 @@
         <include refid="Base_Column_List" />
         from task
         where true
+        <if test="taskType != null">
+            and task_type = #{taskType,jdbcType=INTEGER}
+        </if>
         <if test="userId != null">
             <if test="roleId == 1">
                 and founder_id = #{userId,jdbcType=INTEGER}
@@ -89,6 +92,9 @@
         select count(*)
         from task
         where true
+        <if test="taskType != null">
+            and task_type = #{taskType,jdbcType=INTEGER}
+        </if>
         <if test="userId != null">
             <if test="roleId == 1">
                 and founder_id = #{userId,jdbcType=INTEGER}
@@ -112,9 +118,12 @@
     </select>
 
     <insert id="addTask" keyProperty="id" useGeneratedKeys="true" parameterType="org.ccf.ccfpedia.cms.bean.TaskBean" >
-        insert into task (name,description,founder_id,committee_id,executor_id,deadline,status_id,memo,group_id)
+        insert into task
+        (name,description,founder_id,committee_id,executor_id,deadline,status_id,memo,group_id,task_type)
         values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{founder.id,jdbcType=INTEGER},
-        #{committee.id,jdbcType=INTEGER}, #{executor.id,jdbcType=INTEGER},#{deadline,jdbcType=TIMESTAMP},#{statusId,jdbcType=INTEGER},#{memo,jdbcType=VARCHAR},#{group.id,jdbcType=INTEGER}
+        #{committee.id,jdbcType=INTEGER},#{executor.id,jdbcType=INTEGER},#{deadline,jdbcType=TIMESTAMP},
+        #{statusId,jdbcType=INTEGER},#{memo,jdbcType=VARCHAR},#{group.id,jdbcType=INTEGER},
+        #{taskType,jdbcType=INTEGER}
         )
     </insert>
 

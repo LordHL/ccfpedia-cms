@@ -1,12 +1,14 @@
 server:
-  port: 8081
+  port: 8082
 
 spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/term_ccf?characterEncoding=utf8&amp;autoReconnect=true&amp;failOverReadOnly=false
 #    url: jdbc:mysql://212.64.110.155:3389/term_ccf?characterEncoding=utf8&amp;autoReconnect=true&amp;failOverReadOnly=false
-    username: wiki
-    password: termccf
+#    username: wiki
+#   password: termccf
+    username: root
+    password: abc.123
 
 mybatis:
   configuration:

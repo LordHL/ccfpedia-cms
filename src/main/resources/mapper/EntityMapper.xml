@@ -145,4 +145,12 @@
     </if>
   </select>
 
+  <!-- 查询新增词条是否存在-->
+  <select id="entityIsExist" resultType="java.lang.String">
+        select p.page_title
+        from task_new_entry t
+        join page p on t.`name` = p.page_title
+        where t.`name` = #{name,jdbcType=VARCHAR}
+    </select>
+
 </mapper>

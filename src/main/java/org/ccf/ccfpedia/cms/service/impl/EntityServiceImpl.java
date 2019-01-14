@@ -51,5 +51,12 @@ public class EntityServiceImpl implements EntityService {
     public EntityBean getEntityByName(String name){
         return entityMapper.getEntityByName(name);
     }
+    @Override
+    public boolean entityIsExist(String name){
+        List<String> list = entityMapper.entityIsExist(name);
+        if(list != null && !list.isEmpty())
+            return true;
+        return false;
+    }
 
 }

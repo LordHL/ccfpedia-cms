@@ -1,7 +1,12 @@
 package org.ccf.ccfpedia.cms.service.impl;
 
-import org.ccf.ccfpedia.cms.bean.*;
-import org.ccf.ccfpedia.cms.dao.EntryMapper;
+import org.ccf.ccfpedia.cms.bean.EntityBean;
+import org.ccf.ccfpedia.cms.bean.EntryBean;
+import org.ccf.ccfpedia.cms.bean.TaskBean;
+import org.ccf.ccfpedia.cms.bean.TaskEntityBean;
+import org.ccf.ccfpedia.cms.bean.TaskNewEntryBean;
+import org.ccf.ccfpedia.cms.bean.TaskStatusBean;
+import org.ccf.ccfpedia.cms.bean.UserBean;
 import org.ccf.ccfpedia.cms.dao.TaskEntityMapper;
 import org.ccf.ccfpedia.cms.dao.TaskMapper;
 import org.ccf.ccfpedia.cms.dao.TaskNewEntryMapper;
@@ -34,7 +39,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskBean> getTaskViewListNew(Integer userId, String keyword, Integer status_id, Integer pageNo, Integer pageSize) {
+    public List<TaskBean> getTaskViewListNew(Integer userId, String keyword, Integer status_id,
+                                             Integer taskType, Integer pageNo, Integer pageSize) {
         List<Integer> status = new ArrayList<Integer>();
         Integer roleId = null;
         if(userId != null){
@@ -152,8 +158,11 @@ public class TaskServiceImpl implements TaskService {
             }
         }
         List<TaskBean> taskBeans = new ArrayList<>();
+        if(keyword == null || keyword.isEmpty()){
+            keyword = null;
+        }
         if(status.size() > 0) {
-            taskBeans = taskMapper.selectTaskViewList(userId, roleId, keyword, status, limit, offset);
+            taskBeans = taskMapper.selectTaskViewList(userId, roleId, keyword, status,taskType, limit, offset);
             for (TaskBean taskBean : taskBeans) {
                 taskBean.setStatus(getTaskStatusBeanByRoleIdAndStatusId(roleId, taskBean.getStatusId()));
                 convertToView(taskBean);
@@ -163,7 +172,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public int getCountNew(Integer userId, String keyword, Integer status_id) {
+    public int getCountNew(Integer userId, String keyword, Integer status_id,Integer taskType) {
         List<Integer> status = new ArrayList<Integer>();
         Integer roleId = null;
         if(userId != null){
@@ -276,33 +285,49 @@ public class TaskServiceImpl implements TaskService {
         }
         int count = 0;
         if(status.size() > 0){
-            count = taskMapper.getCountNew(userId, roleId, keyword, status);
+            count = taskMapper.getCountNew(userId, roleId, keyword, status,taskType);
         }
         return count;
     }
 
     @Override
     public int addTask(TaskBean taskBean) {
+        //编辑
+        taskBean.setTaskType(0);
         int num = taskMapper.addTask(taskBean);
+        //转义
         List<EntryBean> entryList = taskBean.getEntry();
         List<TaskEntityBean> taskEntityList = new ArrayList<>();
-        List<TaskNewEntryBean> taskNewEntryList = new ArrayList<>();
         for(EntryBean entry : entryList){
-            if(entry.getCategory() == 0){
-                TaskEntityBean taskEntity = new TaskEntityBean();
-                taskEntity.setEntityId(entry.getId());
-                taskEntity.setTaskId(taskBean.getId());
-                taskEntityList.add(taskEntity);
-            } else {
-                TaskNewEntryBean taskNewEntryBean = new TaskNewEntryBean();
-                taskNewEntryBean.setName(entry.getName());
-                taskNewEntryBean.setTaskId(taskBean.getId());
-                taskNewEntryList.add(taskNewEntryBean);
-            }
+            entry.setCategory(0);
+            TaskEntityBean taskEntity = new TaskEntityBean();
+            taskEntity.setEntityId(entry.getId());
+            taskEntity.setTaskId(taskBean.getId());
+            taskEntityList.add(taskEntity);
+
         }
         if(taskEntityList.size() > 0) {
             taskEntityMapper.insertMany(taskEntityList);
         }
+
+        return num;
+    }
+    @Override
+    public int addEntityTask(TaskBean taskBean) {
+        //新增词条
+        taskBean.setTaskType(1);
+        int num = taskMapper.addTask(taskBean);
+        List<EntryBean> entryList = taskBean.getEntry();
+        List<TaskNewEntryBean> taskNewEntryList = new ArrayList<>();
+        for(EntryBean entry : entryList){
+            entry.setCategory(1);
+            TaskNewEntryBean taskNewEntryBean = new TaskNewEntryBean();
+            taskNewEntryBean.setName(entry.getName());
+            taskNewEntryBean.setTaskId(taskBean.getId());
+            taskNewEntryList.add(taskNewEntryBean);
+
+        }
+
         if(taskNewEntryList.size() > 0) {
             taskNewEntryMapper.insertMany(taskNewEntryList);
         }

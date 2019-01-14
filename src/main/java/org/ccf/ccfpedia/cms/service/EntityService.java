@@ -12,4 +12,6 @@ public interface EntityService {
     EntityBean getEntityByName(String name);
     List<EntityBean> getEntityList(String keyword, Integer firstClass,Integer secondClass,Integer pageNo, Integer pageSize);
     int getEntityCount(String keyword,Integer firstClass,Integer secondClass);
+    //查询新增词条是否存在
+    boolean entityIsExist(String name);
 }

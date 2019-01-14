@@ -21,6 +21,8 @@ public class TaskBean {
     private List<EntryBean> entry;
     private List<EntityBean> entityList;
     private List<String> newEntryList;
+    //状态
+    private Integer taskType;
 
     public List<EntityBean> getEntityList() {
         return entityList;
@@ -141,5 +143,13 @@ public class TaskBean {
 
     public void setEntry(List<EntryBean> entry) {
         this.entry = entry;
+    }
+
+    public Integer getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(Integer taskType) {
+        this.taskType = taskType;
     }
 }

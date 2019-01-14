@@ -1,7 +1,8 @@
 package org.ccf.ccfpedia.cms.rest;
 
 import io.swagger.annotations.ApiOperation;
-import org.ccf.ccfpedia.cms.bean.*;
+import org.ccf.ccfpedia.cms.bean.TaskBean;
+import org.ccf.ccfpedia.cms.bean.UserBean;
 import org.ccf.ccfpedia.cms.bean.resp.DataArray;
 import org.ccf.ccfpedia.cms.bean.resp.RestResp;
 import org.ccf.ccfpedia.cms.service.EntityService;
@@ -9,7 +10,11 @@ import org.ccf.ccfpedia.cms.service.TaskService;
 import org.ccf.ccfpedia.cms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -28,9 +33,12 @@ public class TaskApi {
 
     @ApiOperation("任务列表")
     @RequestMapping(value = "taskviewlistnew", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp<DataArray<TaskBean>> taskViewListNew(Integer userId, Integer status_id, String keyword, Integer pageNo, Integer pageSize) {
-        List<TaskBean> taskViewList = taskService.getTaskViewListNew(userId, keyword, status_id, pageNo, pageSize);
-        int userCount = taskService.getCountNew(userId, keyword, status_id);
+    public RestResp<DataArray<TaskBean>> taskViewListNew(Integer userId, Integer status_id, String keyword,
+                                                         Integer taskType, Integer pageNo,
+                                                         Integer pageSize) {
+        List<TaskBean> taskViewList = taskService.getTaskViewListNew(userId, keyword, status_id,taskType, pageNo,
+                pageSize);
+        int userCount = taskService.getCountNew(userId, keyword, status_id,taskType);
         DataArray<TaskBean> data = new DataArray<>();
         data.setCount(userCount);
         data.setArray(taskViewList);
@@ -49,7 +57,7 @@ public class TaskApi {
         }
     }
 
-    @ApiOperation("工委专委新建任务")
+    @ApiOperation("工委专委编辑词条任务")
     @RequestMapping(value = "create", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public RestResp addTask(@RequestBody TaskBean taskBean) {
         RestResp<TaskBean> resp = null;
@@ -62,8 +70,45 @@ public class TaskApi {
                 } else {
                     taskBean.setStatusId(4);
                 }
+            }else {
+                if(taskBean.getStatusId() == null){
+                    taskBean.setStatusId(1);
+                }
             }
             int temp = taskService.addTask(taskBean);
+            if (temp == 1) {
+                resp = new RestResp<>(200, "任务创建成功");
+            } else {
+                resp = new RestResp<>(400, "任务创建失败");
+            }
+        }
+        return resp;
+    }
+    @ApiOperation("工委专委新增词条任务")
+    @RequestMapping(value = "create/entity", method = RequestMethod.POST, produces=
+            MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public RestResp addNewTask(@RequestBody TaskBean taskBean) {
+        RestResp<TaskBean> resp = null;
+        if(taskBean != null) {
+            if(taskBean.getGroup() != null) {
+                //找到专委主编
+                UserBean leader = userService.getLeaderByGroup(taskBean.getGroup().getId());
+                //专委委员
+                taskBean.setCommittee(leader);
+                if(leader.getId() == taskBean.getFounder().getId()){
+                    //专委新建任务
+                    taskBean.setStatusId(6);
+                } else {
+                    //工委分配给专委
+                    taskBean.setStatusId(4);
+                }
+            }else {
+                if(taskBean.getStatusId() == null){
+                    //工委新建
+                    taskBean.setStatusId(1);
+                }
+            }
+            int temp = taskService.addEntityTask(taskBean);
             if (temp == 1) {
                 resp = new RestResp<>(200, "任务创建成功");
             } else {
@@ -96,7 +141,7 @@ public class TaskApi {
 
     @ApiOperation("确认任务完成")
     @RequestMapping(value = "confirm", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp confirmTask(Integer userId,Integer taskId) {
+    public RestResp confirmTask(Integer userId, Integer taskId) {
         RestResp<TaskBean> resp = null;
         int temp = taskService.confirmTask(userId,taskId);
         if(temp==1){
@@ -109,7 +154,7 @@ public class TaskApi {
 
     @ApiOperation("驳回任务")
     @RequestMapping(value = "reject", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public RestResp rejectTask(Integer userId,Integer taskId, String memo) {
+    public RestResp rejectTask(Integer userId, Integer taskId, String memo) {
         RestResp<TaskBean> resp = null;
         int temp = taskService.rejectTask(userId,taskId,memo);
         if(temp==1){
